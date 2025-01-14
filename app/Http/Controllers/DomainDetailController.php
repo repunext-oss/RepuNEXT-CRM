@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type;
-use App\Models\Host_Details;
+use App\Models\HostDetail;
 use App\Models\Domain_detail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class DomainDetailController extends Controller
     public function index()
     {
         $type= Type::all();
-        $host = Host_Details::all();
+        $host = HostDetail::all();
         $repn   =  Domain_detail::where('domain_isdeleted', 0)->orderBy('id','DESC')->get();
         return view('domain_detail.list',compact('repn','type','host'));
     }
@@ -31,7 +31,7 @@ class DomainDetailController extends Controller
     public function create()
     {
         $type= Type::all();
-        $host = Host_Details::all();
+        $host = HostDetail::all();
         return view('domain_detail.add',compact('type','host'));   
     }
 
@@ -77,7 +77,7 @@ class DomainDetailController extends Controller
     public function show($id)
     {
         $type= Type::all();
-        $host = Host_Details::all();
+        $host = HostDetail::all();
         $repn   = Domain_detail::find($id);
         return view('domain_detail.show',compact('repn','type','host'));
     }
@@ -91,7 +91,7 @@ class DomainDetailController extends Controller
     public function edit($id)
     {
         $type= Type::all();
-        $host = Host_Details::all();
+        $host = HostDetail::all();
         $repn   = Domain_detail::find($id);
         return view('domain_detail.edit',compact('repn','type','host'));   
     }

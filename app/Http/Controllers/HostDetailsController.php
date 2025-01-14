@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Host_Details;
+use App\Models\HostDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -10,7 +10,7 @@ class HostDetailsController extends Controller
 {
     public function index()
     {   
-        $repn   =  Host_Details::where('h_isdeleted', 0)->orderBy('id','DESC')->get();
+        $repn   =  HostDetail::where('h_isdeleted', 0)->orderBy('id','DESC')->get();
         return view('host_details.list',compact('repn'));              
     }
 
@@ -23,14 +23,14 @@ class HostDetailsController extends Controller
         $request->validate([
             'host_name' => 'required',
         ]);
-        $check_isexist  =   Host_Details::where('host_name', $request->host_name)->first();  
+        $check_isexist  =   HostDetail::where('host_name', $request->host_name)->first();  
         if($check_isexist){
             $notification   =   array(  'message' => 'host name already exists',
                                         'alert-type' => 'warning'  );
             return redirect()->route('list.hdetail')->with($notification); 
         } 
  
-         $repn           =   new Host_Details;
+         $repn           =   new HostDetail;
          $repn->host_name  =   $request->host_name; 
          $repn->host_username  =   $request->host_username; 
          $repn->host_password  =   $request->host_password; 
@@ -44,18 +44,18 @@ class HostDetailsController extends Controller
 
     public function show($id)
     {
-        $repn   = Host_Details::find($id);
+        $repn   = HostDetail::find($id);
         return view('host_details.show',compact('repn'));
     }
 
     public function edit($id)
     {
-        $repn   = Host_Details::find($id);
+        $repn   = HostDetail::find($id);
         return view('host_details.edit',compact('repn'));   
     }
     public function update(Request $request)
     {
-        $repn = Host_Details::find($request->id);
+        $repn = HostDetail::find($request->id);
 
         $repn->host_name = $request['host_name']; 
         $repn->host_username = $request['host_username']; 
@@ -76,14 +76,14 @@ class HostDetailsController extends Controller
       
     public function destroy($id)
     {
-        $repn                   =   Host_Details::find($id);
+        $repn                   =   HostDetail::find($id);
         $repn->h_isdeleted     =   "1";
         $repn->save();     
         return redirect()->route('list.hdetail')->with('success','state has been deleted successfully');
     }
     public function status(Request $request)
     { 
-        $repn               =   Host_Details::find($request->id);  
+        $repn               =   HostDetail::find($request->id);  
         $repn->h_status    =   $request->statusval;
         $repn->save();     
         return redirect()->route('list.hdetail')->with('success','state has been status successfully');

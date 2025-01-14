@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class tools_credentials extends Model
+class ToolsCredential extends Model
 {
     use HasFactory;
     protected $table='tools_credentials';

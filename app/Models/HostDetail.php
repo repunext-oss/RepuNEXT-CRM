@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class host_details extends Model
+class HostDetail extends Model
 {
     use HasFactory;
     protected $table='host_details';

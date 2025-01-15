@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Controllers\Controller;
+ 
 use Illuminate\Http\Request;
 use  App\Models\Callcenter;
 
-class callcenterController extends Controller
+class CallCenterController extends Controller
 {
     public function index(Request $request){
         $callcenter=Callcenter::all();

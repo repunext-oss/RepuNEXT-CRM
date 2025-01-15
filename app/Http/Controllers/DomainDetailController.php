@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Type;
 use App\Models\HostDetail;
-use App\Models\Domain_detail;
+use App\Models\DomainDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class DomainDetailController extends Controller
     {
         $type= Type::all();
         $host = HostDetail::all();
-        $repn   =  Domain_detail::where('domain_isdeleted', 0)->orderBy('id','DESC')->get();
+        $repn   =  DomainDetail::where('domain_isdeleted', 0)->orderBy('id','DESC')->get();
         return view('domain_detail.list',compact('repn','type','host'));
     }
 
@@ -48,13 +48,13 @@ class DomainDetailController extends Controller
             'backend_password' => 'required'
 
         ]);
-        $check_isexist  =   Domain_detail::where('domain_name', $request->domain_name)->first();  
+        $check_isexist  =   DomainDetail::where('domain_name', $request->domain_name)->first();  
         if($check_isexist){
             $notification   =   array(  'message' => 'domain name already exists',
                                         'alert-type' => 'warning'  );
             return redirect()->route('list.ddetail')->with($notification); 
         } 
-         $repn   =   new Domain_detail;
+         $repn   =   new DomainDetail;
          $repn->domain_name  =   $request->domain_name; 
          $repn->host_id  =   $request->host_id; 
          $repn->type  =   $request->type_name; 
@@ -71,14 +71,14 @@ class DomainDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Domain_detail  $domain_detail
+     * @param  \App\Models\DomainDetail  $domain_detail
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $type= Type::all();
         $host = HostDetail::all();
-        $repn   = Domain_detail::find($id);
+        $repn   = DomainDetail::find($id);
         return view('domain_detail.show',compact('repn','type','host'));
     }
 
@@ -92,7 +92,7 @@ class DomainDetailController extends Controller
     {
         $type= Type::all();
         $host = HostDetail::all();
-        $repn   = Domain_detail::find($id);
+        $repn   = DomainDetail::find($id);
         return view('domain_detail.edit',compact('repn','type','host'));   
     }
 
@@ -100,12 +100,12 @@ class DomainDetailController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Domain_detail  $domain_detail
+     * @param  \App\Models\DomainDetail  $domain_detail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Domain_detail $domain_detail)
+    public function update(Request $request, DomainDetail $domain_detail)
     {
-        $repn = Domain_detail::find($request->id);
+        $repn = DomainDetail::find($request->id);
 
         $repn->domain_name = $request['domain_name']; 
         $repn->host_id = $request['host_id']; 
@@ -134,14 +134,14 @@ class DomainDetailController extends Controller
      */
     public function destroy($id)
     {
-        $repn                   =   Domain_detail::find($id);
+        $repn                   =   DomainDetail::find($id);
         $repn->domain_isdeleted     =   "1";
         $repn->save();     
         return redirect()->route('list.ddetail')->with('success','state has been deleted successfully');
     }
     public function status(Request $request)
     { 
-        $repn               =   Domain_detail::find($request->id);  
+        $repn               =   DomainDetail::find($request->id);  
         $repn->domain_status    =   $request->statusval;
         $repn->save();     
         return redirect()->route('list.ddetail')->with('success','state has been status successfully');

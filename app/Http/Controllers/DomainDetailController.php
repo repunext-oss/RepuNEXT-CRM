@@ -9,37 +9,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class DomainDetailController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+{ 
     public function index()
     {
         $type= Type::all();
         $host = HostDetail::all();
         $repn   =  DomainDetail::where('domain_isdeleted', 0)->orderBy('id','DESC')->get();
         return view('domain_detail.list',compact('repn','type','host'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    } 
     public function create()
     {
         $type= Type::all();
         $host = HostDetail::all();
         return view('domain_detail.add',compact('type','host'));   
-    }
-
-
+    } 
     public function store(Request $request)
-    {
-        // dd($request);
-        // exit();
+    { 
         $request->validate([
             'domain_name' => 'required',
             'host_id' => 'required',
@@ -66,44 +51,22 @@ class DomainDetailController extends Controller
                                     'alert-type' => 'success'  );
            
         return redirect()->route('list.ddetail')->with($notification); 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DomainDetail  $domain_detail
-     * @return \Illuminate\Http\Response
-     */
+    } 
     public function show($id)
     {
         $type= Type::all();
         $host = HostDetail::all();
         $repn   = DomainDetail::find($id);
         return view('domain_detail.show',compact('repn','type','host'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Domain_detail  $domain_detail
-     * @return \Illuminate\Http\Response
-     */
+    } 
     public function edit($id)
     {
         $type= Type::all();
         $host = HostDetail::all();
         $repn   = DomainDetail::find($id);
         return view('domain_detail.edit',compact('repn','type','host'));   
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\DomainDetail  $domain_detail
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DomainDetail $domain_detail)
+    } 
+    public function update(Request $request)
     {
         $repn = DomainDetail::find($request->id);
 
@@ -112,9 +75,7 @@ class DomainDetailController extends Controller
         $repn->type = $request['type']; 
         $repn->backend_user = $request['backend_user']; 
         $repn->backend_password = $request['backend_password']; 
-        $repn->save();
-        
-        
+        $repn->save(); 
         if($repn){
             $notification = array(  'message' => 'domain Updated Successfully',
                                     'alert-type' => 'success'  );
@@ -123,15 +84,8 @@ class DomainDetailController extends Controller
             $notification = array(  'message' => 'Something went wrong, Please try again!!',
                                     'alert-type' => 'warning' );
             return redirect()->route('list.ddetail')->with($notification);
-    }
-}
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Domain_detail  $domain_detail
-     * @return \Illuminate\Http\Response
-     */
+        }
+    } 
     public function destroy($id)
     {
         $repn                   =   DomainDetail::find($id);
@@ -145,8 +99,5 @@ class DomainDetailController extends Controller
         $repn->domain_status    =   $request->statusval;
         $repn->save();     
         return redirect()->route('list.ddetail')->with('success','state has been status successfully');
-    }
-   
-
-   
+    } 
 }

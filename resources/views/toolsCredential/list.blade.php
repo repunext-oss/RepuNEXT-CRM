@@ -101,8 +101,8 @@
 
 								<td>
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" onchange="Check(this, {{ $repns->id }})" 
-										@if($repns->state_status == 0) checked @endif>
+										<input class="form-check-input" type="checkbox" onchange="Check(this,{{ $repns->id }})" 
+										@if($repns->tc_status == 0) checked @endif>
 									</div>
 								</td>
 
@@ -121,13 +121,13 @@
 								</td>
 							</tr>
 							@endforeach
-						</tbody>
-
-
-					</table>
-
-				
-
+						</tbody> 
+					</table> 
+				</div> 
+			</div>
+		</div>
+	</div>
+</div> 
 <script>  
 	function deleteConfirmation(id) {
 			swal({
@@ -140,10 +140,9 @@
 				closeOnConfirm: false
 			}, function (isConfirm) {
 				if (!isConfirm) return;    
-				
 				let token = "{{ csrf_token() }}";
-				let _url = `/project/toolcred/destroy/{id}`;  // Dynamically insert id here
-				
+				let _url = `/project/toolcred/destroy/${id}`;  
+				console.log(_url);
 				$.ajax({
 					type: 'POST',  
 					url: _url,
@@ -175,7 +174,5 @@
 				}
 			}); 
     }; 
-</script>
-  
-
+</script> 
 @endsection

@@ -111,7 +111,7 @@
 				if (!isConfirm) return;    
 				
 				let token = "{{ csrf_token() }}";
-				let _url = `/project/toolstype/destroy/{id}`;  // Dynamically insert id here
+				let _url = `/project/toolstype/destroy/${id}`;  // Dynamically insert id here
 				
 				$.ajax({
 					type: 'POST',  

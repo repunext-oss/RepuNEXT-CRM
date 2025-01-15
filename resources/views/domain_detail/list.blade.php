@@ -29,15 +29,7 @@
 						<div id="kt_ecommerce_report_views_export" class="d-none"></div> 
 					</div> 
 					<div class="card-toolbar flex-row-fluid justify-content-end gap-5"> 
-						<!-- <input class="form-control form-control-solid w-100 mw-250px" placeholder="Pick date range" id="kt_ecommerce_report_views_daterangepicker" />
-						<div class="w-150px"> 
-							<select class="form-select form-select-solid st-drop" data-control="select2" data-hide-search="true" data-placeholder="Status" data-kt-ecommerce-order-filter="rating">
-								<option></option>
-								<option value="all">All</option>
-								<option value="rating-1">UnPaid</option>
-								<option value="rating-2">Paid</option>
-							</select> 
-						</div>  -->
+						 
 						<button type="button" class="btn btn-light-primary st-drop" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 							<span class="svg-icon svg-icon-2">
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

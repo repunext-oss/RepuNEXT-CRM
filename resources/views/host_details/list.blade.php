@@ -84,9 +84,7 @@
 								<td>{{$j+=1;}}</td> 
 								<td>{{ $repns->host_name}} </td> 
 								<td>{{ $repns->host_username}} </td> 
-								<td>{{ $repns->host_password}} </td> 
-								
-								
+								<td>{{ $repns->host_password}} </td>  
 								<td><label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack mb-0">    
 								<input class="form-check-input" type="checkbox" onchange="Check(this,{{$repns->id}})" @if($repns->state_status==0) checked @endif></label></td>       
 								<td><a href="{{route('view.hdetail', $repns->id)}}" class="btn btn-sm btn-warning align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>          

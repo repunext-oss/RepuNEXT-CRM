@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>xyz</title>
+		<title>Repunext</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -72,18 +72,32 @@
 		<script src="{{asset('backend/assets/js/custom/apps/chat/chat.js')}}"></script>
 		<script src="{{asset('backend/assets/js/custom/utilities/modals/upgrade-plan.js')}}"></script>
 		<script src="{{asset('backend/assets/js/custom/utilities/modals/create-app.js')}}"></script>
-		<script src="{{asset('backend/assets/js/custom/utilities/modals/users-search.js')}}"></script>
-		<script src="{{asset('backend/assets/js/custom/apps/user-management/roles/list/add.js')}}"></script>
-		<script src="{{asset('backend/assets/js/custom/apps/user-management/roles/list/update-role.js')}}"></script>
-
-		<script src="{{asset('backend/assets/js/custom/apps/user-management/users/list/table.js')}}"></script>
-		<script src="{{asset('backend/assets/js/custom/apps/user-management/users/list/export-users.js')}}"></script>
-		<script src="{{asset('backend/assets/js/custom/apps/user-management/users/list/add.js')}}"></script>
+		<script src="{{asset('backend/assets/js/custom/utilities/modals/users-search.js')}}"></script> 
+		<script src="{{asset('backend/assets/js/custom/apps/ecommerce/sales/listing.js')}}"></script>
+		<script src="{{asset('backend/assets/js/custom/apps/user-management/users/list/table.js')}}"></script> 
 		<script src="{{asset('backend/assets/js/custom/apps/ecommerce/catalog/products.js')}}"></script>
 		<script src="{{asset('backend/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
-		<script src="{{asset('backend/assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
+		<script src="{{asset('backend/assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> 
+		<script src="{{asset('backend/assets/js/custom/apps/ecommerce/reports/views/views.js')}}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" ></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> 
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+		<script src="{{asset('backend/assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>	
+<script>
+tinymce.init({
+    selector: "#tinymce_basic", height : "400", statusbar: false, menubar: false,
+    toolbar: [ "styleselect fontsizeselect fontselect| bold italic | link image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | autolink | code preview"],
+    plugins : "advlist autolink link image lists charmap print preview code",
+	relative_urls: false, 
+    remove_script_host: false, 
+	image_dimensions: false,
+	setup: function (editor) {
+		editor.on('BeforeSetContent', function (e) { 
+			if (e.content) {
+				e.content = e.content.replace(/(<img[^>]+)(?:width|height)="[^"]*"/g, '$1');
+			}
+		});
+	}
+});</script>
 	</body>
 </html>

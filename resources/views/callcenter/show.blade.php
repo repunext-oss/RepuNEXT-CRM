@@ -7,71 +7,75 @@
             <div class="card">
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold fs-3 mb-1">Edit</span>
+                        <span class="card-label fw-bold fs-3 mb-1">View</span>
                         <span class="text-muted fw-semibold fs-7">
                             <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Call Center / List
                         </span>
                     </h3>
                 </div>
                 <div class="card-body pt-5 pb-0">
-                <form action="{{ route('callcenter.update') }}" method="post" class="form" enctype="multipart/form-data">
+
                         @csrf
                        
+
+                        <!-- Name and Mobile -->
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="name" class="required fw-bold fs-6 mb-2">Name</label>
-                                <input type="text" class="form-control" id="name" name="Name" required placeholder="Enter Name" value="{{ $d->Name }}" onkeypress="return /^[a-zA-Z\s]*$/.test(event.key)">
+                                <label for="name" class="  fw-bold fs-6 mb-2">Name</label>
+                                <input type="text" class="form-control" id="name" name="Name"    readonly placeholder="Enter Name" value="{{ $d->Name }}" onkeypress="return /^[a-zA-Z\s]*$/.test(event.key)">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="mobile" class="required fw-bold fs-6 mb-2">Mobile</label>
-                                <input type="text" class="form-control" id="mobile" name="Mobile" required placeholder="Enter Mobile Number" value="{{ $d->Mobile }}">
+                                <label for="mobile" class="  fw-bold fs-6 mb-2">Mobile</label>
+                                <input type="text" class="form-control" id="mobile" name="Mobile"    readonly placeholder="Enter Mobile Number" value="{{ $d->Mobile }}">
                                 <span id="numloc" class="text-danger"></span>
                             </div>
                         </div><br>
 
+                        <!-- Enquiry Date and Email -->
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="enquiry_date" class="required fw-bold fs-6 mb-2">Enquiry Date</label>
-                                <input type="date" class="form-control" id="enquiry_date" name="Enquiry_Date" required value="{{ $d->Enquiry_Date }}">
+                                <label for="enquiry_date" class="  fw-bold fs-6 mb-2">Enquiry Date</label>
+                                <input type="date" class="form-control" id="enquiry_date" name="Enquiry_Date"   value="{{ $d->Enquiry_Date }}">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="email" class="required fw-bold fs-6 mb-2">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="Email" required placeholder="Enter Email" value="{{ $d->Email }}">
+                                <label for="email" class="  fw-bold fs-6 mb-2">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="Email"    readonly placeholder="Enter Email" value="{{ $d->Email }}">
                             </div>
                         </div><br>
 
+                        <!-- Company Name and Follow-Up -->
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="company_name" class="required fw-bold fs-6 mb-2">Company Name</label>
-                                <input type="text" class="form-control" id="company_name" name="Company_Name" required placeholder="Enter Company Name" value="{{ $d->Company_Name }}">
+                                <label for="company_name" class="  fw-bold fs-6 mb-2">Company Name</label>
+                                <input type="text" class="form-control" id="company_name" name="Company_Name"    readonly placeholder="Enter Company Name" value="{{ $d->Company_Name }}">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="followup" class="required fw-bold fs-6 mb-2">Follow-Up</label>
-                                <input type="text" class="form-control" id="followup" name="FollowUp" required value="{{ $d->FollowUp }}">
+                                <label for="followup" class="  fw-bold fs-6 mb-2">Follow-Up</label>
+                                <input type="text" class="form-control" id="followup" name="FollowUp"   value="{{ $d->FollowUp }}">
                             </div>
                         </div><br>
 
                         <!-- Follow-Up Date and Service -->
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="followupdate" class="required fw-bold fs-6 mb-2">Follow-Up Date</label>
-                                <input type="date" class="form-control" id="followupdate" name="followupdate" required value="{{ $d->followupdate }}">
+                                <label for="followupdate" class="  fw-bold fs-6 mb-2">Follow-Up Date</label>
+                                <input type="date" class="form-control" id="followupdate" name="followupdate"   value="{{ $d->followupdate }}">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="service" class="required fw-bold fs-6 mb-2">Service</label>
-                                <input type="text" class="form-control" id="service" name="Service" required placeholder="Enter Service" value="{{ $d->Service }}">
+                                <label for="service" class="  fw-bold fs-6 mb-2">Service</label>
+                                <input type="text" class="form-control" id="service" name="Service"    readonly placeholder="Enter Service" value="{{ $d->Service }}">
                             </div>
                         </div><br>
 
                         <!-- Source and Status -->
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="source" class="required fw-bold fs-6 mb-2">Source</label>
-                                <input type="text" class="form-control" id="source" name="Source" required placeholder="Enter Source" value="{{ $d->Source }}">
+                                <label for="source" class="  fw-bold fs-6 mb-2">Source</label>
+                                <input type="text" class="form-control" id="source" name="Source"    readonly placeholder="Enter Source" value="{{ $d->Source }}">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="status" class="required fw-bold fs-6 mb-2">Status</label>
-                                <select id="status" class="form-select" name="Status" required>
+                                <label for="status" class="  fw-bold fs-6 mb-2">Status</label>
+                                <select id="status" class="form-select" name="Status"  >
                                     <option value="" disabled>Choose...</option>
                                     <option value="Hot" {{ $d->Status === 'Hot' ? 'selected' : '' }}>Hot</option>
                                     <option value="Warm" {{ $d->Status === 'Warm' ? 'selected' : '' }}>Warm</option>
@@ -96,6 +100,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     function validate() {

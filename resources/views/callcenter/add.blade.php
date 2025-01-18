@@ -1,7 +1,7 @@
 @extends('admin.admin_master')
 @section('admin')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> -->
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="post d-flex flex-column-fluid" id="kt_post">
@@ -32,25 +32,27 @@
 
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
                                         <label class="required fw-bold fs-6 mb-2">Name</label>
                                         <input type="hidden" name="id" placeholder="enter name">
 
                                         <input type="text" class="form-control" name="Name" required placeholder="Enter Name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" >
                                     </div>
-                                    <div class="col-6">
-                                        <label class="required fw-bold fs-6 mb-2">Mobile</label>
-                                        <input type="number" class="form-control" name="Mobile" required placeholder="Enter Mobile.No"><span id="numloc"></span>
+                                    <div class="col-lg-6 fv-row">
+                                        <label for="mobile" class="required fw-bold fs-6 mb-2">Mobile</label>
+                                        <input type="text" class="form-control" id="mobile" name="mobile" required placeholder="Enter Mobile Number" pattern="^[6-9]\d{9}$" title="Enter a valid 10-digit mobile number starting with 6, 7, 8, or 9">
+                                        <span id="numloc" class="text-danger"></span>
                                     </div>
+
                                 </div></br>
 
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
                                         <label class="required fw-bold fs-6 mb-2">Enquiry Date</label>
                                         <input type="date" class="form-control" name="Enquiry_Date" required placeholder="Enter Enquiry Date">
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
                                         <label class="required fw-bold fs-6 mb-2">Email address</label>
                                         <input type="email" class="form-control" name="Email" required placeholder="Enter Email">
                                     </div>
@@ -60,13 +62,13 @@
 
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
                                         <label class="required fw-bold fs-6 mb-2">Company Name</label>
                                         <input type="text" class="form-control" name="Company_Name" required placeholder="Enter Company Name">
                                     </div>
-                                    <div class="col-6">
-                                        <label class="required fw-bold fs-6 mb-2">Follow up</label>
-                                        <input type="text" class="form-control" name="FollowUp" required>
+                                    <div class="col-lg-6 fv-row">
+                                        <label class=" fw-bold fs-6 mb-2">Follow up</label>
+                                        <input type="text" class="form-control" name="FollowUp" placeholder="Followup">
                                     </div>
                                 </div></br>
 
@@ -75,11 +77,11 @@
 
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
                                         <label class="required fw-bold fs-6 mb-2">FollowUp Date</label>
                                         <input type="date" class="form-control" name="followupdate" required placeholder="Enter Date">
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
                                         <label class="required fw-bold fs-6 mb-2">Service</label>
                                         <input type="text" class="form-control" name="Service" required placeholder="Enter Service">
                                     </div>
@@ -87,26 +89,22 @@
 
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 fv-row">
 
                                         <label class="required fw-bold fs-6 mb-2">Source</label>
                                         <input type="text" class="form-control" name="Source" required placeholder="Enter Source">
                                     </div>
-                                    <div class="col-6">
-                                        <div class="col-1">
-                                            <label class="required fw-bold fs-6 mb-2">Status</label>
-                                        </div>
-                                        <div class="col-md-4">
-
-                                            <select class="custom-select my-1 mr-sm-2" name="Status" required>
-                                                <option value="" selected disabled>Choose...</option>
-                                                <option value="Hot">Hot</option>
-                                                <option value="Warm">Warm</option>
-                                                <option value="Cold">Cold</option>
-                                                <option value="Dead">Dead</option>
-                                            </select>
-                                        </div></br>
+                                    <div class="col-lg-6 fv-row">
+                                        <label for="status" class="required fw-bold fs-6 mb-2">Status</label>
+                                        <select id="status" class="form-select" name="Status" required>
+                                            <option value="" selected disabled>Choose...</option>
+                                            <option value="Hot">Hot</option>
+                                            <option value="Warm">Warm</option>
+                                            <option value="Cold">Cold</option>
+                                            <option value="Dead">Dead</option>
+                                        </select>
                                     </div>
+
                                 </div></br>
 
 
@@ -135,22 +133,21 @@
 </div>
 </div>
 
-<script>  
-function validate(){  
-var num=document.myform.Mobile.value;  
-if (isNaN(Mobile)){  
-  document.getElementById("numloc").innerHTML="Enter Numeric value only";  
-  return false;  
-}else{  
-  return true;  
-  }  
-}  
+<script>
+    function validateForm() {
+        const mobileInput = document.getElementById('mobile');
+        const mobileValue = mobileInput.value;
+        const numLoc = document.getElementById('numloc');
+        const mobileRegex = /^[6-9]\d{9}$/;
 
-   
+        if (!mobileRegex.test(mobileValue)) {
+            numLoc.textContent = 'Enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.';
+            return false;
+        }
+
+        numLoc.textContent = ''; // Clear error
+        return true;
+    }
 </script>
-<!-- <script>
-	$(document).ready( function () {
-		$('#PoTable').DataTable(); 
-	} );
-</script> -->
+
 @endsection

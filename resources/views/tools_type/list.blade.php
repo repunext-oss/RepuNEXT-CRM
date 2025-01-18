@@ -8,12 +8,19 @@
 			<div class="card "> 
 				<div class="card-header pt-5">
 					<h3 class="card-title align-items-start flex-column">
-						<span class="card-label fw-bold fs-3 mb-1">List</span>
-						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Type</span>
+						<span class="card-label fw-bold fs-3 mb-1">List Tools Type</span>
+						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Tools/ Tools Type</span>
 					</h3>
-					<div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" data-kt-initialized="1">
-						<a href="{{route('add.tooltime')}}" class="btn btn-sm btn-primary" >Add</a>
-					</div>
+					
+					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+							<a href="{{ route('add.tooltime') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
+								<span class="svg-icon svg-icon-2">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>Add</button> </a>
+						</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
 					<div class="card-title"> 
@@ -68,10 +75,10 @@
 						<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
 							<th class="w-8px pe-2"> </th> 
 							<th >#</th>
-							<th class="min-w-115px sorting">Type Name</th> 
+							<th style="width: 50%;">Type Name</th> 
 					
-							<th class="min-w-115px sorting">Status</th>   
-							<th class="min-w-150px sorting">Actions</th> 
+							<th style="width: 20%;">Status</th>   
+							<th style="width: 20%;">Actions</th> 
 						</tr> 
 						</thead> 
 						<tbody class="fw-semibold text-gray-600">

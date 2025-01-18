@@ -9,7 +9,7 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bold fs-3 mb-1">View Tool Credentials</span>
                         <span class="text-muted fw-semibold fs-7">
-                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Project / Tool Credentials
+                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Tools / Tools Credtionals
                         </span>
                     </h3> 
                 </div>
@@ -18,7 +18,6 @@
                     <input type="hidden" name="id" value="{{ $repn->id }}">   
                     
                     <div class="card-body border-0 pt-0">  
-                        <!-- Tool Name -->
                         <div class="row">
                             <div class="col-lg-6 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Tool Name</label>
@@ -27,7 +26,6 @@
                                     required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"/>
                             </div> 
 
-                            <!-- Tool Type -->
                             <div class="col-lg-6 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">ToolType ID</label>
                                 <select name="tooltype_id" id="tooltype_id" 
@@ -44,29 +42,23 @@
                             </div>
                         </div>   
 
-                        <br> 
-
 						<div class="row">
-							<div class="col-lg-6 fv-row">
+							<div class="col-lg-4 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Link</label>
 								<input type="url" name="link" id="link" 
 									value="{{$repn->link}}" 
 									 required 
 									class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"/>
 							</div>
-							<div class="col-lg-6 fv-row">
+							<div class="col-lg-4 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">User</label>
 								<input type="text" name="user" id="user" 
 									value="{{$repn->user}}" 
 									 required 
 									class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"/>
 							</div>  
-						</div>
 
-
-                        <!-- Password -->
-                        <div class="row">
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Password</label>
                                 <input type="text" name="password" id="password" 
                                     value="{{ $repn->password }}" placeholder="Password" 
@@ -75,7 +67,6 @@
                         </div>   
                     </div>
 
-                    <!-- Footer -->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <a href="{{ route('list.toolcred') }}" class="btn btn-light-success me-2">Back</a>
                         <button type="submit" class="btn btn-primary">Save Changes</button>   

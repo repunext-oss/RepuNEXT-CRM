@@ -11,9 +11,15 @@
 						<span class="card-label fw-bold fs-3 mb-1">Domain List</span>
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Domain</span>
 					</h3>
-					<div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" data-kt-initialized="1">
-						<a href="{{route('add.ddetail')}}" class="btn btn-sm btn-primary" >Add</a>
-					</div>
+					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+							<a href="{{ route('add.ddetail') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
+								<span class="svg-icon svg-icon-2">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>Add</button> </a>
+						</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
 					<div class="card-title"> 
@@ -60,13 +66,11 @@
 						<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
 							<th class="w-8px pe-2"> </th> 
 							<th >#</th>
-							<th class="min-w-115px sorting">Domain Name</th> 
-							<th class="min-w-115px sorting">Host Id</th> 
-							<th class="min-w-115px sorting">Type</th> 
-							<th class="min-w-115px sorting">Backend username</th> 
-							<th class="min-w-115px sorting">Backend Password</th> 
-							<th class="min-w-115px sorting">Status</th>   
-							<th class="min-w-150px sorting">Actions</th> 
+							<th class="min-w-125px sorting">Domain Name</th>  
+							<th class="min-w-125px sorting">Type</th> 
+							<th class="min-w-125px sorting">Backend Username/Password</th>  
+							<th class="min-w-100px sorting">Status</th>   
+							<th class="min-w-125px sorting">Actions</th> 
 						</tr> 
 						</thead> 
 							
@@ -77,39 +81,34 @@
 								<td></td>
 								<td>{{ $j += 1 }}</td>
 
-								<!-- Domain Name with Details Table -->
+							
 								<td>
-									<a href="#" onclick="showDetails('{{ $repns->domain_name }}', '{{ $repns->host_id }}')" class="text-primary text-decoration-underline">
+									<button class="btn btn-sm btn-light text-black" onclick="showDetails('{{ $repns->domain_name }}', '{{ $repns->host_id }}')" class="text-primary text-decoration-underline">
 										{{ $repns->domain_name }}
-									</a>
+									</button>
 									<div id="detailsTable_{{ $repns->domain_name }}" class="mt-3 d-none">
-										<table class="table table-bordered table-striped">
-											<thead class="table-light">
-												<tr>
-													<th>Hostname</th>
-													<th>Host Username</th>
-													<th>Host Password</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td id="hostname_{{ $repns->domain_name }}"></td>
-													<td id="hostusername_{{ $repns->domain_name }}"></td>
-													<td id="hostpassword_{{ $repns->domain_name }}"></td>
-												</tr>
-											</tbody>
-										</table>
+									<table class="table table-bordered" style="border: 2px solid black;">
+										<tbody>
+											<tr>
+												<th class="text-start bg-success text-center align-middle" style="border: 1px solid black;"><b>Hostname:</b></th>
+												<td id="hostname_{{ $repns->domain_name }}" style="border: 1px solid black;"></td>
+											</tr>
+											<tr>
+												<th class="text-start bg-success text-center align-middle" style="border: 1px solid black;"><b>UN:</b></th>
+												<td id="hostusername_{{ $repns->domain_name }}" style="border: 1px solid black;"></td>
+											</tr>
+											<tr>
+												<th class="text-start bg-success text-center align-middle" style="border: 1px solid black;"><b>PD:</b></th>
+												<td id="hostpassword_{{ $repns->domain_name }}" style="border: 1px solid black;"></td>
+											</tr>
+										</tbody>
+									</table>
+
+
+
 									</div>
 								</td>
-
-								<!-- Hostname -->
-								<td>
-									@foreach($host as $hosts)
-										@if($hosts->id == $repns->host_id)
-											{{ $hosts->host_name }}
-										@endif
-									@endforeach
-								</td>
+ 
 
 								<!-- Type -->
 								<td>
@@ -121,8 +120,7 @@
 								</td>
 
 								<!-- Backend User and Password -->
-								<td>{{ $repns->backend_user }}</td>
-								<td>{{ $repns->backend_password }}</td>
+								<td>UN: {{ $repns->backend_user }} <br>PD: {{ $repns->backend_password }}</td>
 
 								<!-- Switch -->
 								<td>

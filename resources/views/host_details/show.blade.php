@@ -6,8 +6,8 @@
 			<div class="card "> 
 				<div class="card-header pt-5">
 					<h3 class="card-title align-items-start flex-column">
-						<span class="card-label fw-bold fs-3 mb-1">View </span>
-						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Service</span>
+						<span class="card-label fw-bold fs-3 mb-1">View Host </span>
+						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Domain/ Host</span>
 					</h3> 
 				</div>
 				<form action="{{ route('update.hdetail') }}" method="post" class="form" enctype="multipart/form-data">

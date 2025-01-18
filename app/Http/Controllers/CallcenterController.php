@@ -44,11 +44,17 @@ class CallCenterController extends Controller
             'message' => 'Call Center is created Successfully',
             'alert-type' => 'success'
             );
-        return redirect(route('website.main'))->with($notification);
+        return redirect(route('callcenter.callcenter'))->with($notification);
+    }
+    public function show($id)
+    {   
+        $d = CallCenter::find($id);
+        return view('callcenter.show',compact('d'));
     }
 
-    public function edit(callcenter $d){
-        return view('callcenter.edit',['d'=>$d]);
+    public function edit($id){
+        $d = CallCenter::find($id);
+        return view('callcenter.edit',compact('d'));
     }
    
     public function update(Request $request, callcenter $d) {
@@ -67,8 +73,14 @@ class CallCenterController extends Controller
     
         $d->update($data);
     
-        return redirect(route('website.main'));
+        return redirect(route('callcenter.callcenter'));
     }
-    
-    
+    public function destroy($id)
+    {
+        $repn                   =   Callcenter::find($id);
+        $repn->c_isdeleted     =   "1";
+        $repn->save();     
+        return redirect()->route('callcenter.callcenter')->with('success','state has been deleted successfully');
+    }
+
 }

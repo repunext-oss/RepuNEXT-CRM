@@ -9,7 +9,7 @@
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bold fs-3 mb-1">Add Domain Detail</span>
                         <span class="text-muted fw-semibold fs-7">
-                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Project / Detail
+                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Domain / Domain List
                         </span>
                     </h3>
                 </div>
@@ -19,14 +19,12 @@
                         @csrf
 
                         <div class="row">
-                            <!-- Domain Name -->
                             <div class="col-lg-6 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Domain Name</label>
                                 <input type="text" name="domain_name" id="domain_name" placeholder="Domain name" 
                                     required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
                             </div>  
-                            
-                            <!-- Host Selection -->
+       
                             <div class="col-lg-6 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Host</label>
                                 <select name="host_id" id="host_id" class="form-select mb-3 form-control select2"
@@ -38,11 +36,9 @@
                             </div> 
                         </div>   
 
-                        <br> 
-
                         <div class="row">
                             <!-- Type Selection -->
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Type</label>
                                 <select name="type_name" id="type_name" class="form-select mb-3 form-control select2"
                                     data-placeholder="Select a Type" data-allow-clear="true">
@@ -53,16 +49,13 @@
                             </div>  
 
                             <!-- Backend User -->
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Backend Username</label>
                                 <input type="text" name="backend_user" id="backend_user" placeholder="Backend user" 
                                     required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
                             </div>  
-                        </div>
-
-                        <div class="row">
-                            <!-- Backend Password -->
-                            <div class="col-lg-6 fv-row">
+                                                   
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Backend Password</label>
                                 <input type="text" name="backend_password" id="backend_password" placeholder="Backend password" 
                                     required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />

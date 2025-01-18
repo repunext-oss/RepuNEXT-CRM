@@ -11,8 +11,15 @@
 						<span class="card-label fw-bold fs-3 mb-1">List</span>
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Service</span>
 					</h3>
-					<div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" data-kt-initialized="1">
-						<a href="{{route('add.pservice')}}" class="btn btn-sm btn-primary" >Add</a>
+				
+					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+							<a href="{{ route('add.pservice') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
+								<span class="svg-icon svg-icon-2">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>Add</button> </a>
 					</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 

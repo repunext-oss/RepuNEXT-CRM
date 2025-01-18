@@ -8,11 +8,18 @@
 			<div class="card "> 
 				<div class="card-header pt-5">
 					<h3 class="card-title align-items-start flex-column">
-						<span class="card-label fw-bold fs-3 mb-1">Domain List</span>
-						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Domain</span>
+						<span class="card-label fw-bold fs-3 mb-1">Tools Credtionals List</span>
+						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Tools / Tools Credtionals</span>
 					</h3>
-					<div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" data-kt-initialized="1">
-						<a href="{{route('add.toolcred')}}" class="btn btn-sm btn-primary" >Add</a>
+				
+					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+							<a href="{{ route('add.toolcred') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
+								<span class="svg-icon svg-icon-2">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>Add</button> </a>
 					</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
@@ -68,13 +75,12 @@
 						<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
 							<th class="w-8px pe-2"> </th> 
 							<th >#</th>
-							<th class="min-w-115px sorting">Tool Name</th> 
-							<th class="min-w-115px sorting">ToolType Id</th> 
-							<th class="min-w-115px sorting">Link</th> 
-							<th class="min-w-115px sorting">User</th> 
-							<th class="min-w-115px sorting">Password</th> 
-							<th class="min-w-115px sorting">Status</th>   
-							<th class="min-w-150px sorting">Actions</th> 
+							<th class="min-w-125px sorting">Tool Name</th> 
+							<th class="min-w-125px sorting">ToolType Id</th> 
+							<th class="min-w-125px sorting">Link</th> 
+							<th class="min-w-125px sorting">User/Password</th> 
+							<th class="min-w-100px sorting">Status</th>   
+							<th class="min-w-115px sorting">Actions</th> 
 						</tr> 
 						</thead> 
 							
@@ -96,9 +102,8 @@
 								</td>
 
 								<td>{{ $repns->link }}</td>
-								<td>{{ $repns->user }}</td>
-								<td>{{ $repns->password }}</td>
-
+								<td>UN: {{ $repns->user }} <br>PD: {{ $repns->password }}</td>
+								
 								<td>
 									<div class="form-check form-switch">
 										<input class="form-check-input" type="checkbox" onchange="Check(this,{{ $repns->id }})" 

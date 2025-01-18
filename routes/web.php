@@ -58,8 +58,10 @@ Route::controller(CallCenterController::class)->group(function(){
     Route::get('/callcenter','index')->name('callcenter.callcenter');
     Route::get('/callcenter/add','add')->name('callcenter.add');
     Route::post('/callcenter/store','store')->name('callcenter.store');
-    Route::get('/callcenter/{d}/edit','edit')->name('callcenter.edit');
-    Route::put('/callcenter/{d}/update','update')->name('callcenter.update');
+    Route::put('/callcenter/update','update')->name('callcenter.update');
+    Route::get('/callcenter/edit/{id}','edit')->name('callcenter.edit');
+    Route::get('/callcenter/view/{id}','show')->name('callcenter.view'); 
+    Route::post('/callcenter/destroy/{id}','destroy')->name('callcenter.delete'); 
 });
 
 Route::controller(WebsitecredentialController::class)->group(function(){

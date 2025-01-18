@@ -60,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+                
 				<div class="card-body pt-0"> 
 					<table class="table border align-middle rounded  dataTable table-row-dashed fs-6 gy-5" id="kt_ecommerce_report_views_table">
 						<thead> 

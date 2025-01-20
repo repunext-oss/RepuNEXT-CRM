@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
- 
 use Illuminate\Http\Request;
 use  App\Models\Callcenter;
 
@@ -10,7 +9,6 @@ class CallCenterController extends Controller
     public function index(Request $request){
         $callcenter=Callcenter::all();
         $Status = $request->input('Status');
-
         $query = Callcenter::query();
 
         if ($Status && $Status !== 'all') {

@@ -9,7 +9,6 @@ class CallCenterController extends Controller
     public function index(Request $request){
         $callcenter=Callcenter::all();
         $Status = $request->input('Status');
-
         $query = Callcenter::query();
 
         if ($Status && $Status !== 'all') {

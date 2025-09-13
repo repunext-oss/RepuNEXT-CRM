@@ -25,6 +25,7 @@ class CreatecallcenterTable extends Migration
             $table->string('Source');
             $table->string('Service');
             $table->string('Status');
+            $table->bigInteger('c_isdeleted');
             $table->timestamps();
         });
     }

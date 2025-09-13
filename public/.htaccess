@@ -3,8 +3,7 @@
         Options -MultiViews -Indexes
     </IfModule>
 
-    RewriteEngine On
-    
+    RewriteEngine On 
     # Redirect non-www to www
     RewriteCond %{HTTP_HOST} !^www\. [NC]
     RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]

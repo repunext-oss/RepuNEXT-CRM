@@ -18,6 +18,7 @@ class CreateToolsCredentialsTable extends Migration
             $table->string('tool_name'); 
             $table->bigInteger('tooltype_id');
             $table->string('link');
+            $table->string('link_to_sm');
             $table->string('user');
             $table->string('password');
             $table->bigInteger('tc_status')->default(0);

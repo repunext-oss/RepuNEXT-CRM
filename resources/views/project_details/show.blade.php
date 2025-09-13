@@ -10,14 +10,12 @@
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Service</span>
 					</h3> 
 				</div>
-				<form action="{{ route('update.pdetail') }}" method="post" class="form" enctype="multipart/form-data">
-				@csrf
 					<div class="card-body border-0 pt-0">  
 					<div class="row">
 							<div class="col-lg-6 fv-row">
 							<input type="text" name="id" value="{{ $repn->id }}" hidden>   
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Project Title</label>
-								<input type="text" name="project_title" id="project_title" value="{{$repn->project_title}}" placeholder="Project Title" required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 "/>
+								<input type="text" name="project_title" id="project_title" value="{{$repn->project_title}}" readonly placeholder="Project Title" required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 "/>
 							</div>  
 							<div class="col-lg-6 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Project Description</label>
@@ -41,7 +39,7 @@
 						<div class="row">
 							<div class="col-lg-6 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Project Service Category</label>
-								<select name="project_service_category[]"  id="project_service_category" class="form-select mb-3 form-control"  data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple" >
+								<select name="project_service_category[]"  id="project_service_category" class="form-select mb-3 form-control"  data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple" disabled>
 								<?php $mems=explode(',', $repn->project_service_category); ?> 	
 									@foreach($serv as $servs)
 											<option value="{{$servs->id}}" @if(in_array($servs->id,$mems)) selected @endif>{{$servs->ps_name}}</option>
@@ -75,7 +73,6 @@
 					</div>
 					<div class="card-footer d-flex justify-content-end py-6 px-9" >
 						<a href="{{route('list.pdetail')}}" class="btn btn-light-success me-2"> Back </a>
-						<!-- <button type="submit" class="btn btn-primary">Save Changes</button>    -->
 					</div> 
 				</form>
 			</div>

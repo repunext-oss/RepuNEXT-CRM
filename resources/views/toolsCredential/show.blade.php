@@ -13,20 +13,20 @@
                         </span>
                     </h3> 
                 </div>
-                <form action="{{ route('update.toolcred') }}" method="POST" class="form" enctype="multipart/form-data">
-                    @csrf
                     <input type="hidden" name="id" value="{{ $repn->id }}">   
                     
                     <div class="card-body border-0 pt-0">  
+                        <!-- Tool Name -->
                         <div class="row">
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Tool Name</label>
                                 <input type="text" name="tool_name" id="tool_name" 
                                     value="{{ $repn->tool_name }}" placeholder="Tool Name" 
                                     required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"/>
                             </div> 
 
-                            <div class="col-lg-6 fv-row">
+                            <!-- Tool Type -->
+                            <div class="col-lg-4  fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">ToolType ID</label>
                                 <select name="tooltype_id" id="tooltype_id" 
                                     class="form-select mb-3 form-control select2"
@@ -40,6 +40,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-lg-4 fv-row">
+                                <label for="link_to_sm" class="col-lg-12 col-form-label required fw-bold fs-6">Link To SM</label>
+                                <select name="link_to_sm" id="link_to_sm" class="form-select mb-3 select2" data-placeholder="Select an option" data-allow-clear="true" required>
+                                    <option value="" disabled>Select an option</option>
+                                    <option value="yes" {{ $repn->link_to_sm == 'yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="no" {{ $repn->link_to_sm == 'no' ? 'selected' : '' }}>No</option>
+                                </select>
+                            </div>
+
                         </div>   
 
 						<div class="row">
@@ -57,7 +66,7 @@
 									 required 
 									class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"/>
 							</div>  
-
+						
                             <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Password</label>
                                 <input type="text" name="password" id="password" 
@@ -67,9 +76,10 @@
                         </div>   
                     </div>
 
+                    <!-- Footer -->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <a href="{{ route('list.toolcred') }}" class="btn btn-light-success me-2">Back</a>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>   
+                        <!-- <button type="submit" class="btn btn-primary">Save Changes</button>    -->
                     </div> 
                 </form>
             </div>

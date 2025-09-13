@@ -18,69 +18,77 @@
                         @csrf
                        
                         <div class="row mb-3">
-                            <div class="col-lg-6 fv-row">
-                                <label for="name" class="required fw-bold fs-6 mb-2">Name</label>
-                                <input type="text" class="form-control" id="name" name="Name" required placeholder="Enter Name" value="{{ $d->Name }}" onkeypress="return /^[a-zA-Z\s]*$/.test(event.key)">
+                            <div class="col-lg-4 fv-row">
+                                <label class="required fw-bold fs-6 mb-2">Name</label>
+                                <input type="text" class="form-control" name="Name" value="{{ $d->Name }}" required>
                             </div>
-                            <div class="col-lg-6 fv-row">
-                                <label for="mobile" class="required fw-bold fs-6 mb-2">Mobile</label>
-                                <input type="text" class="form-control" id="mobile" name="Mobile" required placeholder="Enter Mobile Number" value="{{ $d->Mobile }}">
-                                <span id="numloc" class="text-danger"></span>
+                            <div class="col-lg-4 fv-row">
+                                <label class="required fw-bold fs-6 mb-2">Mobile</label>
+                                <input type="text" class="form-control" name="mobile" value="{{ $d->mobile }}" required>
                             </div>
-                        </div><br>
+                            <div class="col-lg-4 fv-row">
+                                <label class="fw-bold fs-6 mb-2">Mobile 2</label>
+                                <input type="text" class="form-control" name="mobile2" value="{{ $d->mobile2 }}">
+                            </div>
+                        </div>
 
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="enquiry_date" class="required fw-bold fs-6 mb-2">Enquiry Date</label>
-                                <input type="date" class="form-control" id="enquiry_date" name="Enquiry_Date" required value="{{ $d->Enquiry_Date }}">
+                                <label class="fw-bold fs-6 mb-2">Enquiry Date</label>
+                                <input type="date" class="form-control" name="Enquiry_Date" value="{{ $d->Enquiry_Date }}">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="email" class="required fw-bold fs-6 mb-2">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="Email" required placeholder="Enter Email" value="{{ $d->Email }}">
+                                <label class="fw-bold fs-6 mb-2">Email address</label>
+                                <input type="email" class="form-control" name="Email" value="{{ $d->Email }}">
                             </div>
-                        </div><br>
+                        </div>
 
                         <div class="row mb-3">
                             <div class="col-lg-6 fv-row">
-                                <label for="company_name" class="required fw-bold fs-6 mb-2">Company Name</label>
-                                <input type="text" class="form-control" id="company_name" name="Company_Name" required placeholder="Enter Company Name" value="{{ $d->Company_Name }}">
+                                <label class="fw-bold fs-6 mb-2">Company Name</label>
+                                <input type="text" class="form-control" name="Company_Name" value="{{ $d->Company_Name }}">
                             </div>
                             <div class="col-lg-6 fv-row">
-                                <label for="followup" class="required fw-bold fs-6 mb-2">Follow-Up</label>
-                                <input type="text" class="form-control" id="followup" name="FollowUp" required value="{{ $d->FollowUp }}">
-                            </div>
-                        </div><br>
-
-                        <!-- Follow-Up Date and Service -->
-                        <div class="row mb-3">
-                            <div class="col-lg-6 fv-row">
-                                <label for="followupdate" class="required fw-bold fs-6 mb-2">Follow-Up Date</label>
-                                <input type="date" class="form-control" id="followupdate" name="followupdate" required value="{{ $d->followupdate }}">
-                            </div>
-                            <div class="col-lg-6 fv-row">
-                                <label for="service" class="required fw-bold fs-6 mb-2">Service</label>
-                                <input type="text" class="form-control" id="service" name="Service" required placeholder="Enter Service" value="{{ $d->Service }}">
-                            </div>
-                        </div><br>
-
-                        <!-- Source and Status -->
-                        <div class="row mb-3">
-                            <div class="col-lg-6 fv-row">
-                                <label for="source" class="required fw-bold fs-6 mb-2">Source</label>
-                                <input type="text" class="form-control" id="source" name="Source" required placeholder="Enter Source" value="{{ $d->Source }}">
-                            </div>
-                            <div class="col-lg-6 fv-row">
-                                <label for="status" class="required fw-bold fs-6 mb-2">Status</label>
-                                <select id="status" class="form-select" name="Status" required>
-                                    <option value="" disabled>Choose...</option>
-                                    <option value="Hot" {{ $d->Status === 'Hot' ? 'selected' : '' }}>Hot</option>
-                                    <option value="Warm" {{ $d->Status === 'Warm' ? 'selected' : '' }}>Warm</option>
-                                    <option value="Cold" {{ $d->Status === 'Cold' ? 'selected' : '' }}>Cold</option>
-                                    <option value="Dead" {{ $d->Status === 'Dead' ? 'selected' : '' }}>Dead</option>
+                                <label class="fw-bold fs-6 mb-2">Service</label>
+                                <select id="status" class="form-select" name="Service">
+                                    <option value="Animation" {{ $d->Service == 'Animation' ? 'selected' : '' }}>🎬 Animation</option>
+                                    <option value="Content Writing" {{ $d->Service == 'Content Writing' ? 'selected' : '' }}>✍️ Content Writing</option>
+                                    <option value="Web Design" {{ $d->Service == 'Web Design' ? 'selected' : '' }}>🎨 Web Design</option>
+                                    <option value="Graphic Design" {{ $d->Service == 'Graphic Design' ? 'selected' : '' }}>🖌️ Graphic Design</option>
                                 </select>
                             </div>
-                        </div><br>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 fv-row">
+                                <label class="fw-bold fs-6 mb-2">FollowUp1</label>
+                                <input type="date" class="form-control" name="followup1" value="{{ $d->followup1 }}" required>
+                            </div>
+                            <div class="col-lg-4 fv-row">
+                                <label class="fw-bold fs-6 mb-2">FollowUp2</label>
+                                <input type="date" class="form-control" name="followup2" value="{{ $d->followup2 }}" required>
+                            </div>
+                            <div class="col-lg-4 fv-row">
+                                <label class="fw-bold fs-6 mb-2">FollowUp3</label>
+                                <input type="date" class="form-control" name="followup3" value="{{ $d->followup3 }}" required>
+                            </div>
+                        </div>
 
+                        <div class="row mb-3">
+                            <div class="col-lg-6 fv-row">
+                                <label class="fw-bold fs-6 mb-2">Source</label>
+                                <select id="status" class="form-select" name="Source">
+                                    <option value="JustDial" {{ $d->Source == 'JustDial' ? 'selected' : '' }}>📞 JustDial</option>
+                                    <option value="IndiaMart" {{ $d->Source == 'IndiaMart' ? 'selected' : '' }}>🏬 India Mart</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 fv-row">
+                                <label class="fw-bold fs-6 mb-2">Status</label>
+                                <select id="status" class="form-select" name="Status">
+                                    <option value="Hot" {{ $d->Status == 'Hot' ? 'selected' : '' }}>Hot</option>
+                                    <option value="Warm" {{ $d->Status == 'Warm' ? 'selected' : '' }}>Warm</option>
+                                </select>
+                            </div>
+                        </div>
                         <!-- Submit and Cancel Buttons -->
                         <div class="row">
                             <div class="col-1">

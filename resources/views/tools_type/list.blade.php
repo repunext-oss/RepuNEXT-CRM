@@ -11,15 +11,17 @@
 						<span class="card-label fw-bold fs-3 mb-1">List Tools Type</span>
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Tools/ Tools Type</span>
 					</h3>
-					
 					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+							@if(in_array("tool_all",$rolerawdata, TRUE) || in_array("tool_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<a href="{{ route('add.tooltime') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
 								<span class="svg-icon svg-icon-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
 										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
 									</svg>
-								</span>Add</button> </a>
+								</span>Add</button>
+							 </a>
+							 @endif
 						</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
@@ -91,9 +93,22 @@
 								
 								<td><label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack mb-0">    
 								<input class="form-check-input" type="checkbox" onchange="Check(this,{{$repns->id}})" @if($repns->state_status==0) checked @endif></label></td>       
-								<td><a href="{{route('view.tooltime', $repns->id)}}" class="btn btn-sm btn-warning align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>          
-									<a href="{{route('edit.tooltime', $repns->id)}}" class="btn btn-sm btn-info align-self-center" style="border-radius: 104px;padding: 8px 8px 10px 13px;margin: 0px 1px;"><i class="fa fa-edit" aria-hidden="true"></i></a>
-									<a href="#" onclick="deleteConfirmation({{$repns->id}})" data-id="{{ $repns->id }}" class="btn btn-sm crop-delete btn-danger align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 12px;"><i class="fa fa-trash" aria-hidden="true"></i></a>  
+								<td>
+									@if(in_array("tool_all",$rolerawdata, TRUE) || in_array("tool_read",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<a href="{{route('view.tooltime', $repns->id)}}" class="btn btn-sm btn-warning align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 10px;">
+										<i class="fa fa-eye" aria-hidden="true"></i>
+									</a> 
+									@endif
+									@if(in_array("tool_all",$rolerawdata, TRUE) || in_array("tool_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))             
+									<a href="{{route('edit.tooltime', $repns->id)}}" class="btn btn-sm btn-info align-self-center" style="border-radius: 104px;padding: 8px 8px 10px 13px;margin: 0px 1px;">
+										<i class="fa fa-edit" aria-hidden="true"></i>
+									</a>
+									@endif
+									@if(in_array("tool_all",$rolerawdata, TRUE) || in_array("tool_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<a href="#" onclick="deleteConfirmation({{$repns->id}})" data-id="{{ $repns->id }}" class="btn btn-sm crop-delete btn-danger align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 12px;">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a> 
+									@endif 
 								</td>
 							</tr>   
 							@endforeach  

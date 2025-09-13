@@ -55,16 +55,15 @@ class HostDetailsController extends Controller
     }
     public function update(Request $request)
     {
+        // dd($request->all());
         $repn = HostDetail::find($request->id);
-
-        $repn->host_name = $request['host_name']; 
-        $repn->host_username = $request['host_username']; 
-        $repn->host_password = $request['host_password']; 
+    
+        $repn->host_name = $request->host_name;
+        $repn->host_username = $request->host_username;
+        $repn->host_password = $request->host_password;
         $repn->save();
-        
-        
         if($repn){
-            $notification = array(  'message' => 'host Updated Successfully',
+            $notification = array(  'message' => 'HostDetails Updated Successfully',
                                     'alert-type' => 'success'  );
             return redirect()->route('list.hdetail')->with($notification);
         }else{
@@ -73,6 +72,8 @@ class HostDetailsController extends Controller
             return redirect()->route('list.hdetail')->with($notification);
         }
     }
+    
+    
       
     public function destroy($id)
     {

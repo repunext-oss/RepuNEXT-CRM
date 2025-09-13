@@ -1,5 +1,30 @@
 @extends('admin.admin_master')
 @section('admin')
+
+<style>
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-input {
+    border: 0px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 150px;
+}
+
+.toggle-password {
+    margin-left: -30px;
+    cursor: pointer;
+    color: #333;
+}
+</style>
+
+
+
+
 <?php $rolerawdata = session('userRoles', []);?>
 <style>.st-drop{ border:1px solid #b9b9b9 !important;}</style>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -13,13 +38,16 @@
 					</h3>
 					
 					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+						@if(in_array("host_all",$rolerawdata, TRUE) || in_array("host_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<a href="{{ route('add.hdetail') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
 								<span class="svg-icon svg-icon-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
 										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
 									</svg>
-								</span>Add</button> </a>
+								</span>Add</button>
+							</a>
+						@endif
 						</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
@@ -76,9 +104,9 @@
 							<th class="w-10px pe-2"> </th> 
 							<th >#</th>
 							<th class="min-w-125px sorting">Host Name</th> 
-							<th class="min-w-125px sorting">Host UserName</th> 
-							<th class="min-w-125px sorting">Host password</th> 
-							<th class="min-w-100px sorting">Status</th>   
+							<th class="min-w-125px sorting">Credentials</th>
+							<th class="min-w-125px sorting">Host<br>Updat Date</th>  
+							<!-- <th class="min-w-100px sorting">Status</th>    -->
 							<th class="min-w-125px sorting">Actions</th> 
 							
 						</tr> 
@@ -89,14 +117,33 @@
 							<tr>
 								<td></td>
 								<td>{{$j+=1;}}</td> 
-								<td>{{ $repns->host_name}} </td> 
-								<td>{{ $repns->host_username}} </td> 
-								<td>{{ $repns->host_password}} </td>  
-								<td><label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack mb-0">    
-								<input class="form-check-input" type="checkbox" onchange="Check(this,{{$repns->id}})" @if($repns->state_status==0) checked @endif></label></td>       
-								<td><a href="{{route('view.hdetail', $repns->id)}}" class="btn btn-sm btn-warning align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>          
-									<a href="{{route('edit.hdetail', $repns->id)}}" class="btn btn-sm btn-info align-self-center" style="border-radius: 104px;padding: 8px 8px 10px 13px;margin: 0px 1px;"><i class="fa fa-edit" aria-hidden="true"></i></a>
-									<a href="#" onclick="deleteConfirmation({{$repns->id}})" data-id="{{ $repns->id }}" class="btn btn-sm crop-delete btn-danger align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 12px;"><i class="fa fa-trash" aria-hidden="true"></i></a>  
+								<td>{{ preg_replace('/ - \(.*?\)/', '', $repns->host_name) }}</td>
+								<td>UN:{{ $repns->host_username}} <br>
+									<div class="password-container">
+										PD:<input type="password" class="password-input" value="{{ $repns->host_password }}" readonly>
+										<i class="fas fa-eye toggle-password"></i>
+									</div>
+								</td> 
+								<td>{{ $repns->updated_at->format('d-m-Y') }}</td>
+
+								<!-- <td><label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack mb-0">     -->
+								<!-- <input class="form-check-input" type="checkbox" onchange="Check(this,{{$repns->id}})" @if($repns->state_status==0) checked @endif></label></td>        -->
+								<td>
+									@if(in_array("host_all",$rolerawdata, TRUE) || in_array("host_read",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<a href="{{route('view.hdetail', $repns->id)}}" class="btn btn-sm btn-warning align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 10px;">
+										<i class="fa fa-eye" aria-hidden="true"></i>
+									</a>  
+									@endif        
+									@if(in_array("host_all",$rolerawdata, TRUE) || in_array("host_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<a href="{{route('edit.hdetail', $repns->id)}}" class="btn btn-sm btn-info align-self-center" style="border-radius: 104px;padding: 8px 8px 10px 13px;margin: 0px 1px;">
+										<i class="fa fa-edit" aria-hidden="true"></i>
+									</a>
+									@endif
+									@if(in_array("host_all",$rolerawdata, TRUE) || in_array("host_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<a href="#" onclick="deleteConfirmation({{$repns->id}})" data-id="{{ $repns->id }}" class="btn btn-sm crop-delete btn-danger align-self-center" style="border-radius: 100px;padding: 8px 8px 8px 12px;">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a> 
+									@endif 
 								</td>
 							</tr>   
 							@endforeach  
@@ -138,21 +185,35 @@
 			});  
 		}
 
-	function Check(value,id) {  
-		if(value.checked){ var statusval=0; }else{ var statusval=1; }  
-		let token = "{{ csrf_token() }}";
-			let _url = `/project/host/status`; 
-			$.ajax({
-				type: 'POST',  
-				url: _url,
-				data: {_token: token, id:id, statusval: statusval},  
-				success: function () {
-					Swal.fire({icon: 'success',title: 'The status has been switched',showConfirmButton: false,timer: 1500}); 
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					swal("Error Status!", "Please try again", "error");
-				}
-			}); 
-    }; 
+	// function Check(value,id) {  
+	// 	if(value.checked){ var statusval=0; }else{ var statusval=1; }  
+	// 	let token = "{{ csrf_token() }}";
+	// 		let _url = `/project/host/status`; 
+	// 		$.ajax({
+	// 			type: 'POST',  
+	// 			url: _url,
+	// 			data: {_token: token, id:id, statusval: statusval},  
+	// 			success: function () {
+	// 				Swal.fire({icon: 'success',title: 'The status has been switched',showConfirmButton: false,timer: 1500}); 
+	// 			},
+	// 			error: function (xhr, ajaxOptions, thrownError) {
+	// 				swal("Error Status!", "Please try again", "error");
+	// 			}
+	// 		}); 
+    // }; 
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.toggle-password').forEach(function (toggleIcon) {
+        toggleIcon.addEventListener('click', function () {
+            const passwordInput = this.previousElementSibling;
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+});
+</script>
+
 @endsection

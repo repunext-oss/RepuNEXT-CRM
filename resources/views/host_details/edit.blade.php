@@ -12,10 +12,12 @@
 				</div>
 				<form action="{{ route('update.hdetail') }}" method="post" class="form" enctype="multipart/form-data">
 				@csrf
+
 					<div class="card-body border-0 pt-0">  
 			
 						<div class="row">
 							<div class="col-lg-12 fv-row">
+							<input type="hidden" name="id" value="{{ $repn->id }}">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Host Name</label>
 								<input type="text" name="host_name" id="host_name"  value="{{$repn->host_name}}" placeholder="host name" required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 "/>
 							</div>  

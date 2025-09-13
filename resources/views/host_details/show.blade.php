@@ -10,8 +10,6 @@
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Domain/ Host</span>
 					</h3> 
 				</div>
-				<form action="{{ route('update.hdetail') }}" method="post" class="form" enctype="multipart/form-data">
-				@csrf
 					<div class="card-body border-0 pt-0">  
 					<div class="row">
 							<div class="col-lg-6 fv-row">
@@ -34,7 +32,6 @@
 
 					<div class="card-footer d-flex justify-content-end py-6 px-9" >
 						<a href="{{route('list.hdetail')}}" class="btn btn-light-success me-2"> Back </a>
-						<!-- <button type="submit" class="btn btn-primary">Save Changes</button>    -->
 					</div> 
 				</form>
 			</div>

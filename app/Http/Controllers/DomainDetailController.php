@@ -25,6 +25,7 @@ class DomainDetailController extends Controller
     } 
     public function store(Request $request)
     { 
+        
         $request->validate([
             'domain_name' => 'required',
             'host_id' => 'required',

@@ -56,4 +56,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function rooms()
+{
+    return $this->belongsToMany(Room::class);
+}
+
+  public function leaveManagement()
+    {
+        // Assuming the `user_ref_id` is the foreign key in the `leave_management` table
+        return $this->hasOne(LeaveManagement::class, 'user_ref_id');
+    }
 }

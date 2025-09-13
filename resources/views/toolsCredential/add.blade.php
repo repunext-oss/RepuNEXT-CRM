@@ -19,19 +19,19 @@
                         @csrf
 
                         <div class="row">
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Tool Name</label>
                                 <input type="text" name="tool_name" id="tool_name" placeholder="Tool Name" 
                                      required 
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                                    class="form-control form-control-lg form-control mb-3 mb-lg-0" />
                             </div>  
 
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">ToolType ID</label>
                                 <select name="tooltype_id" id="tooltype_id" 
                                     class="form-select mb-3 form-control select2" 
                                     data-placeholder="Select a Tooltype" data-allow-clear="true" required>
-                                    <option></option>
+                                    <option value="" disabled selected>Select an Tooltype</option>`
                                     @foreach($tooltype as $tooltypes)
                                         <option value="{{ $tooltypes->id }}" {{ old('tooltype_id') == $tooltypes->id ? 'selected' : '' }}>
                                             {{ $tooltypes->tooltype_name }}
@@ -39,6 +39,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-lg-4 fv-row">
+                                <label for="link_to_sm" class="col-lg-12 col-form-label fw-bold fs-6">Link To SM</label>
+                                <select name="link_to_sm" id="link_to_sm" class="form-select mb-3 select2" data-placeholder="Select an option" data-allow-clear="true" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+
                         </div>   
 
                         <div class="row">
@@ -46,21 +55,21 @@
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Link</label>
                                 <input type="url" name="link" id="link" placeholder="Enter a valid URL" 
                                     required 
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                                    class="form-control form-control-lg form-control mb-3 mb-lg-0" />
                             </div>
 
                             <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">User</label>
                                 <input type="text" name="user" id="user" placeholder="User" 
                                     required 
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                                    class="form-control form-control-lg form-control mb-3 mb-lg-0" />
                             </div>  
         
                             <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Password</label>
                                 <input type="text" name="password" id="password" placeholder="Password" 
                                     required 
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" />
+                                    class="form-control form-control-lg form-control mb-3 mb-lg-0" />
                             </div> 
                         </div>   
 

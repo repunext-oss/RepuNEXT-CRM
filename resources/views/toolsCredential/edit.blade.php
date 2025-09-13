@@ -20,7 +20,7 @@
                     <div class="card-body border-0 pt-0">  
                         <!-- Tool Name -->
                         <div class="row">
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Tool Name</label>
                                 <input type="text" name="tool_name" id="tool_name" 
                                     value="{{ $repn->tool_name }}" placeholder="Tool Name" 
@@ -28,7 +28,7 @@
                             </div> 
 
                             <!-- Tool Type -->
-                            <div class="col-lg-6 fv-row">
+                            <div class="col-lg-4  fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">ToolType ID</label>
                                 <select name="tooltype_id" id="tooltype_id" 
                                     class="form-select mb-3 form-control select2"
@@ -40,8 +40,17 @@
                                             {{ $tooltypes->tooltype_name }}
                                         </option>
                                     @endforeach
+                                </select> 
+                            </div>
+                            <div class="col-lg-4 fv-row">
+                                <label for="link_to_sm" class="col-lg-12 col-form-label required fw-bold fs-6">Link To SM</label>
+                                <select name="link_to_sm" id="link_to_sm" class="form-select mb-3 select2" data-placeholder="Select an option" data-allow-clear="true" required>
+                                    <option value="" disabled>Select an option</option>
+                                    <option value="Yes" {{ $repn->link_to_sm == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                    <option value="No" {{ $repn->link_to_sm == 'No' ? 'selected' : '' }}>No</option>
                                 </select>
                             </div>
+
                         </div>   
 
 						<div class="row">

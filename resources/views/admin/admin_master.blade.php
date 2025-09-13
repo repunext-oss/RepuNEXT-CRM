@@ -6,7 +6,8 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="shortcut icon" href="{{asset('backend/assets/media/logos/favicon.svg')}}" />
+		<meta name="csrf-token" content="{{ csrf_token() }}">
+		<link rel="shortcut icon" href="{{asset('backend/assets/media/logos/favicon.ico')}}" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<link href="{{asset('backend/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css')}}" rel="stylesheet" type="text/css" />
 		<link href="{{asset('backend/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
@@ -83,6 +84,76 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> 
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 		<script src="{{asset('backend/assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>	
+		
+		<!-- Dropdown Functionality -->
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Initialize dropdown functionality
+			initializeDropdowns();
+		});
+
+		function initializeDropdowns() {
+			// Grid icon dropdown
+			const gridButton = document.querySelector('[data-kt-menu-trigger="click"][data-kt-menu-attach="parent"]');
+			const gridDropdown = gridButton ? gridButton.nextElementSibling : null;
+			
+			if (gridButton && gridDropdown) {
+				gridButton.addEventListener('click', function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					gridDropdown.classList.toggle('show');
+				});
+			}
+			
+			// User profile dropdown
+			const userButton = document.querySelector('#kt_header_user_menu_toggle .cursor-pointer');
+			const userDropdown = userButton ? userButton.nextElementSibling : null;
+			
+			if (userButton && userDropdown) {
+				userButton.addEventListener('click', function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					userDropdown.classList.toggle('show');
+				});
+			}
+			
+			// Close dropdowns when clicking outside
+			document.addEventListener('click', function(e) {
+				if (!e.target.closest('[data-kt-menu-trigger]') && !e.target.closest('.menu-sub')) {
+					document.querySelectorAll('.menu-sub').forEach(dropdown => {
+						dropdown.classList.remove('show');
+					});
+				}
+			});
+		}
+
+		// jQuery fallback for dropdowns
+		$(document).ready(function() {
+			// Grid icon dropdown
+			$('[data-kt-menu-trigger="click"][data-kt-menu-attach="parent"]').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				$(this).next('.menu-sub').toggleClass('show');
+			});
+			
+			// User profile dropdown
+			$('#kt_header_user_menu_toggle .cursor-pointer').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				$(this).next('.menu-sub').toggleClass('show');
+			});
+			
+			// Close dropdowns when clicking outside
+			$(document).on('click', function(e) {
+				if (!$(e.target).closest('[data-kt-menu-trigger], .menu-sub').length) {
+					$('.menu-sub').removeClass('show');
+				}
+			});
+		});
+		</script>
+
+	
+
 <script>
 tinymce.init({
     selector: "#tinymce_basic", height : "400", statusbar: false, menubar: false,

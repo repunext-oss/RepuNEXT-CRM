@@ -13,7 +13,6 @@
 				<div class="card-body border-0 pt-0"> 
 					<form action="{{ route('store.ttime') }}" method="post" class="form" enctype="multipart/form-data">
 						@csrf
-
 						<div class="row">
 							<div class="col-lg-5 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Type Name</label>

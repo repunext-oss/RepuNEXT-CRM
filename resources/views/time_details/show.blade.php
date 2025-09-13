@@ -11,8 +11,6 @@
 					</h3> 
 				</div>
 				<div class="card-body border-0 pt-0"> 
-				<form action="{{ route('update.ptime') }}" method="post" class="form" enctype="multipart/form-data">
-				@csrf
 				<div class="row">
 							<div class="col-lg-6 fv-row">
 							<input type="text" name="id" value="{{ $repn->id }}" hidden> 

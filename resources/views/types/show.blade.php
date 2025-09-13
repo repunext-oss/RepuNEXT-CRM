@@ -10,8 +10,6 @@
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Domain / Domain Type</span>
 					</h3> 
 				</div>
-				<form action="{{ route('update.ttime') }}" method="post" class="form" enctype="multipart/form-data">
-				@csrf
 					<div class="card-body border-0 pt-0">  
 					<div class="row">
 							<div class="col-lg-5 fv-row">

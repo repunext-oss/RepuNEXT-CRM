@@ -17,6 +17,7 @@
                             <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Call Center / List
                         </span>
                     </h3>
+                    @if(in_array("callcenter_all",$rolerawdata, TRUE) || in_array("callcenter_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                         <a href="{{ route('callcenter.add') }}">
                             <button type="button" class="btn btn-primary">
@@ -27,6 +28,7 @@
                             </button>
                         </a>
                     </div>
+                    @endif
                 </div>
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0">
                     <div class="card-title">
@@ -90,15 +92,21 @@
                                 <td>{{ $d->Status }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        @if(in_array("callcenter_all",$rolerawdata, TRUE)||in_array("callcenter_read",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
                                         <a href="{{ route('callcenter.view', $d->id) }}" class="btn btn-sm btn-warning">
                                             <i class="fa fa-eye"></i>
                                         </a>
+                                        @endif
+                                        @if(in_array("callcenter_all",$rolerawdata, TRUE)||in_array("callcenter_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
                                         <a href="{{ route('callcenter.edit', $d->id) }}" class="btn btn-sm btn-info">
                                             <i class="fa fa-edit"></i>
                                         </a>
+                                        @endif
+                                        @if(in_array("callcenter_all",$rolerawdata, TRUE)||in_array("callcenter_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
                                         <button onclick="deleteConfirmation({{ $d->id }})" class="btn btn-sm btn-danger">
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -110,6 +118,5 @@
         </div>
     </div>
 </div>
-
 
 @endsection

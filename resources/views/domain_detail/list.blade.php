@@ -1,5 +1,26 @@
 @extends('admin.admin_master')
 @section('admin')
+<style>
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-input {
+    border: 0px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 150px;
+}
+
+.toggle-password {
+    margin-left: -30px;
+    cursor: pointer;
+    color: #333;
+}
+</style>
+
 <?php $rolerawdata = session('userRoles', []);?>
 <style>.st-drop{ border:1px solid #b9b9b9 !important;}</style>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -11,15 +32,19 @@
 						<span class="card-label fw-bold fs-3 mb-1">Domain List</span>
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Project / Domain</span>
 					</h3>
+					
 					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+						@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<a href="{{ route('add.ddetail') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
 								<span class="svg-icon svg-icon-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
 										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
 									</svg>
-								</span>Add</button> </a>
-						</div>
+								</span>Add</button> 
+							</a>
+						@endif
+					</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
 					<div class="card-title"> 
@@ -67,81 +92,81 @@
 							<th class="w-8px pe-2"> </th> 
 							<th >#</th>
 							<th class="min-w-125px sorting">Domain Name</th>  
-							<th class="min-w-125px sorting">Type</th> 
-							<th class="min-w-125px sorting">Backend Username/Password</th>  
-							<th class="min-w-100px sorting">Status</th>   
-							<th class="min-w-125px sorting">Actions</th> 
+							<th class="min-w-115px sorting">Domain Category</th> 
+							<th class="min-w-125px sorting">Credentials</th> 
+							<!-- <th class="min-w-125px sorting">Password</th>   -->
+							<!-- <th class="min-w-80px sorting">Status</th>    -->
+							<th class="min-w-100px sorting">Actions</th> 
 						</tr> 
-						</thead> 
-							
+						</thead> 	
 						<tbody class="fw-semibold text-gray-600">
 							<?php $j = 0; ?>
 							@foreach($repn as $repns)
 							<tr>
 								<td></td>
 								<td>{{ $j += 1 }}</td>
-
-							
 								<td>
 									<button class="btn btn-sm btn-light text-black" onclick="showDetails('{{ $repns->domain_name }}', '{{ $repns->host_id }}')" class="text-primary text-decoration-underline">
 										{{ $repns->domain_name }}
 									</button>
 									<div id="detailsTable_{{ $repns->domain_name }}" class="mt-3 d-none">
-									<table class="table table-bordered" style="border: 2px solid black;">
+										<table class="table table-bordered" style="border: 2px solid black;">
 										<tbody>
 											<tr>
-												<th class="text-start bg-success text-center align-middle" style="border: 1px solid black;"><b>Hostname:</b></th>
-												<td id="hostname_{{ $repns->domain_name }}" style="border: 1px solid black;"></td>
+											<th class="bg-success text-center p-1" style="border: 1px solid black;">Hostname:</th>
+											<td id="hostname_{{ $repns->domain_name }}"class="p-1" style="border: 1px solid black;"></td>
 											</tr>
 											<tr>
-												<th class="text-start bg-success text-center align-middle" style="border: 1px solid black;"><b>UN:</b></th>
-												<td id="hostusername_{{ $repns->domain_name }}" style="border: 1px solid black;"></td>
+											<th class="bg-success text-center p-1" style="border: 1px solid black;">UN:</th>
+											<td id="hostusername_{{ $repns->domain_name }}" class="p-1"style="border: 1px solid black;"></td>
 											</tr>
 											<tr>
-												<th class="text-start bg-success text-center align-middle" style="border: 1px solid black;"><b>PD:</b></th>
-												<td id="hostpassword_{{ $repns->domain_name }}" style="border: 1px solid black;"></td>
+											<th class="bg-success text-center p-1" style="border: 1px solid black;">PD:</th>
+											<td id="hostpassword_{{ $repns->domain_name }}"class="p-1" style="border: 1px solid black;"></td>
 											</tr>
 										</tbody>
-									</table>
-
-
-
+										</table>
 									</div>
 								</td>
- 
-
-								<!-- Type -->
-								<td>
+ 								<td>
 									@foreach($type as $types)
 										@if($types->id == $repns->type)
 											{{ $types->type_name }}
 										@endif
 									@endforeach
 								</td>
+								<td>UN: {{ $repns->backend_user }} <br>							
+									<div class="password-container">
+									PD: <input type="password" class="password-input" value="{{ $repns->backend_password }}" readonly>
+										<i class="fas fa-eye toggle-password"></i>
+									</div>
+								</td> 
 
-								<!-- Backend User and Password -->
-								<td>UN: {{ $repns->backend_user }} <br>PD: {{ $repns->backend_password }}</td>
-
-								<!-- Switch -->
-								<td>
+								<!-- <td>
 									<div class="form-check form-switch">
 										<input class="form-check-input" type="checkbox" onchange="Check(this, {{ $repns->id }})" 
 										@if($repns->state_status == 0) checked @endif>
 									</div>
-								</td>
+								</td>  -->
 
 								<!-- Action Buttons -->
 								<td>
 									<div class="d-flex gap-2">
+										@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_read",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 										<a href="{{ route('view.ddetail', $repns->id) }}" class="btn btn-sm btn-warning">
 											<i class="fa fa-eye"></i>
 										</a>
+										@endif
+										@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 										<a href="{{ route('edit.ddetail', $repns->id) }}" class="btn btn-sm btn-info">
 											<i class="fa fa-edit"></i>
 										</a>
+										@endif
+										@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 										<a href="#" onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-sm btn-danger">
 											<i class="fa fa-trash"></i>
 										</a>
+										@endif
 									</div>
 								</td>
 							</tr>
@@ -235,4 +260,17 @@
     }
 </script>
 
+<!-- Password Hide And Show -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.toggle-password').forEach(function (toggleIcon) {
+        toggleIcon.addEventListener('click', function () {
+            const passwordInput = this.previousElementSibling;
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+});
+</script>
 @endsection

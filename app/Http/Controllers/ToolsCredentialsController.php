@@ -12,10 +12,12 @@ class ToolsCredentialsController extends Controller
    
     public function index()
     {
-      
         $tooltype = ToolsType::all();
-        $repn   =  ToolsCredential::where('tc_isdeleted', 0)->orderBy('id','DESC')->get();
-        return view('toolsCredential.list',compact('repn','tooltype'));
+        
+        // Fetch only non-deleted records
+        $repn = ToolsCredential::where('tc_isdeleted', 0)->orderBy('id', 'DESC')->get();
+    
+        return view('toolsCredential.list', compact('repn', 'tooltype'));
     }
 
     public function create()
@@ -46,6 +48,7 @@ class ToolsCredentialsController extends Controller
                 $repn->link  =   $request->link; 
                 $repn->user  =   $request->user; 
                 $repn->password  =   $request->password; 
+                $repn->link_to_sm = $request->link_to_sm;
                 
                 $repn->save();
                 $notification   =   array(  'message' => 'Tool Credentials Stored Successfully',
@@ -71,15 +74,13 @@ class ToolsCredentialsController extends Controller
     public function update(Request $request)
     {
         $repn = ToolsCredential::find($request->id);
-
         $repn->tool_name = $request['tool_name']; 
         $repn->tooltype_id = $request['tooltype_id']; 
         $repn->link = $request['link']; 
         $repn->user = $request['user']; 
         $repn->password = $request['password']; 
-        $repn->save();
-        
-        
+        $repn->link_to_sm = $request['link_to_sm'];
+        $repn->save(); 
         if($repn){
             $notification = array(  'message' => 'Tools Credentials Updated Successfully',
                                     'alert-type' => 'success'  );

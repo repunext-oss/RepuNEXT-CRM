@@ -87,7 +87,7 @@
 										</div> 
 										<div class="col-lg-4">
 											<label class="col-lg-12 col-form-label required fw-bold fs-6">Password</label>
-											<input type="text" name="password" required class="form-control mb-2 mb-lg-0" placeholder="Password" value="Welcome@321!"/>
+											<input type="text" name="password" required class="form-control mb-2 mb-lg-0" placeholder="Password"/>
 											<!-- <div class="text-muted fs-7">A product name is required and recommended to be unique. Example: Product Name and Unit</div> -->
 										</div> 
 										<div class="col-lg-4">
@@ -97,10 +97,11 @@
 										</div>   
 									</div>
 									<div class="row ">
-										<div class="col-lg-4">
+									<div class="col-lg-4">
 											<label class="col-lg-12 col-form-label required fw-bold fs-6">Phone</label>
-											<input type="text" name="phone" required class="form-control mb-2 mb-lg-0" placeholder="Phone no" />
-											<!-- <div class="text-muted fs-7">A product name is required and recommended to be unique. Example: Product Name and Unit</div> -->
+											<input type="text" id="phone" name="phone" required class="form-control mb-2 mb-lg-0"
+												placeholder="Phone no" maxlength="10" oninput="validatePhone(this)" />
+											<small id="phone-error" class="text-danger"></small>
 										</div>
 										<div class="col-lg-4">
 											<label class="col-lg-12 col-form-label required fw-bold fs-6">Date of Birth</label>
@@ -151,4 +152,16 @@
 		</div>
 	</div>
 </div>
+
+<script>
+    function validatePhone(input) {
+        let phoneNumber = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+        if (phoneNumber.length > 10) {
+            phoneNumber = phoneNumber.slice(0, 10); // Restrict to 10 digits
+        }
+        input.value = phoneNumber; // Update input value
+        document.getElementById("phone-error").innerText = 
+            phoneNumber.length === 10 ? "" : "Enter a valid 10-digit phone number.";
+    }
+</script>
 @endsection

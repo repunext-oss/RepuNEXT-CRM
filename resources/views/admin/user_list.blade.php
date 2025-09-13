@@ -1,10 +1,11 @@
 @extends('admin.admin_master')
 @section('admin')
+<?php $rolerawdata = session('userRoles', []);?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered mw-650px">
 			<div class="modal-content">
-				<div class="modal-header" id="kt_modal_add_user_header">
+					<div class="modal-header" id="kt_modal_add_user_header">
 					<h2 class="fw-bolder">Add User</h2>
 					<div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
 						<span class="svg-icon svg-icon-1">
@@ -75,7 +76,7 @@
 										<div class="fv-row col-8">
 												<input type="phone" name="phone" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="phone" min="10" max="10" required/>
 
-										</div>
+										</div>	
 									</div>
 								</div>
 								<div class="col-6">
@@ -128,21 +129,23 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="post d-flex flex-column-fluid" id="kt_post">
 		<div id="kt_content_container" class="container-xxl">
 			<div class="card">
 				<div class="card-header border-0 pt-6">   
 					<h3 class="card-title align-items-start flex-column">           
 						<a href="/list/user">            
-							<span class="card-label fw-bold fs-3 mb-1"> List
+							<span class="card-label fw-bold fs-3 mb-1"> Users Details
 							</span>
 						</a>
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / User
 							 </span>
-					</h3>  
+					</h3> 
+					@if(in_array("user_management_all",$rolerawdata, TRUE) || in_array("user_management_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE)) 
 					<div class="card-toolbar">
 						<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-							<a href="{{route('add.user')}}">
+						<a href="{{route('add.user')}}">
 							<button type="button" class="btn btn-primary">
 								<span class="svg-icon svg-icon-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -150,20 +153,23 @@
 										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
 									</svg>
 								</span>Add User</button>    </a> 
-						</div>
-					</div>        
+						</div> 
+					</div>
+					@endif
+
+					 
 				</div>  
 				<div class="card-body border-top pt-0">
 				<table class="table border rounded gy-5 gs-7 dataTable no-footer" id="emailTable">
 						<thead>   
 							<tr class="tfw-bold text-muted bg-light">   
 								<th >#</th>
-								<th class="min-w-125px">Full User</th>
-								<th class="min-w-125px">User Name</th>
-								<th class="min-w-125px">Role</th>
-								<th class="min-w-125px">Status</th>
-								<th class="min-w-125px">Joined Date</th>
-								<th class="text-end ">Actions</th>
+								<th class="min-w-125px">JOINED DATE</th>
+								<th class="min-w-125px">FULL USER</th>
+								<th class="min-w-125px">USER NAME</th>
+								<th class="min-w-125px">ROLE</th>
+								<th class="min-w-125px">STATUS</th>
+								<th class="text-end ">ACTIONS</th>
 							</tr>
 						</thead>
 						<tbody class="text-gray-600 fw-bold">
@@ -171,6 +177,8 @@
 							@foreach ($usersdetails as $userdetail)
 							<tr>
 								<td>{{$j+=1;}}</td>
+								<td>{{ucwords($userdetail->created_at);}}</td>
+
 								<td class="d-flex align-items-center">
 									<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
 											<div class="symbol-label">
@@ -185,27 +193,30 @@
 								<td>
 									<div class="badge badge-light fw-bolder">{{ucwords($userdetail->role);}}</div>
 								</td>
-								<td>
+								<!-- <td>
 									@if($userdetail->status=="0")
 										Enabled
 									@else
 										Disabled
 									@endif
-								</td>
-								<td>{{ucwords($userdetail->created_at);}}</td>
-								<td class="text-end">
-
-									<form method="POST" class="btn" action="{{route('delete.userlist')}}">
-									@csrf
-									<input type="hidden" value="{{$userdetail->id}}" name="id">
-									@if(ucwords($userdetail->role)!="Admin")
-									<button type="submit" class="btn btn-danger my-1" onclick="deleteuser()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+								</td> -->
+								<td><label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack mb-0">    
+								<input class="form-check-input" type="checkbox" onchange="Check(this,{{$userdetail->id}})" @if($userdetail->status==0) checked @endif></label></td> 
+								<td>  
+								@if(ucwords($userdetail->role)!="Admin")
+									@if(in_array("user_management_all",$rolerawdata, TRUE)||in_array("user_management_edit",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<a href="{{route('edit.user', $userdetail->id)}}" class="btn btn-sm btn-primary align-self-center" style="border-radius: 104px;padding: 8px 8px 10px 13px;margin: 0px 1px;"><i class="fa fa-edit" aria-hidden="true"></i></a>
 									@endif
-								</form>
-								</td>
+									@if(in_array("user_management_all",$rolerawdata, TRUE)||in_array("user_management_delete",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
+									<button type="submit" class="btn btn-danger my-1" onclick="deleteuser()" style="border-radius: 104px;padding: 8px 8px 10px 13px;margin: 0px 1px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+									@endif
+								@endif
+								
+							</td>
+								
 							</tr>
 							@endforeach
-						</tbody> 
+						</tbody>  
 					</table> 
 				</div> 
 			</div>
@@ -230,5 +241,54 @@
 			  return false;
 		  return true;
 	  }
+
+	  // delete//
+	function deleteConfirmation(id) {
+			swal({
+				title: "Are you sure?",
+				text: "You will not be able to recover this data!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Yes, delete it!",
+				closeOnConfirm: false
+			}, function (isConfirm) {
+				if (!isConfirm) return;    
+				let token = "{{ csrf_token() }}";
+				let _url = `/user/destroy/${id}`;  
+				console.log(_url);
+				$.ajax({
+					type: 'POST',  
+					url: _url,
+					data: {_token: token},  
+					success: function () {
+						swal("Done!", "It was successfully deleted!", "success");
+						location.reload();  
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						swal("Error deleting!", "Please try again", "error");
+					}
+				}); 
+			});  
+		}
+
+// ststus 
+function Check(value,id) {  
+		if(value.checked){ var statusval=0; }else{ var statusval=1; }  
+		let token = "{{ csrf_token() }}";
+			let _url = `/user/status`; 
+			$.ajax({
+				type: 'POST',  
+				url: _url,
+				data: {_token: token, id:id, statusval: statusval},  
+				success: function () {
+					Swal.fire({icon: 'success',title: 'The status has been switched',showConfirmButton: false,timer: 1500}); 
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					swal("Error Status!", "Please try again", "error");
+				}
+			}); 
+		};
 </script>
+
 @endsection

@@ -15,12 +15,11 @@ class ProjectDetailController extends Controller
     {   
         $user= User::all();
         $serv = ProjectService::all();
-         $repn   =   ProjectDetail::where('project_isdeleted', 0)->orderBy('id','DESC')->get();
+        $repn   =   ProjectDetail::where('project_isdeleted', 0)->orderBy('id','DESC')->get();
         return view('project_details.list',compact('repn','user','serv'));              
     }
 
     public function create()
-
     {
         $repn = user::all();
         $repu = ProjectService::all();
@@ -55,9 +54,6 @@ class ProjectDetailController extends Controller
         $repn->assigned_to_member = implode(',', $request->assigned_to_member);
         $repn->project_priority  =   $request->project_priority; 
 
-            
-               
-        // dd($request->all());
         $repn->save();
 
             
@@ -66,7 +62,6 @@ class ProjectDetailController extends Controller
            
         return redirect()->route('list.pdetail')->with($notification);  
     }
-
     public function show($id)
     {
         $repn   = ProjectDetail::find($id);
@@ -74,8 +69,6 @@ class ProjectDetailController extends Controller
         $serv = ProjectService::all();
         return view('project_details.show',compact('repn','rep','serv'));
     }
-
-
     public function edit($id)
     {
         $repn   = ProjectDetail::find($id);

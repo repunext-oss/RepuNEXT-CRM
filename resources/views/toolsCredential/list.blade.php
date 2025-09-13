@@ -1,5 +1,25 @@
 @extends('admin.admin_master')
 @section('admin')
+<style>
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-input {
+    border: 0px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: 150px;
+}
+
+.toggle-password {
+    margin-left: -30px;
+    cursor: pointer;
+    color: #333;
+}
+</style>
 <?php $rolerawdata = session('userRoles', []);?>
 <style>.st-drop{ border:1px solid #b9b9b9 !important;}</style>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -13,13 +33,16 @@
 					</h3>
 				
 					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+						@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<a href="{{ route('add.toolcred') }}"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user" >
 								<span class="svg-icon svg-icon-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
 										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
 									</svg>
-								</span>Add</button> </a>
+								</span>Add</button> 
+							</a>
+						@endif
 					</div>
 				</div>
 				<div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0"> 
@@ -36,15 +59,7 @@
 						<div id="kt_ecommerce_report_views_export" class="d-none"></div> 
 					</div> 
 					<div class="card-toolbar flex-row-fluid justify-content-end gap-5"> 
-						<!-- <input class="form-control form-control-solid w-100 mw-250px" placeholder="Pick date range" id="kt_ecommerce_report_views_daterangepicker" />
-						<div class="w-150px"> 
-							<select class="form-select form-select-solid st-drop" data-control="select2" data-hide-search="true" data-placeholder="Status" data-kt-ecommerce-order-filter="rating">
-								<option></option>
-								<option value="all">All</option>
-								<option value="rating-1">UnPaid</option>
-								<option value="rating-2">Paid</option>
-							</select> 
-						</div>  -->
+					
 						<button type="button" class="btn btn-light-primary st-drop" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 							<span class="svg-icon svg-icon-2">
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,23 +91,41 @@
 							<th class="w-8px pe-2"> </th> 
 							<th >#</th>
 							<th class="min-w-125px sorting">Tool Name</th> 
-							<th class="min-w-125px sorting">ToolType Id</th> 
-							<th class="min-w-125px sorting">Link</th> 
-							<th class="min-w-125px sorting">User/Password</th> 
-							<th class="min-w-100px sorting">Status</th>   
-							<th class="min-w-115px sorting">Actions</th> 
+							<th class="min-w-115px sorting">ToolType</th> 
+							<th class="min-w-135px sorting">Credentials </th> 
+							<th class="min-w-70px sorting">SM</th> 
+							<!-- <th class="min-w-80px sorting">Status</th>    -->
+							<th class="min-w-100px sorting">Actions</th> 
 						</tr> 
-						</thead> 
-							
+						</thead> 		
 						<tbody class="fw-semibold text-gray-600">
 							<?php $j = 0; ?>
 							@foreach($repn as $repns)
 							<tr>
 								<td></td>
 								<td>{{ $j += 1 }}</td>
+								<td>
+									<a href="{{ $repns->link }}" class="text-primary" style="font-weight: bold;" target="_blank" rel="noopener noreferrer">
+										{{ $repns->tool_name }}
+									</a>
 
-								<td>{{ $repns->tool_name }}</td>
+									<div id="detailsRow_{{$repns->id}}" class="mt-3 d-none">
+										<table class="table table-bordered" style="border: 2px solid blue;">
+											<tbody>
+												<tr>
+													<th class="bg-success text-center p-1" style="border: 1px solid blue;">Link:</th>
+													<td class="p-1" style="border: 1px solid blue;">
+														<a href="{{ $repns->link }}" class="btn btn-sm btn-primary" target="_blank" rel="noopener noreferrer">
+															Open Link
+														</a>
+													</td>
+												</tr>                    
+											</tbody>
+										</table>
+									</div>
+								</td>
 
+								<!-- Tool Type -->
 								<td>
 									@foreach($tooltype as $tooltypes)
 										@if($tooltypes->id == $repns->tooltype_id)
@@ -100,33 +133,47 @@
 										@endif
 									@endforeach
 								</td>
-
-								<td>{{ $repns->link }}</td>
-								<td>UN: {{ $repns->user }} <br>PD: {{ $repns->password }}</td>
-								
-								<td>
+								</td>
+								<td>UN: {{ $repns->user }} <br>							
+									<div class="password-container">
+									PD: <input type="password" class="password-input" value="{{ $repns->password }}" readonly>
+										<i class="fas fa-eye toggle-password"></i>
+									</div>
+								</td> 
+								<td>{{ $repns->link_to_sm}}</td>
+								<!-- <td>
 									<div class="form-check form-switch">
 										<input class="form-check-input" type="checkbox" onchange="Check(this,{{ $repns->id }})" 
 										@if($repns->tc_status == 0) checked @endif>
 									</div>
-								</td>
-
+								</td> -->
+								<!-- Shortened Link -->
+								<!-- <td>{{ preg_replace('/\.com\/.*/', '.com/', $repns->link) }}</td> -->
+								<!-- Actions -->
 								<td>
 									<div class="d-flex gap-2">
+										@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_read",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
 										<a href="{{ route('view.toolcred', $repns->id) }}" class="btn btn-sm btn-warning">
 											<i class="fa fa-eye"></i>
 										</a>
+										@endif
+										@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))             
 										<a href="{{ route('edit.toolcred', $repns->id) }}" class="btn btn-sm btn-info">
 											<i class="fa fa-edit"></i>
 										</a>
+										@endif
+										@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 										<a href="#" onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-sm btn-danger">
 											<i class="fa fa-trash"></i>
 										</a>
+										@endif
 									</div>
 								</td>
 							</tr>
+							
 							@endforeach
-						</tbody> 
+						</tbody>
+
 					</table> 
 				</div> 
 			</div>
@@ -180,4 +227,70 @@
 			}); 
     }; 
 </script> 
+<!-- Password Hide And Show -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.toggle-password').forEach(function (toggleIcon) {
+        toggleIcon.addEventListener('click', function () {
+            const passwordInput = this.previousElementSibling;
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+});
+</script>
+
+<!-- link show and hide table -->
+<script>
+    function showDetails(toolId) {
+        // Define tool details dynamically from Blade
+        var toolsDetails = {
+            @foreach($repn as $repns)
+            "{{ $repns->id }}": {
+                link: "{{ $repns->link }}"
+            }
+            @if(!$loop->last), @endif
+            @endforeach
+        };
+
+        // Check if tool details exist
+        if (toolsDetails[toolId]) {
+            // Populate the details in the target table
+            document.getElementById("toolLink_" + toolId).innerText = toolsDetails[toolId].link;
+
+            // Toggle the visibility of the details row
+            var detailsRow = document.getElementById("detailsRow_" + toolId);
+            if (detailsRow) {
+                detailsRow.classList.toggle("d-none");
+            }
+        } else {
+            alert("Tool details not found!");
+        }
+    }
+</script>
+<script>
+function openToolLink(id) {
+    let url = getToolUrlById(id);  // Retrieve the correct URL based on tool ID
+
+    if (url) {
+        window.open(url, '_blank'); // Open in a new tab
+    } else {
+        alert("No valid link available.");
+    }
+}
+
+// Example function to return a URL based on tool ID
+function getToolUrlById(id) {
+    let urls = {
+        1: "https://iconscout.com/",
+        2: "https://www.investintech.com/pdf-to-powerpoint/",
+        3: "https://example.com/" // Add more tool links as needed
+    };
+    return urls[id] || null; // Return URL if found, otherwise null
+}
+
+</script>
+
+
 @endsection

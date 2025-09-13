@@ -41,7 +41,7 @@
 						<div class="row">
 							<div class="col-lg-6 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Project Service Category</label>
-								<select name="project_service_category[]"  id="project_service_category" class="form-select mb-3 form-control"  data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple" >
+								<select name="project_service_category[]"  id="project_service_category" class="form-select mb-3 form-control form-control-solid"  data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple" >
 								<?php $mems=explode(',', $repn->project_service_category); ?> 	
 									@foreach($serv as $servs)
 											<option value="{{$servs->id}}" @if(in_array($servs->id,$mems)) selected @endif>{{$servs->ps_name}}</option>

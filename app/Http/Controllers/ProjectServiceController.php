@@ -18,6 +18,7 @@ class ProjectServiceController extends Controller
         return view('project_service.add');   
     }
     public function store(Request $request){
+
         $request->validate([
             'ps_name' => 'required',
         ]);

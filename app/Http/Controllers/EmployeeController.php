@@ -45,7 +45,7 @@ class EmployeeController extends Controller
             $notification = array(
                 'message' => 'User Profile is created Successfully',
                 'alert-type' => 'success'
-                );
+                ); 
             return redirect()->route('list.employee')->with($notification);
         }
     }

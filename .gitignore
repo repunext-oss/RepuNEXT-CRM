@@ -1,2 +1,6 @@
 node_modules
 .env
+composer.lock
+vendor/
+storage/
+public/

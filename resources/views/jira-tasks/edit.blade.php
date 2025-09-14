@@ -1,76 +1,22 @@
 @extends('admin.admin_master')
 @section('admin')
 
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 <style>
-.description-editor {
+.tinymce-editor {
     border: 1px solid #ced4da;
     border-radius: 0.375rem;
     overflow: hidden;
 }
 
-.editor-toolbar {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #ced4da;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    flex-wrap: wrap;
+.tinymce-editor .tox-tinymce {
+    border: none !important;
 }
 
-.editor-toolbar .btn {
-    border: 1px solid #dee2e6;
-    padding: 0.25rem 0.5rem;
-    min-width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.editor-toolbar .btn:hover {
-    background-color: #e9ecef;
-    border-color: #adb5bd;
-}
-
-.editor-toolbar .btn.active {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-}
-
-.editor-toolbar .vr {
-    width: 1px;
-    height: 24px;
-    background-color: #dee2e6;
-    margin: 0 0.25rem;
-}
-
-.editor-content {
-    background-color: white;
-}
-
-.editor-content textarea {
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.5;
-}
-
-.editor-content textarea:focus {
-    border: none;
-    box-shadow: none;
-    outline: none;
-}
-
-.character-count {
-    font-size: 0.875rem;
-    color: #6c757d;
-    text-align: right;
-    padding: 0.25rem 0.5rem;
-    background-color: #f8f9fa;
-    border-top: 1px solid #dee2e6;
+.tinymce-editor .tox-editor-header {
+    border-bottom: 1px solid #dee2e6 !important;
 }
 </style>
 <div class="container-fluid mt-3">
@@ -82,10 +28,7 @@
                         <i class="fas fa-edit me-2"></i>
                         Edit RN Task
                     </h3>
-                    <div>
-                        <a href="{{ route('jira-tasks.show', $task->id) }}" class="btn btn-outline-info me-2">
-                            <i class="fas fa-eye"></i> View
-                        </a>
+                    <div> 
                         <a href="{{ route('jira-tasks.board') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left"></i> Back to Board
                         </a>
@@ -216,37 +159,9 @@
                             <div class="col-md-12">
                                 <div class="form-group mb-3">
                                     <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
-                                    <div class="description-editor">
-                                        <div class="editor-toolbar">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('bold')" title="Bold">
-                                                <i class="fas fa-bold"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('italic')" title="Italic">
-                                                <i class="fas fa-italic"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('underline')" title="Underline">
-                                                <i class="fas fa-underline"></i>
-                                            </button>
-                                            <div class="vr mx-1"></div>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertList('ul')" title="Bullet List">
-                                                <i class="fas fa-list-ul"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertList('ol')" title="Numbered List">
-                                                <i class="fas fa-list-ol"></i>
-                                            </button>
-                                            <div class="vr mx-1"></div>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLink()" title="Insert Link">
-                                                <i class="fas fa-link"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearFormatting()" title="Clear Formatting">
-                                                <i class="fas fa-remove-format"></i>
-                                            </button>
-                                        </div>
-                                        <div class="editor-content">
-                                            <textarea class="form-control @error('description') is-invalid @enderror" 
-                                                      id="description" name="description" rows="8" required 
-                                                      style="min-height: 200px; resize: vertical;">{{ old('description', $task->description) }}</textarea>
-                                        </div>
+                                    <div class="tinymce-editor">
+                                        <textarea class="form-control @error('description') is-invalid @enderror" 
+                                                  id="description" name="description" required>{{ old('description', $task->description) }}</textarea>
                                     </div>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -300,146 +215,29 @@
 </div>
 
 <script>
-// Text Editor Functions
-function formatText(command) {
-    const textarea = document.getElementById('description');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    
-    if (!selectedText) {
-        // No text selected, just insert formatting tags
-        const formatMap = {
-            'bold': '**text**',
-            'italic': '*text*',
-            'underline': '<u>text</u>'
-        };
-        
-        const formatText = formatMap[command];
-        const beforeCursor = textarea.value.substring(0, start);
-        const afterCursor = textarea.value.substring(end);
-        
-        textarea.value = beforeCursor + formatText + afterCursor;
-        
-        // Position cursor between the tags
-        const newCursorPos = start + formatText.indexOf('text');
-        textarea.setSelectionRange(newCursorPos, newCursorPos + 4);
-    } else {
-        // Text selected, wrap it with formatting
-        let formattedText = '';
-        switch(command) {
-            case 'bold':
-                formattedText = '**' + selectedText + '**';
-                break;
-            case 'italic':
-                formattedText = '*' + selectedText + '*';
-                break;
-            case 'underline':
-                formattedText = '<u>' + selectedText + '</u>';
-                break;
-        }
-        
-        textarea.value = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
-        textarea.setSelectionRange(start + formattedText.length, start + formattedText.length);
-    }
-    
-    textarea.focus();
-}
-
-function insertList(type) {
-    const textarea = document.getElementById('description');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    
-    let listText = '';
-    if (type === 'ul') {
-        listText = selectedText ? 
-            '• ' + selectedText.replace(/\n/g, '\n• ') : 
-            '• ';
-    } else if (type === 'ol') {
-        listText = selectedText ? 
-            '1. ' + selectedText.replace(/\n/g, '\n2. ') : 
-            '1. ';
-    }
-    
-    textarea.value = textarea.value.substring(0, start) + listText + textarea.value.substring(end);
-    const newCursorPos = start + listText.length;
-    textarea.setSelectionRange(newCursorPos, newCursorPos);
-    textarea.focus();
-}
-
-function insertLink() {
-    const textarea = document.getElementById('description');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    
-    const linkText = selectedText || 'link text';
-    const url = prompt('Enter URL:', 'https://');
-    
-    if (url) {
-        const link = '[' + linkText + '](' + url + ')';
-        textarea.value = textarea.value.substring(0, start) + link + textarea.value.substring(end);
-        textarea.setSelectionRange(start + link.length, start + link.length);
-    }
-    
-    textarea.focus();
-}
-
-function clearFormatting() {
-    const textarea = document.getElementById('description');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    
-    if (selectedText) {
-        // Remove common formatting
-        let cleanText = selectedText
-            .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove bold
-            .replace(/\*(.*?)\*/g, '$1')      // Remove italic
-            .replace(/<u>(.*?)<\/u>/g, '$1')  // Remove underline
-            .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links
-            .replace(/^[•\-\*]\s*/gm, '')     // Remove bullet points
-            .replace(/^\d+\.\s*/gm, '')       // Remove numbered lists
-            .trim();
-        
-        textarea.value = textarea.value.substring(0, start) + cleanText + textarea.value.substring(end);
-        textarea.setSelectionRange(start, start + cleanText.length);
-    }
-    
-    textarea.focus();
-}
-
-// Auto-resize textarea
+// Initialize TinyMCE
 document.addEventListener('DOMContentLoaded', function() {
-    const textarea = document.getElementById('description');
-    
-    function autoResize() {
-        textarea.style.height = 'auto';
-        textarea.style.height = Math.max(200, textarea.scrollHeight) + 'px';
-    }
-    
-    textarea.addEventListener('input', autoResize);
-    autoResize(); // Initial resize
-    
-    // Keyboard shortcuts
-    textarea.addEventListener('keydown', function(e) {
-        if (e.ctrlKey || e.metaKey) {
-            switch(e.key) {
-                case 'b':
-                    e.preventDefault();
-                    formatText('bold');
-                    break;
-                case 'i':
-                    e.preventDefault();
-                    formatText('italic');
-                    break;
-                case 'u':
-                    e.preventDefault();
-                    formatText('underline');
-                    break;
-            }
+    tinymce.init({
+        selector: '#description',
+        height: 400,
+        menubar: false,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; }',
+        placeholder: 'Enter task description...',
+        branding: false,
+        promotion: false,
+        setup: function (editor) {
+            editor.on('change', function () {
+                editor.save();
+            });
         }
     });
 });

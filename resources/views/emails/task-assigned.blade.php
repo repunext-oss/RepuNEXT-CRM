@@ -102,7 +102,7 @@
         @if($task->description)
         <div class="info-row">
             <span class="info-label">Description:</span><br>
-            {{ $task->description }}
+            {!! $task->description !!}
         </div>
         @endif
 

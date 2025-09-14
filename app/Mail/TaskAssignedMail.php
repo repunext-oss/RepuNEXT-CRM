@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 use App\Models\JiraTask;
 use App\Models\User;
@@ -35,6 +36,9 @@ class TaskAssignedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: [
+                new Address($this->assignee->email, $this->assignee->name),
+            ],
             subject: "New Task Assigned: {$this->task->task_key} - {$this->task->title}",
         );
     }

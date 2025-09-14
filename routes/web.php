@@ -41,6 +41,7 @@ use App\Http\Controllers\InternController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\JiraTaskController;
 
 
 Route::get('/test-mail', function () {
@@ -412,7 +413,7 @@ Route::controller(LeaveController::class)->group(function(){
          Route::post('/availability/{id}/toggle', 'toggleStatus')->name('availability.toggle');
      }); 
  
-  Route::controller(InternController::class)->group(function(){
+     Route::controller(InternController::class)->group(function(){
       
         Route::get('/karthik','create')->name('add.intern');  
         Route::post('/intern/store','store')->name('store.intern');    
@@ -421,6 +422,23 @@ Route::controller(LeaveController::class)->group(function(){
         Route::get('/intern/view/{id}','show')->name('view.intern'); 
         Route::post('/intern/destroy/{id}','destroy')->name('destroy.intern'); 
         Route::post('/intern/status','status')->name('status.intern');
+    });
+
+    // Jira Tasks Routes
+    Route::controller(JiraTaskController::class)->group(function(){
+        Route::get('/jira-tasks/board', 'index')->name('jira-tasks.board');
+        Route::get('/jira-tasks/create', 'create')->name('jira-tasks.create');
+        Route::post('/jira-tasks/store', 'store')->name('jira-tasks.store');
+        Route::get('/jira-tasks/show/{id}', 'show')->name('jira-tasks.show');
+        Route::get('/jira-tasks/details/{id}', 'getTaskDetails')->name('jira-tasks.details');
+        Route::get('/jira-tasks/edit/{id}', 'edit')->name('jira-tasks.edit');
+        Route::put('/jira-tasks/update/{id}', 'update')->name('jira-tasks.update');
+        Route::delete('/jira-tasks/destroy/{id}', 'destroy')->name('jira-tasks.destroy');
+        Route::post('/jira-tasks/update-status', 'updateStatus')->name('jira-tasks.updateStatus');
+        Route::post('/jira-tasks/assign', 'assignTask')->name('jira-tasks.assign');
+        Route::get('/jira-tasks/backlog', 'backlog')->name('jira-tasks.backlog');
+        Route::post('/jira-tasks/{id}/add-comment', 'addComment')->name('jira-tasks.add-comment');
+        Route::delete('/jira-tasks/{id}/delete-comment', 'deleteComment')->name('jira-tasks.delete-comment');
     });
  
 });

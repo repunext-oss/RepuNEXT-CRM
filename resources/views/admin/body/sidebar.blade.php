@@ -285,6 +285,22 @@
 									<span class="menu-title">Revenue & Expense</span>
 								</a>
 							</div>
+							<div class="menu-item">
+								<a class="menu-link" href="{{route('jira-tasks.board')}}">
+									<span class="menu-bullet">
+										<span class="bullet bullet-dot"></span>
+									</span>
+									<span class="menu-title">Repunext Board</span>
+								</a>
+							</div>
+							<div class="menu-item">
+								<a class="menu-link" href="{{route('jira-tasks.backlog')}}">
+									<span class="menu-bullet">
+										<span class="bullet bullet-dot"></span>
+									</span>
+									<span class="menu-title">Backlog</span>
+								</a>
+							</div>
 							
 					</div>
 				</div>

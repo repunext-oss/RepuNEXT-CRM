@@ -59,8 +59,6 @@ class RoomController extends Controller
     // Send message to room
     public function sendMessage(Request $request, $roomId)
     {
-        // dd($request->all());
-        // exit();
         $request->validate([
             'message' => 'required|string',
         ]);

@@ -24,9 +24,6 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    public function dummy(){
-        return view('admin.dummy');
-    }
 
     public function dashboard(Request $request)
     {

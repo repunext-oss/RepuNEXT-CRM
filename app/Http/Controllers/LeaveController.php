@@ -45,8 +45,6 @@ class LeaveController extends Controller
                     ->get();
 
 
-            // dd( $leaveSummary);
-            // exit();
 
 
             return view('leave.list', compact('repn', 'user', 'leaveSummary'));

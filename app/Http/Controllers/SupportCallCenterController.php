@@ -25,10 +25,6 @@ class SupportCallCenterController extends Controller
     }
     public function store(Request $request){
 
-        // dd($request->all());
-        // if (Auth::check()) {
-        //     session(['userid' => Auth::user()->id, 'username' => Auth::user()->username]);
-        // }
        
         $request->validate([
             'Name' => 'required',

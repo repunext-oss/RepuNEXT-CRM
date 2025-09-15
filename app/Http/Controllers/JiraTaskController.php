@@ -118,8 +118,11 @@ class JiraTaskController extends Controller
         if ($request->hasFile('attachments')) {
             $files = [];
             foreach ($request->file('attachments') as $file) {
-                $filename = 'jira_task_' . time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('upload/jira-tasks'), $filename);
+                $dateTime = date('dmyHis');
+                $random = rand(10, 99);
+                $extension = $file->getClientOriginalExtension();
+                $filename = "rnboard-{$dateTime}{$random}." . $extension; 
+                $file->move(public_path('upload/rn-board-tasks'), $filename);
                 $files[] = $filename;
             }
             $task->attachments = $files;
@@ -216,8 +219,11 @@ class JiraTaskController extends Controller
         if ($request->hasFile('attachments')) {
             $files = [];
             foreach ($request->file('attachments') as $file) {
-                $filename = 'jira_task_' . time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('upload/jira-tasks'), $filename);
+                $dateTime = date('dmyHis');
+                $random = rand(10, 99);
+                $extension = $file->getClientOriginalExtension();
+                $filename = "rnboard-{$dateTime}{$random}." . $extension;
+                $file->move(public_path('upload/rn-board-tasks'), $filename);
                 $files[] = $filename;
             }
             $task->attachments = $files;

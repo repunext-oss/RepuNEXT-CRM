@@ -664,6 +664,98 @@
     transform: translateY(-1px);
 }
 
+/* Optimized Image Attachment Styles */
+.image-attachment {
+    padding: 0;
+    overflow: hidden;
+}
+
+.image-preview-container {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    background: #f8f9fa;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attachment-image-preview {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-preview-container:hover .attachment-image-preview {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.image-preview-container:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.image-fallback small {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.attachment-info {
+    padding: 0.75rem;
+}
+
+.attachment-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.attachment-actions .btn {
+    flex: 1;
+}
+
+/* Image Modal Header Button Styles */
+#imageOverviewModal .modal-header .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+#imageOverviewModal .modal-header .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    transform: translateY(-1px);
+}
+
+#imageOverviewModal .modal-header .btn-outline-light:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
 .file-icon-large {
     width: 48px;
     height: 48px;
@@ -1459,6 +1551,35 @@
     </div>
 </div>
 
+<!-- Image Overview Modal -->
+<div class="modal fade" id="imageOverviewModal" tabindex="-1" aria-labelledby="imageOverviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 bg-gradient-primary text-white">
+                <div class="d-flex align-items-center justify-content-between w-100">
+                    <h5 class="modal-title mb-0" id="imageOverviewModalLabel">
+                        <i class="fas fa-image me-2"></i><span id="modalImageTitle">Image Preview</span>
+                    </h5>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-outline-light btn-sm" onclick="toggleImageFullscreen()" title="Fullscreen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <a id="modalImageDownload" href="" class="btn btn-outline-light btn-sm" target="_blank" title="Download" download>
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="image-container text-center">
+                    <img id="modalImagePreview" src="" alt="" class="img-fluid" style="max-height: 70vh; width: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
 .draggable-task {
     cursor: pointer;
@@ -1878,7 +1999,19 @@ function viewTaskDetails(taskId) {
                                         `}
                                     </div>
                                 </div>
-                                
+                                <!-- Attachments Section -->
+                                    ${task.attachments && task.attachments.length > 0 ? `
+                                    <div class="content-section">
+                                        <h5 class="section-title">
+                                            <i class="fas fa-paperclip"></i>Attachments (${task.attachments.length})
+                                        </h5>
+                                        <div class="attachments-grid">
+                                            <div class="row g-3">
+                                                    ${task.attachments.map(attachment => generateAttachmentHTML(attachment, task.id)).join('')}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
                                 <!-- Comments Section -->
                                 <div class="content-section">
                                     <h5 class="section-title">
@@ -1937,48 +2070,7 @@ function viewTaskDetails(taskId) {
                                         </div>
                                 </div>
                                     
-                                <!-- Attachments Section -->
-                                    ${task.attachments && task.attachments.length > 0 ? `
-                                    <div class="content-section">
-                                        <h5 class="section-title">
-                                            <i class="fas fa-paperclip"></i>Attachments (${task.attachments.length})
-                                        </h5>
-                                        <div class="attachments-grid">
-                                            <div class="row g-3">
-                                                    ${task.attachments.map(attachment => {
-                                                        const isString = typeof attachment === 'string';
-                                                        const fileName = isString ? attachment : (attachment.name || 'Attachment');
-                                                        const fileUrl = isString ? '/upload/jira_tasks/' + attachment : (attachment.url || '#');
-                                                        const fileSize = isString ? '' : (attachment.size ? formatFileSize(attachment.size) : '');
-                                                        const fileExtension = fileName.split('.').pop().toLowerCase();
-                                                        const fileIcon = getFileIcon(fileExtension);
-                                                    const fileIconClass = getFileIconClass(fileExtension);
-                                                        
-                                                        return `
-                                                        <div class="col-md-6 col-lg-4">
-                                                            <div class="attachment-card">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="file-icon-large ${fileIconClass}">
-                                                                        <i class="fas fa-${fileIcon}"></i>
-                                                                    </div>
-                                                                    <div class="flex-grow-1">
-                                                                        <h6 class="mb-1 text-dark">${fileName}</h6>
-                                                                        <small class="text-muted">${fileSize}</small>
-                                                                    </div>
-                                                                    <div class="ms-2">
-                                                                        <a href="${fileUrl}" class="btn btn-outline-primary btn-sm" target="_blank" title="Download">
-                                                                            <i class="fas fa-download"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        `;
-                                                    }).join('')}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ` : ''}
+                                
                                 </div>
 
                             <!-- Sidebar Information Column -->
@@ -2220,18 +2312,24 @@ function viewTaskDetails(taskId) {
 
 /* Optimized - removed unused functions */
 
+// Optimized file type constants
+const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+
+const FILE_ICON_CLASSES = {
+    'pdf': 'file-icon-pdf',
+    'doc': 'file-icon-doc',
+    'docx': 'file-icon-doc',
+    'jpg': 'file-icon-img',
+    'jpeg': 'file-icon-img',
+    'png': 'file-icon-img',
+    'gif': 'file-icon-img',
+    'svg': 'file-icon-img',
+    'webp': 'file-icon-img',
+    'bmp': 'file-icon-img'
+};
+
 function getFileIconClass(extension) {
-    switch(extension) {
-        case 'pdf': return 'file-icon-pdf';
-        case 'doc':
-        case 'docx': return 'file-icon-doc';
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'gif':
-        case 'svg': return 'file-icon-img';
-        default: return 'file-icon-default';
-    }
+    return FILE_ICON_CLASSES[extension] || 'file-icon-default';
 }
 
 // Comment System Functions
@@ -2509,37 +2607,167 @@ function formatFileSize(bytes) {
     return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
 }
 
+// Optimized file icon mapping
+const FILE_ICONS = {
+    'pdf': 'file-pdf',
+    'doc': 'file-word', 'docx': 'file-word',
+    'xls': 'file-excel', 'xlsx': 'file-excel',
+    'ppt': 'file-powerpoint', 'pptx': 'file-powerpoint',
+    'txt': 'file-alt',
+    'jpg': 'file-image', 'jpeg': 'file-image', 'png': 'file-image',
+    'gif': 'file-image', 'bmp': 'file-image', 'svg': 'file-image', 'webp': 'file-image',
+    'mp4': 'file-video', 'avi': 'file-video', 'mov': 'file-video',
+    'mp3': 'file-audio', 'wav': 'file-audio',
+    'zip': 'file-archive', 'rar': 'file-archive', '7z': 'file-archive',
+    'css': 'file-code', 'js': 'file-code', 'html': 'file-code',
+    'php': 'file-code', 'json': 'file-code', 'xml': 'file-code'
+};
+
 function getFileIcon(extension) {
-    const iconMap = {
-        'pdf': 'file-pdf',
-        'doc': 'file-word',
-        'docx': 'file-word',
-        'xls': 'file-excel',
-        'xlsx': 'file-excel',
-        'ppt': 'file-powerpoint',
-        'pptx': 'file-powerpoint',
-        'txt': 'file-alt',
-        'jpg': 'file-image',
-        'jpeg': 'file-image',
-        'png': 'file-image',
-        'gif': 'file-image',
-        'bmp': 'file-image',
-        'svg': 'file-image',
-        'mp4': 'file-video',
-        'avi': 'file-video',
-        'mov': 'file-video',
-        'mp3': 'file-audio',
-        'wav': 'file-audio',
-        'zip': 'file-archive',
-        'rar': 'file-archive',
-        '7z': 'file-archive',
-        'css': 'file-code',
-        'js': 'file-code',
-        'html': 'file-code',
-        'php': 'file-code',
-        'json': 'file-code',
-        'xml': 'file-code'
-    };
-    return iconMap[extension] || 'file-alt';
+    return FILE_ICONS[extension] || 'file-alt';
+}
+
+// Optimized attachment HTML generator
+function generateAttachmentHTML(attachment, taskId) {
+    const isString = typeof attachment === 'string';
+    const fileName = isString ? attachment : (attachment.name || 'Attachment');
+    const fileUrl = isString ? '/upload/rn-board-tasks/' + attachment : (attachment.url || '#');
+    const fileSize = isString ? '' : (attachment.size ? formatFileSize(attachment.size) : '');
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    const fileIcon = getFileIcon(fileExtension);
+    const fileIconClass = getFileIconClass(fileExtension);
+    
+    // Check if it's an image file
+    const isImage = IMAGE_EXTENSIONS.includes(fileExtension);
+    
+    if (isImage) {
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="attachment-card image-attachment">
+                <div class="image-preview-container" onclick="viewImageOverview('${fileUrl}', '${fileName}', ${taskId})">
+                    <img src="${fileUrl}" alt="${fileName}" class="attachment-image-preview" 
+                         onerror="handleImageError(this);" 
+                         onload="handleImageLoad(this);">
+                    <div class="image-fallback" style="display: none;">
+                        <div class="file-icon-large ${fileIconClass}">
+                            <i class="fas fa-${fileIcon}"></i>
+                        </div>
+                        <small class="text-muted mt-2">Image not available</small>
+                    </div>
+                    <div class="image-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="attachment-info">
+                    <h6 class="mb-1 text-dark">${fileName}</h6>
+                    <small class="text-muted">${fileSize}</small> 
+                </div>
+            </div>
+        </div>
+        `;
+    } else {
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="attachment-card">
+                <div class="d-flex align-items-center">
+                    <div class="file-icon-large ${fileIconClass}">
+                        <i class="fas fa-${fileIcon}"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 text-dark">${fileName}</h6>
+                        <small class="text-muted">${fileSize}</small>
+                    </div>
+                    <div class="ms-2">
+                        <a href="${fileUrl}" class="btn btn-outline-primary btn-sm" target="_blank" title="Download">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+}
+
+// Image Overview Functions
+function viewImageOverview(imageUrl, fileName, taskId) {
+    // Validate URL before setting
+    if (!imageUrl || imageUrl === '#') {
+        alert('Image URL is not available');
+        return;
+    }
+    
+    // Set the image source and name
+    document.getElementById('modalImagePreview').src = imageUrl;
+    document.getElementById('modalImagePreview').alt = fileName;
+    document.getElementById('modalImageTitle').textContent = fileName;
+    document.getElementById('modalImageDownload').href = imageUrl;
+    
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('imageOverviewModal'));
+    modal.show();
+}
+
+// Image error handling functions
+function handleImageError(imgElement) {
+    imgElement.style.display = 'none';
+    const fallback = imgElement.nextElementSibling;
+    if (fallback) {
+        fallback.style.display = 'flex';
+        fallback.style.flexDirection = 'column';
+        fallback.style.alignItems = 'center';
+        fallback.style.justifyContent = 'center';
+    }
+}
+
+function handleImageLoad(imgElement) {
+    imgElement.style.display = 'block';
+    const fallback = imgElement.nextElementSibling;
+    if (fallback) {
+        fallback.style.display = 'none';
+    }
+}
+
+function toggleImageFullscreen() {
+    const image = document.getElementById('modalImagePreview');
+    const modal = document.getElementById('imageOverviewModal');
+    
+    if (!document.fullscreenElement) {
+        // Enter fullscreen
+        if (image.requestFullscreen) {
+            image.requestFullscreen();
+        } else if (image.webkitRequestFullscreen) {
+            image.webkitRequestFullscreen();
+        } else if (image.msRequestFullscreen) {
+            image.msRequestFullscreen();
+        }
+    } else {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
+// Handle fullscreen change events
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    const fullscreenButton = document.querySelector('[onclick="toggleImageFullscreen()"]');
+    const icon = fullscreenButton.querySelector('i');
+    
+    if (document.fullscreenElement) {
+        icon.className = 'fas fa-compress';
+        fullscreenButton.title = 'Exit Fullscreen';
+    } else {
+        icon.className = 'fas fa-expand';
+        fullscreenButton.title = 'Fullscreen';
+    }
 }
 </script> 

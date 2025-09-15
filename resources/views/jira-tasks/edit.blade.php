@@ -203,7 +203,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Update Task
                             </button>
-                            <a href="{{ route('jira-tasks.show', $task->id) }}" class="btn btn-secondary">
+                            <a href="{{ route('jira-tasks.board') }}" class="btn btn-secondary">
                                 <i class="fas fa-times"></i> Cancel
                             </a>
                         </div>

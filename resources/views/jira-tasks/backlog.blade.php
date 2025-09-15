@@ -91,9 +91,7 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <strong class="text-dark">{{ $task->title }}</strong>
-                                                        <br>
-                                                        <small class="text-muted">{{ Str::limit($task->description, 60) }}</small>
+                                                        <strong class="text-dark">{{ $task->title }}</strong> 
                                                     </div>
                                                 </td>
                                                 <td>
@@ -127,10 +125,7 @@
                                                     <small class="text-muted">{{ $task->created_at->format('M d, Y') }}</small>
                                                 </td>
                                                 <td>
-                                                    <div class="btn-group btn-group-sm">
-                                                        <a href="{{ route('jira-tasks.show', $task->id) }}" class="btn btn-outline-primary btn-sm" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
+                                                    <div class="btn-group btn-group-sm"> 
                                                         <a href="{{ route('jira-tasks.edit', $task->id) }}" class="btn btn-outline-secondary btn-sm" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a> 
@@ -208,8 +203,6 @@
                                                 <td>
                                                     <div>
                                                         <strong class="text-dark">{{ $task->title }}</strong>
-                                                        <br>
-                                                        <small class="text-muted">{{ Str::limit($task->description, 60) }}</small>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -245,10 +238,7 @@
                                                     </small>
                                                 </td>
                                                 <td>
-                                                    <div class="btn-group btn-group-sm">
-                                                        <a href="{{ route('jira-tasks.show', $task->id) }}" class="btn btn-outline-primary btn-sm" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
+                                                    <div class="btn-group btn-group-sm"> 
                                                         <a href="{{ route('jira-tasks.edit', $task->id) }}" class="btn btn-outline-secondary btn-sm" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a> 

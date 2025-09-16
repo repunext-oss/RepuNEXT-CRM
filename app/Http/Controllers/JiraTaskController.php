@@ -143,7 +143,7 @@ class JiraTaskController extends Controller
             }
         }
 
-        return redirect()->route('jira-tasks.board')->with([
+        return redirect()->route('jira-tasks.backlog')->with([
             'message' => 'Task created successfully!',
             'alert-type' => 'success'
         ]);

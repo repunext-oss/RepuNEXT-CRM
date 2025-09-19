@@ -136,7 +136,7 @@
         @endif
 
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{{ $taskUrl }}" class="btn">View Task</a>
+            
             <a href="{{ $boardUrl }}" class="btn">Go to Board</a>
         </div>
     </div>

@@ -56,6 +56,12 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () { 
+    // Session reset route for idle timeout
+    Route::post('/reset-session', function() {
+        session()->put('last_activity', time());
+        return response()->json(['status' => 'success', 'message' => 'Session extended']);
+    })->name('reset-session');
+    
     Route::controller(AdminController::class)->group(function(){
         Route::get('/admin/logout','destroy')->name('admin.logout');
         Route::get('/admin/profile','Profile')->name('admin.profile');

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 
 class CheckIdleTimeout
 {
-    private const IDLE_TIMEOUT_MINUTES = 10;
+    private const IDLE_TIMEOUT_MINUTES = 30;
 
     /**
      * Handle an incoming request.

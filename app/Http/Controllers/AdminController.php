@@ -24,6 +24,9 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+    public function dummy(){
+        return view('admin.dummy');
+    }
 
     public function dashboard(Request $request)
     {
@@ -150,13 +153,93 @@ class AdminController extends Controller
         ->orderBy('year', 'ASC')
         ->orderBy('month', 'DESC')
         ->get();
+
+        // Get all users for dropdown selection
+        $allUsers = User::where('isdeleted', 0)->select('id', 'name', 'username')->get();
         
         return view('admin.index', compact(
             'users', 'goals', 'time', 'filter', 'dateRange', 'userId', 'serv', 'categoryData','leaveSummary','support',
             'monthlyRevenue', 'monthlyExpense', 'monthlyProfit','monthlyIntern', 'totalRevenue', 'totalExpense', 'Final','totalProfit',
             'todayBookings', 'thisWeekBookings', 'thisMonthBookings', 'totalBookings','MonthlyFinal',
-            'activeAvailabilities', 'todayAvailableUsers', 'thisWeekAvailableUsers'
+            'activeAvailabilities', 'todayAvailableUsers', 'thisWeekAvailableUsers', 'allUsers'
         ));
+    }
+
+    public function fetchUserMonthlyLeave(Request $request)
+    {
+        $userId = $request->get('user_id');
+        $year = $request->get('year', date('Y'));
+
+        if (!$userId) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User ID is required'
+            ], 400);
+        }
+
+        try {
+            // Check if the user exists
+            $user = User::find($userId);
+            if (!$user) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            // Get monthly leave taken data for the selected user
+            $monthlyLeaveData = LeaveManagement::where('l_isdeleted', 0)
+                ->where('user_ref_id', $userId)
+                ->whereYear('date', $year)
+                ->selectRaw('
+                    MONTH(date) as month,
+                    MONTHNAME(date) as month_name,
+                    SUM(taken_leave) as total_taken_leave
+                ')
+                ->groupBy('month', 'month_name')
+                ->orderBy('month')
+                ->get();
+
+            // If no data for the selected year, try to get any data for this user
+            if ($monthlyLeaveData->isEmpty()) {
+                $monthlyLeaveData = LeaveManagement::where('l_isdeleted', 0)
+                    ->where('user_ref_id', $userId)
+                    ->selectRaw('
+                        MONTH(date) as month,
+                        MONTHNAME(date) as month_name,
+                        SUM(taken_leave) as total_taken_leave
+                    ')
+                    ->groupBy('month', 'month_name')
+                    ->orderBy('month')
+                    ->get();
+            }
+
+            // Get user's current leave balance
+            $latestBalance = LeaveManagement::where('l_isdeleted', 0)
+                ->where('user_ref_id', $userId)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $userBalance = [
+                'credit_leave_days' => $latestBalance ? round((float)$latestBalance->credit_leave, 1) : 0,
+                'casual_leave_days' => $latestBalance ? round((float)$latestBalance->casual_leave, 1) : 0,
+                'sick_leave_days' => $latestBalance ? round((float)$latestBalance->sick_leave, 1) : 0,
+                'total_balance_days' => $latestBalance ? round(((float)$latestBalance->credit_leave + (float)$latestBalance->casual_leave + (float)$latestBalance->sick_leave), 1) : 0
+            ];
+
+            $response = [
+                'status' => 'success',
+                'monthly_data' => $monthlyLeaveData,
+                'user_balance' => $userBalance
+            ];
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
     }
     
     

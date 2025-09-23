@@ -6,7 +6,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\EmailnotificationController;
 use App\Http\Controllers\StateController; 
 use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\CallCenterController;
+
 use App\Http\Controllers\MasterController; 
 use App\Http\Controllers\InventoryController;  
 use App\Http\Controllers\StorageController;  
@@ -78,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store/userlist','Storeuserlist')->name('store.userlist');
         Route::get('/dashboard','Dashboard')->middleware(['auth'])->name('dashboard');
         Route::get('/dashboard-data', 'Dashboard')->name('dashboard.data');
+        Route::get('/fetch-user-monthly-leave','fetchUserMonthlyLeave')->name('admin.fetchUserMonthly');
 
     });
 
@@ -85,15 +86,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/list/employee','userlist')->name('list.employee');
     });
 
-    Route::controller(CallCenterController::class)->group(function(){
-        Route::get('/callcenter','index')->name('callcenter.callcenter');
-        Route::get('/callcenter/add','add')->name('callcenter.add');
-        Route::post('/callcenter/store','store')->name('callcenter.store');
-        Route::put('/callcenter/update','update')->name('callcenter.update');
-        Route::get('/callcenter/edit/{id}','edit')->name('callcenter.edit');
-        Route::get('/callcenter/view/{id}','show')->name('callcenter.view'); 
-        Route::post('/callcenter/destroy/{id}','destroy')->name('callcenter.delete'); 
-    });
 
     Route::controller(WebsitecredentialController::class)->group(function(){
         Route::get('/websitecredentials','index')->name('website.main');
@@ -295,26 +287,27 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/training/video/status','status')->name('status.tvideos');
         Route::get('/download/{filename}','download')->name('download.file'); 
         Route::get('/view-pdf/{filename}','viewPDF')->name('view.pdf'); 
-
     });
-Route::controller(LeaveController::class)->group(function(){      
-        Route::get('/leave/list','index')->name('list.leave');
-        Route::get('/leave/create','create')->name('add.leave');  
-        Route::post('/leave/store','store')->name('store.leave');    
-        Route::post('/leave/update','update')->name('update.leave');     
-        Route::get('/leave/edit/{id}','edit')->name('edit.leave');
-        Route::get('/leave/view/{id}','show')->name('view.leave'); 
-        Route::post('/leave/destroy/{id}','destroy')->name('destroy.leave'); 
-        Route::post('/leave/status','status')->name('status.leave');
-        Route::post('/send-response-email', 'sendResponseEmail')->name('send.leave');
-        Route::post('/update-leave-status', 'updateLeaveStatus')->name('upt.leave');
-        Route::post('/leave/approve','approveLeave')->name('approve.leave');
-        Route::post('/leaves/reject','reject')->name('leaves.reject');
-        Route::get('/leave/balance','showLeaveBalance')->name('leave.balance');
-        Route::get('/fetch-leave-balance','fetchLeaveBalance')->name('leave.fetchBalance');
-        Route::get('/leave/management/create','lmcreate')->name('add.leaveManagement');  
-        Route::post('/leave/management/store','lmstore')->name('store.leaveManagement');    
-        });
+    
+    Route::controller(LeaveController::class)->group(function(){      
+    Route::get('/leave/list','index')->name('list.leave');
+    Route::get('/leave/create','create')->name('add.leave');  
+    Route::post('/leave/store','store')->name('store.leave');    
+    Route::post('/leave/update','update')->name('update.leave');     
+    Route::get('/leave/edit/{id}','edit')->name('edit.leave');
+    Route::get('/leave/view/{id}','show')->name('view.leave'); 
+    Route::post('/leave/destroy/{id}','destroy')->name('destroy.leave'); 
+    Route::post('/leave/status','status')->name('status.leave');
+    Route::post('/send-response-email', 'sendResponseEmail')->name('send.leave');
+    Route::post('/update-leave-status', 'updateLeaveStatus')->name('upt.leave');
+    Route::post('/leave/approve','approveLeave')->name('approve.leave');
+    Route::post('/leaves/reject','reject')->name('leaves.reject');
+    Route::get('/leave/balance','showLeaveBalance')->name('leave.balance');
+    Route::get('/fetch-leave-balance','fetchLeaveBalance')->name('leave.fetchBalance');
+    Route::get('/leave/management/create','lmcreate')->name('add.leaveManagement');  
+    Route::post('/leave/management/store','lmstore')->name('store.leaveManagement');    
+    });
+
     Route::controller(SupportCallCenterController::class)->group(function(){      
         Route::get('/support/list','index')->name('list.support');
         Route::get('/support/create','create')->name('add.support');  

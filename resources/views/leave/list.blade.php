@@ -199,9 +199,6 @@
 					<li class="nav-item">
 						<a class="nav-link fw-bold px-5 py-3"  id="rejected-tab" data-bs-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false">Rejected</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link fw-bold px-5 py-3"  id="leavedetail-tab" data-bs-toggle="tab" href="#leavedetail" role="tab" aria-controls="leavedetail" aria-selected="false">Leave Details</a>
-					</li>
 				</ul>
 				<div id="notification-area"></div>
 					<div class="tab-content">
@@ -445,44 +442,50 @@
 												<td>{{ $repns->reason }}</td>
 												<td>
 													@switch($repns->totaldays)
-													@case(0.25)
+														@case(0.03)
 															15 min
 															@break
+														@case(0.25)
+															2 hours
+															@break
+														@case(0.5)
+															Half day
+															@break
+														@case(1)
+															1 day
+															@break
 														@case(2)
-															2 Hour Permission
+															2 days
+															@break
+														@case(3)
+															3 days
 															@break
 														@case(4)
-															Half Day
+															4 days
 															@break
-														@case(8)
-															1 Day
+														@case(5)
+															5 days
 															@break
-														@case(16)
-															2 Days
+														@case(6)
+															6 days
 															@break
-														@case(24)
-															3 Days
+														@case(7)
+															1 week
 															@break
-														@case(32)
-															4 Days
+														@case(14)
+															2 weeks
 															@break
-														@case(56)
-															1 Week
+														@case(21)
+															3 weeks
 															@break
-														@case(112)
-															2 Weeks
+														@case(28)
+															4 weeks
 															@break
-														@case(168)
-															3 Weeks
-															@break
-														@case(224)
-															4 Weeks
-															@break
-														@case(248)
-															1 Month
+														@case(30)
+															1 month
 															@break
 														@default
-															{{ $repns->totaldays }}
+															{{ $repns->totaldays }} days
 													@endswitch
 												</td>
 
@@ -623,34 +626,6 @@
 							</div>
 						</div>
 
-<div class="tab-pane fade" id="leavedetail" role="tabpanel" aria-labelledby="leavedetail-tab">
-    <div class="card-body pt-0">
-        <table class="table table-bordered table-hover align-middle rounded dataTable table-row-dashed fs-6 gy-5" id="kt_ecommerce_report_views_table">
-            <thead class="text-start text-gray-400 fw-bold fs-7 text-uppercase" style="background-color: #002244;">
-                <tr>
-                    <th class="w-10px pe-2 text-center">#</th> {{-- Centered the index column --}}
-                    <th class="text-left">User Name</th> {{-- Left align user name --}}
-                    <th class="text-center">Year</th> {{-- Centered year column --}}
-                    <th class="text-center">Month</th> {{-- Centered month column --}}
-                    <th class="text-center">Total Leave Taken (Days)</th> {{-- Centered the leave column --}}
-                </tr>
-            </thead>
-            <tbody class="fw-semibold text-gray-600">
-                <?php $j = 0; ?>
-                @foreach($leaveSummary as $summary)
-                    <tr>
-                        <td class="text-center">{{ ++$j }}</td> {{-- Centered the index number --}}
-                        <td class="text-left">{{ $summary->user_name }}</td> {{-- Left-align user name --}}
-                        <td class="text-center">{{ $summary->year }}</td> {{-- Centered year --}}
-                        <td class="text-center">{{ date('F', mktime(0, 0, 0, $summary->month, 1)) }}</td> {{-- Centered month name --}}
-                        <td class="text-center">{{ round($summary->total_leave / 9) }} Days</td> {{-- Centered leave days --}}
-						
-                    </tr>
-                @endforeach
-            </tbody>
-        </table> 
-    </div>
-</div>
 @if(isset($leaveBalance))
     <p>Sick Leave (SL): {{ $leaveBalance->sick_leave }}</p>
     <p>Casual Leave (CL): {{ $leaveBalance->casual_leave }}</p>

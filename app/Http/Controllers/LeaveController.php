@@ -45,6 +45,8 @@ class LeaveController extends Controller
                     ->get();
 
 
+            // dd( $leaveSummary);
+            // exit();
 
 
             return view('leave.list', compact('repn', 'user', 'leaveSummary'));
@@ -106,7 +108,7 @@ class LeaveController extends Controller
 }
 
 
-private const HOUR_PER_DAY = 8; // 1 day = 8 hours
+// Removed HOUR_PER_DAY constant - now using 1 day = 1 day
 
 public function approveLeave(Request $request)
 {
@@ -119,7 +121,7 @@ public function approveLeave(Request $request)
 
         // Your schema: "name" holds user_id
         $userId     = (int) $leave->name;
-        $takenHours = (float) $leave->totaldays; // HOURS. If days, multiply by 8.
+        $takenDays = (float) $leave->totaldays; // Now in days
 
         // Get current running balance (latest row)
         $latest = LeaveManagement::where('user_ref_id', $userId)
@@ -127,14 +129,28 @@ public function approveLeave(Request $request)
             ->lockForUpdate()
             ->first();
 
-        // Default values for leave balances (CL=0, SL=8, Credit=0)
+        // Default values for leave balances (CL=0, SL=1 day, Credit=0)
         $credit = $latest?->credit_leave ?? 0.0;
         $cl     = $latest?->casual_leave  ?? 0.0;
-        $sl     = $latest?->sick_leave    ?? 8.0;
+        $sl     = $latest?->sick_leave    ?? 1.0; // 1 day default
         $perm   = $latest?->permission    ?? 0.0;
 
-        // ---- Deduct in priority: Credit -> CL -> SL ----
-        $remaining = $takenHours;
+        // Check if this is permission or 15 min late (should not detect anything)
+        $isPermissionOrLate = ($leave->leave_type === 'Permission 1st Half' || $leave->leave_type === 'Permission 2nd Half' || $leave->leave_type === 'Late Entry/Exit 15 mins (1st Half)' || $leave->leave_type === 'Late Entry/Exit 15 mins (2nd Half)');
+        
+        // For permission and 15 min late, approve without any balance checking or deduction
+        if ($isPermissionOrLate) {
+            // Approve without any balance checking or deduction
+            $leave->l_status = 1;
+            $leave->save();
+            
+            return response()->json([
+                'message' => 'Permission/Late approved without any balance checking.',
+            ]);
+        }
+
+        // ---- Deduct in priority: Credit -> CL -> SL (for regular leaves) ----
+        $remaining = $takenDays;
 
         // **Step 1: Deduct from current month Credit Leave (if available)**
         $useCredit  = min($remaining, $credit);
@@ -158,7 +174,7 @@ public function approveLeave(Request $request)
         }
 
         // **Step 4: Leftover is Loss of Pay (LOP)**
-        $lopHours = max(0.0, $remaining);
+        $lopDays = max(0.0, $remaining);
 
         // Approve original leave
         $leave->l_status = 1;
@@ -168,12 +184,12 @@ public function approveLeave(Request $request)
         LeaveManagement::create([
             'user_ref_id'  => $userId,
             'date'         => Carbon::now()->format('Y-m-d'),
-            'taken_leave'  => $takenHours,
+            'taken_leave'  => $takenDays,
             'credit_leave' => $credit,  // remaining
             'casual_leave' => $cl,      // remaining
             'sick_leave'   => $sl,      // remaining
             'permission'   => $perm,
-            'l_status'     => $lopHours, // LOP hours
+            'l_status'     => $lopDays, // LOP days
             'l_isdeleted'  => 0,
         ]);
 
@@ -190,9 +206,9 @@ public function approveLeave(Request $request)
 
         // Optional: return a quick summary
         return response()->json([
-            'message' => $lopHours > 0 ? 'Leave approved (with LOP).' : 'Leave approved.',
-            'used_hours' => ['credit' => $useCredit, 'cl' => $useCL, 'sl' => $useSL, 'total' => $takenHours],
-            'balances_hours' => ['credit' => $credit, 'cl' => $cl, 'sl' => $sl, 'lop' => $lopHours],
+            'message' => $lopDays > 0 ? 'Leave approved (with LOP).' : 'Leave approved.',
+            'used_days' => ['credit' => $useCredit, 'cl' => $useCL, 'sl' => $useSL, 'total' => $takenDays],
+            'balances_days' => ['credit' => $credit, 'cl' => $cl, 'sl' => $sl, 'lop' => $lopDays],
         ]);
 
     } catch (\Throwable $e) {
@@ -372,9 +388,9 @@ public function getLeaveBalance(Request $request)
             users.username as user_name,
             SUM(leave_management.credit_leave) AS total_credit_leave,
             SUM(leave_management.taken_leave) AS total_taken_leave,
-            ROUND(SUM(leave_management.credit_leave) / 8, 1) AS credit_days,
-            ROUND(SUM(leave_management.taken_leave) / 8, 1) AS taken_days,
-            ROUND((SUM(leave_management.credit_leave) - SUM(leave_management.taken_leave)) / 8, 1) AS balance_days
+            ROUND(SUM(leave_management.credit_leave), 1) AS credit_days,
+            ROUND(SUM(leave_management.taken_leave), 1) AS taken_days,
+            ROUND((SUM(leave_management.credit_leave) - SUM(leave_management.taken_leave)), 1) AS balance_days
         ")
         ->where('leave_management.l_isdeleted', 0)
         ->where('users.id', Auth::id()) // 🔒 Authenticated user only
@@ -398,7 +414,7 @@ public function lmcreate()
     }
 
         $user = User::all(); 
-        return view('leave_Management.add', compact('user'));  
+        return view('Leave_Management.add', compact('user'));  
     }
 
     public function lmstore(Request $request)
@@ -410,55 +426,134 @@ public function lmcreate()
             ]);
         }
 
-        $lm = new LeaveManagement;
-        $lm->user_ref_id =  $request-> user_id;
-        $lm->credit_leave = $request->credit_leave;
-        $lm->taken_leave = 0;
-        $lm->l_status = 0;
-        $lm->l_isdeleted = 0;
-        $lm->date = date('Y-m-d');
-        $lm->save();
-
-        $notification = [
-            'message' => 'Leave Detail Stored Successfully',
-            'alert-type' => 'success'
-        ];
-
-    return redirect()->route('list.leave')->with($notification);
-}
-   public function fetchLeaveBalance(Request $request)
-    {
-        // Validate start_date and end_date
+        // Validate the request
         $request->validate([
-            'start_date' => 'required|date',
-            'end_date'   => 'required|date|after_or_equal:start_date',
+            'user_ids' => 'required|string',
+            'leave_type' => 'required|in:credit,casual,sick',
+            'leave_days' => 'required|integer|min:1|max:30',
+            'credit_date' => 'required|date'
         ]);
 
-        $start = $request->start_date;
-        $end   = $request->end_date;
+        $leaveType = $request->leave_type;
+        $leaveDays = (int) $request->leave_days;
+        $creditDate = $request->credit_date;
+        
+        // Parse comma-separated user IDs
+        $userIds = array_filter(explode(',', $request->user_ids));
+        
+        // Validate that all user IDs exist
+        $existingUserIds = User::whereIn('id', $userIds)->pluck('id')->toArray();
+        if (count($userIds) !== count($existingUserIds)) {
+            \Log::error('User validation failed:', [
+                'requested_ids' => $userIds,
+                'existing_ids' => $existingUserIds
+            ]);
+            $notification = [
+                'message' => 'One or more selected users do not exist.',
+                'alert-type' => 'error'
+            ];
+            return redirect()->route('add.leaveManagement')->with($notification);
+        }
 
-        // Get records within the range
-        $records = LeaveManagement::where('l_isdeleted', 0)
-            ->whereBetween('date', [$start, $end])
-            ->get()
-            ->groupBy('user_ref_id');
+        DB::beginTransaction();
+        try {
+            foreach ($userIds as $userId) {
+                // Get the latest leave balance for this user
+                $latestBalance = LeaveManagement::where('user_ref_id', $userId)
+                    ->orderByDesc('id')
+                    ->first();
 
-        $data = [];
+                // Initialize default values
+                $creditLeave = $latestBalance ? $latestBalance->credit_leave : 0;
+                $casualLeave = $latestBalance ? $latestBalance->casual_leave : 0;
+                $sickLeave = $latestBalance ? $latestBalance->sick_leave : 1; // Default 1 day SL
+                $permission = $latestBalance ? $latestBalance->permission : 0;
 
-        foreach ($records as $userId => $rows) {
-            $latest = $rows->sortByDesc('id')->first(); // latest row for this user
+                // Add the credited leave based on type
+                switch ($leaveType) {
+                    case 'credit':
+                        $creditLeave += $leaveDays;
+                        break;
+                    case 'casual':
+                        $casualLeave += $leaveDays;
+                        break;
+                    case 'sick':
+                        $sickLeave += $leaveDays;
+                        break;
+                }
 
-            $creditHours = (float)($latest->credit_leave ?? 0);
-            $creditDays  = round($creditHours / 8, 2); // 8 hrs = 1 day
+                // Create new leave management record
+                LeaveManagement::create([
+                    'user_ref_id' => $userId,
+                    'date' => $creditDate,
+                    'taken_leave' => 0,
+                    'credit_leave' => $creditLeave,
+                    'casual_leave' => $casualLeave,
+                    'sick_leave' => $sickLeave,
+                    'permission' => $permission,
+                    'l_status' => 0,
+                    'l_isdeleted' => 0,
+                ]);
+            }
 
-            $user = User::find($userId);
+            DB::commit();
 
-            $data[] = [
-                'user_id'      => $userId,
-                'user_name'    => $user?->email ?? $user?->name ?? 'Unknown',
-                'balance_days' => $creditDays,
+            $leaveTypeName = ucfirst($leaveType) . ($leaveType === 'casual' ? ' Leave (CL)' : ($leaveType === 'sick' ? ' Leave (SL)' : ' Leave'));
+            $notification = [
+                'message' => "Successfully credited {$leaveDays} day(s) of {$leaveTypeName} to " . count($userIds) . " user(s)",
+                'alert-type' => 'success'
+            ];
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Credit Leave Error: ' . $e->getMessage());
+            
+            $notification = [
+                'message' => 'Error occurred while crediting leave. Please try again.',
+                'alert-type' => 'error'
             ];
         }
+
+        return redirect()->route('add.leaveManagement')->with($notification);
+    }
+   public function fetchLeaveBalance(Request $request)
+    {
+        // Latest balance per user (current snapshot)
+        $latestPerUser = DB::table('leave_management as lm1')
+            ->selectRaw('MAX(lm1.id) as max_id')
+            ->where('lm1.l_isdeleted', 0)
+            ->groupBy('lm1.user_ref_id');
+
+        $rows = DB::table('leave_management as lm')
+            ->joinSub($latestPerUser, 't', function ($join) {
+                $join->on('lm.id', '=', 't.max_id');
+            })
+            ->join('users', 'users.id', '=', 'lm.user_ref_id')
+            ->selectRaw('
+                users.id   as user_id,
+                COALESCE(users.name, users.username, users.email) as user_name,
+                COALESCE(lm.credit_leave,0) as credit_days,
+                COALESCE(lm.casual_leave,0) as casual_days,
+                COALESCE(lm.sick_leave,0)   as sick_days
+            ')
+            ->orderBy('users.name')
+            ->get();
+
+        $data = $rows->map(function ($r) {
+            $creditDays = round($r->credit_hours, 2); // Already in days
+            $casualDays = round($r->casual_hours, 2); // Already in days
+            $sickDays   = round($r->sick_hours, 2);   // Already in days
+            $totalDays  = round($r->credit_hours + $r->casual_hours + $r->sick_hours, 2);
+
+            return [
+                'user_id'      => $r->user_id,
+                'user_name'    => $r->user_name,
+                'credit_days'  => $creditDays,
+                'casual_days'  => $casualDays,
+                'sick_days'    => $sickDays,
+                'total_days'   => $totalDays,
+            ];
+        });
 
         return response()->json([
             'status' => 'success',
@@ -495,7 +590,7 @@ public function showLeaveBalance(Request $request)
             MONTH(lm.date) as month,
             lm.casual_leave,
             lm.sick_leave,
-            ((lm.casual_leave + lm.sick_leave) / 8) as balance_leave
+            (lm.casual_leave + lm.sick_leave) as balance_leave
         ')
         ->when($request->filled('user_id'), function ($q) use ($request) {
             $q->where('users.id', $request->user_id);

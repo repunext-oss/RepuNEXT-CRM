@@ -9,7 +9,7 @@
     <p>Dear Abbas,</p>
 
     <p>
-        I am writing to inform you that I am taking leave for <strong>{{ intval($details['total_days']) / 8 }}</strong> day(s).
+        I am writing to inform you that I am taking leave for <strong>{{ $details['total_days'] }}</strong> day(s).
     </p>
 
     <p>
@@ -18,7 +18,7 @@
         <strong>Leave Type:</strong> {{ $details['leave_type'] }}<br>
         <strong>Start Date:</strong> {{ $details['start_date'] }}<br>
         <strong>End Date:</strong> {{ $details['end_date'] }}<br>
-        <strong>Total Days:</strong> {{ intval($details['total_days']) / 8 }} Days<br>
+        <strong>Total Days:</strong> {{ $details['total_days'] }} Days<br>
         <strong>Reason:</strong> {{ $details['reason'] }}
     </p>
 

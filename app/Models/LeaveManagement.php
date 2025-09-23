@@ -9,7 +9,7 @@ class LeaveManagement extends Model
 {
     use HasFactory;
     protected $table='leave_management';
-    protected $fillable = [     'user_ref_id',
+    protected $fillable = ['user_ref_id',
                                 'date',
                                 'taken_leave',
                                 'credit_leave', 

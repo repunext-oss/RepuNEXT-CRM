@@ -47,8 +47,8 @@
                 <td>{{ $row->user_name }}</td>
                 <td>{{ $row->year }}</td>
                 <td>{{ \Carbon\Carbon::create()->month($row->month)->format('F') }}</td>
-                <td>{{ number_format($row->casual_leave / 8, 1) }}</td>
-                <td>{{ number_format($row->sick_leave / 8, 1) }}</td>
+                <td>{{ number_format($row->casual_leave, 1) }}</td>
+                <td>{{ number_format($row->sick_leave, 1) }}</td>
                 <td class="fw-bold text-success">{{ number_format($row->balance_leave, 1) }}</td>
               </tr>
             @empty
@@ -60,8 +60,8 @@
           <tfoot>
             <tr class="table-secondary fw-bold">
               <td colspan="4">TOTAL</td>
-              <td>{{ number_format($balanceLeaves->sum('casual_leave')/8, 1) }}</td>
-              <td>{{ number_format($balanceLeaves->sum('sick_leave')/8, 1) }}</td>
+              <td>{{ number_format($balanceLeaves->sum('casual_leave'), 1) }}</td>
+              <td>{{ number_format($balanceLeaves->sum('sick_leave'), 1) }}</td>
               <td>{{ number_format($balanceLeaves->sum('balance_leave'), 1) }}</td>
             </tr>
           </tfoot>

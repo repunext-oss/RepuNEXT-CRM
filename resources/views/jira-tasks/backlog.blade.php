@@ -492,7 +492,7 @@
         --gradient-warning: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
         --gradient-info: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
         --gradient-secondary: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        --gradient-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        --gradient-dark: #4a4a6a;
         --gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         --gradient-theme: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
@@ -594,8 +594,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+        height: 2px; 
     }
     
     .table td {
@@ -690,13 +689,13 @@
     }
     
     .sprint-history-table thead th {
-        background: var(--gradient-dark);
+        background: #4a4a6a;
         color: white;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.85rem;
         letter-spacing: 0.5px;
-        padding: 1rem 0.75rem;
+        padding: 1rem 0.75rem 1rem 1.5rem;
         border: none;
         position: relative;
     }
@@ -707,16 +706,6 @@
     
     .sprint-history-table thead th:last-child {
         border-top-right-radius: 12px;
-    }
-    
-    .sprint-history-table thead th::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
     }
     
     .sprint-history-table tbody tr {

@@ -1972,7 +1972,7 @@
 }
 
 .sortable-column {
-    min-height: 400px !important;
+    min-height: 500px !important;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 

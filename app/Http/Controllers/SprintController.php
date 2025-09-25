@@ -35,19 +35,16 @@ class SprintController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
-            'status' => 'required|in:planning,active'
+            'end_date' => 'required|date|after:start_date'
         ]);
 
-        // Check if there's already an active sprint and user is trying to create another active sprint
-        if ($request->status === 'active') {
-            $activeSprint = Sprint::where('status', 'active')->first();
-            if ($activeSprint) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'There is already an active sprint. Please complete it before creating a new active sprint.'
-                ], 422);
-            }
+        // Check if there's already an active sprint
+        $activeSprint = Sprint::where('status', 'active')->first();
+        if ($activeSprint) {
+            return response()->json([
+                'success' => false,
+                'message' => 'There is already an active sprint. Please complete it before creating a new active sprint.'
+            ], 422);
         }
 
         $sprint = Sprint::create([
@@ -55,7 +52,7 @@ class SprintController extends Controller
             'description' => $request->description,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'status' => $request->status,
+            'status' => 'active', // Default status is active
             'is_active' => true
         ]);
 
@@ -107,7 +104,7 @@ class SprintController extends Controller
     }
 
     /**
-     * Complete a sprint and move incomplete tasks to backlog
+     * Complete a sprint - close done tasks and move incomplete tasks to backlog
      */
     public function complete($id)
     {
@@ -121,11 +118,19 @@ class SprintController extends Controller
         }
 
         DB::transaction(function () use ($sprint) {
-            // Move all incomplete tasks back to backlog
-            $incompleteTasks = $sprint->tasks()
-                ->whereIn('status', ['todo', 'in_progress', 'review'])
-                ->get();
+            // Get all tasks in the sprint
+            $allTasks = $sprint->tasks()->get();
+            $doneTasks = $allTasks->where('status', 'done');
+            $incompleteTasks = $allTasks->whereIn('status', ['todo', 'in_progress', 'review']);
 
+            // Close done tasks (mark as inactive/archived) but keep sprint_id for history
+            foreach ($doneTasks as $task) {
+                $task->is_active = false; // Close the task permanently
+                // Keep sprint_id to maintain sprint history
+                $task->save();
+            }
+
+            // Move incomplete tasks back to backlog and remove from sprint
             foreach ($incompleteTasks as $task) {
                 $task->status = 'backlog';
                 $task->sprint_id = null; // Remove from sprint
@@ -137,9 +142,13 @@ class SprintController extends Controller
             $sprint->save();
         });
 
+        // Count tasks after completion
+        $doneCount = $sprint->tasks()->where('is_active', false)->count();
+        $incompleteCount = $sprint->tasks()->where('is_active', true)->where('status', 'backlog')->count();
+
         return response()->json([
             'success' => true,
-            'message' => 'Sprint completed successfully! Incomplete tasks have been moved to backlog.',
+            'message' => "Sprint completed successfully! {$doneCount} completed tasks have been closed and {$incompleteCount} incomplete tasks moved to backlog.",
             'sprint' => $sprint
         ]);
     }
@@ -292,18 +301,43 @@ class SprintController extends Controller
         $sprint = Sprint::with(['tasks.assignee', 'tasks.reporter', 'tasks.project'])
             ->findOrFail($id);
 
-        // Get closed tickets (status = 'done')
-        $closedTickets = $sprint->tasks()
-            ->where('status', 'done')
-            ->with(['assignee', 'reporter', 'project'])
-            ->orderBy('moved_to_done_at', 'desc')
-            ->get();
+        // For completed sprints, include both active and inactive tasks to show complete history
+        // For active sprints, only show active tasks
+        $taskQuery = $sprint->tasks();
+        if ($sprint->status === 'completed') {
+            // Include all tasks (both active and inactive) for completed sprints
+            // Don't filter by is_active for completed sprints to show complete history
+        } else {
+            // Only show active tasks for active/planning sprints
+            $taskQuery = $taskQuery->where('is_active', true);
+        }
+
+        // Get closed tickets (status = 'done' or is_active = false for completed sprints)
+        $closedTickets = $taskQuery->where(function($query) use ($sprint) {
+            if ($sprint->status === 'completed') {
+                // For completed sprints, closed tasks are those with is_active = false
+                $query->where('is_active', false);
+            } else {
+                // For active sprints, closed tasks are those with status = 'done'
+                $query->where('status', 'done');
+            }
+        })
+        ->with(['assignee', 'reporter', 'project'])
+        ->orderBy('moved_to_done_at', 'desc')
+        ->get();
 
         // Get all tickets for statistics
-        $allTickets = $sprint->tasks()->get();
+        $allTickets = $taskQuery->get();
         $totalTickets = $allTickets->count();
         $closedTicketsCount = $closedTickets->count();
-        $incompleteTickets = $allTickets->where('status', '!=', 'done');
+        
+        // For completed sprints, incomplete tickets are those that were moved to backlog
+        // For active sprints, incomplete tickets are those not done
+        if ($sprint->status === 'completed') {
+            $incompleteTickets = $allTickets->where('is_active', true)->where('status', 'backlog');
+        } else {
+            $incompleteTickets = $allTickets->where('status', '!=', 'done');
+        }
 
         // Calculate statistics
         $completionRate = $totalTickets > 0 ? round(($closedTicketsCount / $totalTickets) * 100, 1) : 0;
@@ -332,19 +366,33 @@ class SprintController extends Controller
      */
     public function getAllSprints()
     {
-        $sprints = Sprint::withCount(['tasks as total_tasks', 'tasks as closed_tasks' => function($query) {
-            $query->where('status', 'done');
-        }])
-        ->with(['tasks' => function($query) {
-            $query->select('sprint_id', 'story_points', 'status');
+        $sprints = Sprint::with(['tasks' => function($query) {
+            $query->select('sprint_id', 'story_points', 'status', 'is_active');
         }])
         ->orderBy('created_at', 'desc')
         ->get();
 
         $sprintsWithStats = $sprints->map(function($sprint) {
-            $totalStoryPoints = $sprint->tasks->sum('story_points') ?? 0;
-            $completedStoryPoints = $sprint->tasks->where('status', 'done')->sum('story_points') ?? 0;
-            $completionRate = $sprint->total_tasks > 0 ? round(($sprint->closed_tasks / $sprint->total_tasks) * 100, 1) : 0;
+            // Get all tasks for this sprint
+            $allTasks = $sprint->tasks;
+            
+            // Calculate statistics based on sprint status
+            if ($sprint->status === 'completed') {
+                // For completed sprints: count all tasks, closed tasks are inactive
+                $totalTasks = $allTasks->count();
+                $closedTasks = $allTasks->where('is_active', false)->count();
+                $totalStoryPoints = $allTasks->sum('story_points') ?? 0;
+                $completedStoryPoints = $allTasks->where('is_active', false)->sum('story_points') ?? 0;
+            } else {
+                // For active sprints: count only active tasks, closed tasks are done
+                $activeTasks = $allTasks->where('is_active', true);
+                $totalTasks = $activeTasks->count();
+                $closedTasks = $activeTasks->where('status', 'done')->count();
+                $totalStoryPoints = $activeTasks->sum('story_points') ?? 0;
+                $completedStoryPoints = $activeTasks->where('status', 'done')->sum('story_points') ?? 0;
+            }
+            
+            $completionRate = $totalTasks > 0 ? round(($closedTasks / $totalTasks) * 100, 1) : 0;
 
             return [
                 'id' => $sprint->id,
@@ -354,8 +402,8 @@ class SprintController extends Controller
                 'end_date' => $sprint->end_date,
                 'status' => $sprint->status,
                 'status_text' => $sprint->status_text,
-                'total_tasks' => $sprint->total_tasks,
-                'closed_tasks' => $sprint->closed_tasks,
+                'total_tasks' => $totalTasks,
+                'closed_tasks' => $closedTasks,
                 'completion_rate' => $completionRate,
                 'total_story_points' => $totalStoryPoints,
                 'completed_story_points' => $completedStoryPoints,
@@ -377,8 +425,18 @@ class SprintController extends Controller
     {
         $sprint = Sprint::findOrFail($id);
 
+        // For completed sprints, closed tasks are those with is_active = false
+        // For active sprints, closed tasks are those with status = 'done'
         $closedTickets = $sprint->tasks()
-            ->where('status', 'done')
+            ->where(function($query) use ($sprint) {
+                if ($sprint->status === 'completed') {
+                    // For completed sprints, closed tasks are those with is_active = false
+                    $query->where('is_active', false);
+                } else {
+                    // For active sprints, closed tasks are those with status = 'done'
+                    $query->where('status', 'done');
+                }
+            })
             ->with(['assignee', 'reporter', 'project'])
             ->orderBy('moved_to_done_at', 'desc')
             ->get();

@@ -72,24 +72,41 @@ class Sprint extends Model
     // Get sprint progress percentage
     public function getProgressPercentage()
     {
-        $totalTasks = $this->tasks()->count();
+        // For completed sprints, count all tasks; for active sprints, count only active tasks
+        if ($this->status === 'completed') {
+            $totalTasks = $this->tasks()->count();
+            $completedTasks = $this->tasks()->where('is_active', false)->count();
+        } else {
+            $totalTasks = $this->tasks()->where('is_active', true)->count();
+            $completedTasks = $this->tasks()->where('is_active', true)->where('status', 'done')->count();
+        }
+        
         if ($totalTasks === 0) {
             return 0;
         }
         
-        $completedTasks = $this->tasks()->where('status', 'done')->count();
         return round(($completedTasks / $totalTasks) * 100, 1);
     }
 
     // Get total story points
     public function getTotalStoryPoints()
     {
-        return $this->tasks()->sum('story_points') ?? 0;
+        // For completed sprints, count all tasks; for active sprints, count only active tasks
+        if ($this->status === 'completed') {
+            return $this->tasks()->sum('story_points') ?? 0;
+        } else {
+            return $this->tasks()->where('is_active', true)->sum('story_points') ?? 0;
+        }
     }
 
     // Get completed story points
     public function getCompletedStoryPoints()
     {
-        return $this->tasks()->where('status', 'done')->sum('story_points') ?? 0;
+        // For completed sprints, completed tasks are inactive; for active sprints, completed tasks are done
+        if ($this->status === 'completed') {
+            return $this->tasks()->where('is_active', false)->sum('story_points') ?? 0;
+        } else {
+            return $this->tasks()->where('is_active', true)->where('status', 'done')->sum('story_points') ?? 0;
+        }
     }
 }

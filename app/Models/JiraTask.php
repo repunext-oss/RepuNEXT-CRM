@@ -44,6 +44,12 @@ class JiraTask extends Model
         'moved_to_done_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'status_text',
+        'priority_text',
+        'type_text'
+    ];
+
     // Relationships
     public function assignee(): BelongsTo
     {

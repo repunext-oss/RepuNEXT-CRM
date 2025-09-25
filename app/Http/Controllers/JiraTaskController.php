@@ -391,10 +391,16 @@ class JiraTaskController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
+        // Get sprint data for sprint management
+        $currentSprint = Sprint::where('status', 'active')->first();
+        $allSprints = Sprint::withCount('tasks')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $users = User::where('status', 0)->get();
         $projects = ProjectDetail::where('project_status', 0)->get();
 
-        return view('jira-tasks.backlog', compact('backlogTasks', 'todoTasks', 'users', 'projects'));
+        return view('jira-tasks.backlog', compact('backlogTasks', 'todoTasks', 'users', 'projects', 'currentSprint', 'allSprints'));
     }
 
     /**

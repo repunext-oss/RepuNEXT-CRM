@@ -1285,34 +1285,34 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Quick Analytics Bar -->
             <div class="row mt-4">
-                <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 12px;">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-lightning-charge text-primary me-2"></i>
-                            <span class="fw-semibold text-dark">Live Analytics</span>
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 12px;">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-lightning-charge text-primary me-2"></i>
+                        <span class="fw-semibold text-dark">Live Analytics</span>
+                    </div>
+                    <div class="d-flex gap-4">
+                        <div class="text-center">
+                            <div class="fw-bold text-primary">{{ $totalBookings }}</div>
+                            <small class="text-muted">Total Sessions</small>
                         </div>
-                        <div class="d-flex gap-4">
-                            <div class="text-center">
-                                <div class="fw-bold text-primary">{{ $totalBookings }}</div>
-                                <small class="text-muted">Total Sessions</small>
-                            </div>
-                            <div class="text-center">
-                                <div class="fw-bold text-success">{{ $activeAvailabilities }}</div>
-                                <small class="text-muted">Active Schedules</small>
-                            </div>
-                            <div class="text-center">
-                                <div class="fw-bold text-info">{{ $allUsers->count() }}</div>
-                                <small class="text-muted">Total Users</small>
-                            </div>
+                        <div class="text-center">
+                            <div class="fw-bold text-success">{{ $activeAvailabilities }}</div>
+                            <small class="text-muted">Active Schedules</small>
+                        </div>
+                        <div class="text-center">
+                            <div class="fw-bold text-info">{{ $allUsers->count() }}</div>
+                            <small class="text-muted">Total Users</small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        </div>
+        
+        <!-- Quick Analytics Bar -->
+        
         <div class="row">
             <div class="col-xl-4">
                 @php
@@ -1354,7 +1354,7 @@
 
                         <div class="d-flex align-items-center justify-content-center gap-5 text-start">
                             <div>
-                                <canvas id="goalStatusChart" width="140" height="140"></canvas>
+                                    <canvas id="goalStatusChart" width="140" height="140"></canvas>
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <div class="d-flex fw-semibold align-items-center mb-2">
@@ -2900,8 +2900,7 @@ function updateFinancialChartType(chartType) {
             easing: 'easeInOutQuart'
         }
     };
-    
-    // Adjust options based on chart type
+   
     if (chartType === 'doughnut') {
         chartOptions.cutout = '60%';
         chartOptions.plugins.legend.position = 'bottom';
@@ -2927,7 +2926,7 @@ function updateFinancialChartType(chartType) {
         };
     } else {
         chartOptions.scales = {
-            y:  {
+     l       y:  {
                 beginAtZero: true,
                 grid: {
                     color: 'rgba(0, 0, 0, 0.1)',

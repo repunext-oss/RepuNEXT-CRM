@@ -365,7 +365,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/ai/chat',  'send')->name('aichat.send');
     });
    Route::controller(InternController::class)->group(function(){
-        Route::get('/intern/list','index')->name('list.intern');
+        Route::get('/intern/list','index')->name('list.intern');       
         Route::post('/intern/store','store')->name('store.intern');    
         Route::post('/intern/update','update')->name('update.intern');     
         Route::get('/intern/edit/{id}','edit')->name('edit.intern');
@@ -406,16 +406,6 @@ Route::middleware(['auth'])->group(function () {
          Route::post('/availability/{id}/toggle', 'toggleStatus')->name('availability.toggle');
      }); 
  
-     Route::controller(InternController::class)->group(function(){
-      
-        Route::get('/karthik','create')->name('add.intern');  
-        Route::post('/intern/store','store')->name('store.intern');    
-        Route::post('/intern/update','update')->name('update.intern');     
-        Route::get('/intern/edit/{id}','edit')->name('edit.intern');
-        Route::get('/intern/view/{id}','show')->name('view.intern'); 
-        Route::post('/intern/destroy/{id}','destroy')->name('destroy.intern'); 
-        Route::post('/intern/status','status')->name('status.intern');
-    });
 
     // Jira Tasks Routes
     Route::controller(JiraTaskController::class)->group(function(){
@@ -435,4 +425,6 @@ Route::middleware(['auth'])->group(function () {
     });
  
 });
+
 require __DIR__.'/auth.php';
+Route::get('/Karthik',[InternController::class,'create'])->name('add.intern');

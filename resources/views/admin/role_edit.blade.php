@@ -574,8 +574,265 @@
 												</div>
 											</td>
 										</tr>   
-
+										
+										<!-- Chat Management -->
+										 <tr>
+											<td class="text-gray-800">Chat Management</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="chat_all" name="chat_all" @if(in_array("chat_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="chat_read" name="chat_read" @if(in_array("chat_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="chat_write" name="chat_write" @if(in_array("chat_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="chat_create" name="chat_create" @if(in_array("chat_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="chat_delete" name="chat_delete" @if(in_array("chat_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
 										</tr>
+										
+										<!-- sale Management -->
+										 <tr>
+											<td class="text-gray-800">Sale Management</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="sale_all" name="sale_all" @if(in_array("sale_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="sale_read" name="sale_read" @if(in_array("sale_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="sale_write" name="sale_write" @if(in_array("sale_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="sale_create" name="sale_create" @if(in_array("sale_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="sale_delete" name="sale_delete" @if(in_array("sale_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+
+										<!-- Studio Booking -->
+										 <tr>
+											<td class="text-gray-800">Studio Booking</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="studio_booking_all" name="studio_booking_all" @if(in_array("studio_booking_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="studio_booking_read" name="studio_booking_read" @if(in_array("studio_booking_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="studio_booking_write" name="studio_booking_write" @if(in_array("studio_booking_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="studio_booking_create" name="studio_booking_create" @if(in_array("studio_booking_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="studio_booking_delete" name="studio_booking_delete" @if(in_array("studio_booking_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+
+										<!-- Person Availability -->
+										 <tr>
+											<td class="text-gray-800">Studio Booking</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="person_availability_all" name="person_availability_all" @if(in_array("person_availability_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="person_availability_read" name="person_availability_read" @if(in_array("person_availability_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="person_availability_write" name="person_availability_write" @if(in_array("person_availability_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="person_availability_create" name="person_availability_create" @if(in_array("person_availability_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="person_availability_delete" name="person_availability_delete" @if(in_array("person_availability_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+										<!-- Revenue Expense -->
+										<tr>
+											<td class="text-gray-800">Revenue Expense</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="revenue_expense_all" name="revenue_expense_all" @if(in_array("revenue_expense_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="revenue_expense_read" name="revenue_expense_read" @if(in_array("revenue_expense_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="revenue_expense_write" name="revenue_expense_write" @if(in_array("revenue_expense_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="revenue_expense_create" name="revenue_expense_create" @if(in_array("revenue_expense_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="revenue_expense_delete" name="revenue_expense_delete" @if(in_array("revenue_expense_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+
+										<!-- Repunext Board -->
+										 <tr>
+											<td class="text-gray-800">RepuNEXT Board</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="repunext_board_all" name="repunext_board_all" @if(in_array("repunext_board_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="repunext_board_read" name="repunext_board_read" @if(in_array("repunext_board_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="repunext_board_write" name="repunext_board_write" @if(in_array("repunext_board_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="repunext_board_create" name="repunext_board_create" @if(in_array("repunext_board_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="repunext_board_delete" name="repunext_board_delete" @if(in_array("repunext_board_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+
+										<!-- Backlog -->
+										 <tr>
+											<td class="text-gray-800">Backlog</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="backlog_all" name="backlog_all" @if(in_array("backlog_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="backlog_read" name="backlog_read" @if(in_array("backlog_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="backlog_write" name="backlog_write" @if(in_array("backlog_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="backlog_create" name="backlog_create" @if(in_array("backlog_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="backlog_delete" name="backlog_delete" @if(in_array("backlog_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+										<!-- ai Management -->
+										<tr>
+											<td class="text-gray-800">Ai Management</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="ai_all" name="ai_all" @if(in_array("ai_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="ai_read" name="ai_read" @if(in_array("ai_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="ai_write" name="ai_write" @if(in_array("ai_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="ai_create" name="ai_create" @if(in_array("ai_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="ai_delete" name="ai_delete" @if(in_array("ai_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+										<!-- host Management -->
+										 <tr>
+											<td class="text-gray-800">Host Management</td>
+											<td>
+												<div class="d-flex justify-content-between w-100">
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="host_all" name="host_all" @if(in_array("host_all",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">All</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="host_read" name="host_read" @if(in_array("host_read",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Read</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="host_write" name="host_write" @if(in_array("host_write",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Write</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="host_create" name="host_create" @if(in_array("host_create",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Create</span>
+													</label>
+													<label class="form-check form-check-sm form-check-custom form-check-solid">
+														<input class="form-check-input" type="checkbox" value="host_delete" name="host_delete" @if(in_array("host_delete",$editrole, TRUE)) checked @endif/>
+														<span class="form-check-label">Delete</span>
+													</label>
+												</div>
+											</td>
+										</tr>
+
 										</tbody>
 									</table> 
 								</div> 

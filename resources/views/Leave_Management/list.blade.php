@@ -150,7 +150,7 @@
 						</div> 
 						<div id="kt_ecommerce_report_views_export" class="d-none"></div> 
 					</div> 
-					@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("leave_create",$rolerawdata, TRUE) || in_array("leave_write",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
+					@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("leave_create",$rolerawdata, TRUE) || in_array("leave_",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
 					<div class="card-toolbar flex-row-fluid justify-content-end gap-5"> 
 						<button type="button" class="btn btn-light-primary st-drop" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 							<span class="svg-icon svg-icon-2">

@@ -401,8 +401,12 @@
 																<i class="fa fa-eye"></i>view
 															</a>
 															@endif
+															@if(in_array("leave_all",$rolerawdata, TRUE)||in_array("leave_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 															 <a href="{{ route('edit.leave', $repns->id) }}" class="btn btn-sm btn-info" style="border-radius: 100px; padding: 8px;"><i class="fa fa-edit"></i></a>
-															<a href="#" onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-sm btn-danger" style="border-radius: 100px; padding: 8px;"><i class="fa fa-trash"></i></a> 
+															@endif
+															@if(in_array("leave_all",$rolerawdata, TRUE)||in_array("leave_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+															<a href="#" onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-sm btn-danger" style="border-radius: 100px; padding: 8px;"><i class="fa fa-trash"></i></a>
+															@endif
 													 	</td>
 													</tr>
 												@endif
@@ -488,33 +492,35 @@
 
 												
 												<td id="l_status-{{ $repns->id }}" class="status" style="display: none;">{{ $repns->l_status }}</td>
-												<td>
-													@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
+												<td class="d-flex justify-content-around">
+												@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
 													<!-- Approve Button -->
-													 <button class="approve-btn btn btn-success btn-sm"
+													<button class="approve-btn btn btn-success btn-sm"
 															data-id="{{ $repns->name }}"
 															data-leave-id="{{ $repns->id }}"
 															id="approve-btn-{{ $repns->id }}"
 															data-totaldays="{{ $repns->totaldays }}">
 														Approve
 													</button>
-													@endif
+												@endif
 
-													@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
+												@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
 													<button class="reject-btn btn btn-danger btn-sm"
 															id="reject-btn-{{ $repns->id }}"
 															data-leave-id="{{ $repns->id }}"
 															data-user-id="{{ $repns->name }}">
 														Reject
 													</button>
-													@endif
-													@if(in_array("leave_all",$rolerawdata, TRUE)||in_array("leave_read",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+												@endif
+
+												@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("leave_read",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
 													<!-- View Button -->
-													<a href="{{ route('view.leave', $repns->id) }}" class="btn btn-sm " style="background-color: #002244; color:white; text-transform: none;">
-														<i class="fa fa-eye"></i>view
+													<a href="{{ route('view.leave', $repns->id) }}" class="btn btn-sm" style="background-color: #002244; color:white; text-transform: none;">
+														<i class="fa fa-eye"></i> view
 													</a>
-													@endif
-												</td>
+												@endif
+											</td>
+
 											</tr>
 											@endif
 										@endforeach
@@ -613,6 +619,18 @@
 													Approve
 												</button>
 												@endif
+															@if(in_array("leave_all",$rolerawdata, TRUE)||in_array("leave_read",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+															<a href="{{ route('view.leave', $repns->id) }}" class="btn btn-sm " style="background-color: #002244; color:white; text-transform: none;">
+																<i class="fa fa-eye"></i>view
+															</a>
+															@endif
+															@if(in_array("leave_all",$rolerawdata, TRUE)||in_array("leave_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+															 <a href="{{ route('edit.leave', $repns->id) }}" class="btn btn-sm btn-info" style="border-radius: 100px; padding: 8px;"><i class="fa fa-edit"></i></a>
+															@endif
+															@if(in_array("leave_all",$rolerawdata, TRUE)||in_array("leave_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+															<a href="#" onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-sm btn-danger" style="border-radius: 100px; padding: 8px;"><i class="fa fa-trash"></i></a>
+															@endif
+													 	
 												</td>
 											</tr>
 											@endif

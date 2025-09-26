@@ -78,10 +78,9 @@
 
 				<!-- Man Icon -->
 				@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("leave_read",$rolerawdata, TRUE) || in_array("leave_write",$rolerawdata, TRUE) || in_array("leave_create",$rolerawdata, TRUE) || in_array("leave_delete",$rolerawdata, TRUE) ||
-				in_array("goalsheet_category_all",$rolerawdata, TRUE) || in_array("goalsheet_category_read",$rolerawdata, TRUE) || in_array("goalsheet_category_write",$rolerawdata, TRUE) || in_array("goalsheet_category_create",$rolerawdata, TRUE) || in_array("goalsheet_category_delete",$rolerawdata, TRUE) ||
 				in_array("goalsheet_all",$rolerawdata, TRUE) || in_array("goalsheet_read",$rolerawdata, TRUE) || in_array("goalsheet_write",$rolerawdata, TRUE) || in_array("goalsheet_create",$rolerawdata, TRUE) || in_array("goalsheet_delete",$rolerawdata, TRUE) ||		
 				in_array("timesheet_category_all",$rolerawdata, TRUE) || in_array("timesheet_category_read",$rolerawdata, TRUE) || in_array("timesheet_category_write",$rolerawdata, TRUE) || in_array("timesheet_category_create",$rolerawdata, TRUE) || in_array("timesheet_category_delete",$rolerawdata, TRUE)||
-				in_array("timesheet_all",$rolerawdata, TRUE) || in_array("timesheet_read",$rolerawdata, TRUE) || in_array("timesheet_write",$rolerawdata, TRUE) || in_array("timesheet_create",$rolerawdata, TRUE) || in_array("timesheet_all_delete",$rolerawdata, TRUE)||
+				in_array("chat_all",$rolerawdata, TRUE) || in_array("chat_read",$rolerawdata, TRUE) || in_array("chat_write",$rolerawdata, TRUE) || in_array("chat_create",$rolerawdata, TRUE) || in_array("chat_all_delete",$rolerawdata, TRUE)||
 				in_array("tvideo_all",$rolerawdata, TRUE) || in_array("tvideo_read",$rolerawdata, TRUE) || in_array("tvideo_write",$rolerawdata, TRUE) || in_array("tvideo_create",$rolerawdata, TRUE) || in_array("tvideo_delete",$rolerawdata, TRUE)||
 				in_array("cvideo_all",$rolerawdata, TRUE) || in_array("cvideo_read",$rolerawdata, TRUE) || in_array("cvideo_write",$rolerawdata, TRUE) || in_array("cvideo_create",$rolerawdata, TRUE) || in_array("cvideo_delete",$rolerawdata, TRUE)||
 				in_array("kt_roles_select_all",$rolerawdata, TRUE))
@@ -91,6 +90,7 @@
 							<i class="bi bi-person-lines-fill fs-1"></i> <!-- Person with Lines (Text) -->
 						</span>
 					</span>
+					<!-- leave management -->
 					<div class="menu-sub menu-sub-dropdown menu-sub-indention px-2 py-4 w-250px" style="">
 						@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("leave_read",$rolerawdata, TRUE) ||in_array("leave_write",$rolerawdata, TRUE) || in_array("leave_create",$rolerawdata, TRUE) || in_array("leave_delete",$rolerawdata, TRUE) ||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 						<div class="menu-item">
@@ -98,6 +98,8 @@
 								<span class="menu-section fs-5 fw-bolder ps-1 py-1">Leave Managment</span>
 							</div>
 						</div>
+						
+						@if(in_array("leave_all",$rolerawdata, TRUE) || in_array("leave_read",$rolerawdata, TRUE) ||in_array("leave_write",$rolerawdata, TRUE) || in_array("leave_create",$rolerawdata, TRUE) || in_array("leave_delete",$rolerawdata, TRUE) ||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 						<div class="menu-sub menu-sub-accordion">
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('list.leave')}}">
@@ -109,12 +111,12 @@
 							</div> 
 						</div>
 						@endif
-						@if(in_array("goalsheet_category_all",$rolerawdata, TRUE) || in_array("goalsheet_category_read",$rolerawdata, TRUE) ||
-						in_array("goalsheet_category_write",$rolerawdata, TRUE) || in_array("goalsheet_category_create",$rolerawdata, TRUE) || in_array("goalsheet_category_delete",$rolerawdata, TRUE) ||
-						in_array("goalsheet_all",$rolerawdata, TRUE) || in_array("goalsheet_read",$rolerawdata, TRUE) ||
+						@endif
+						<!-- Goal Task Managment -->
+						
+						@if(in_array("goalsheet_all",$rolerawdata, TRUE) || in_array("goalsheet_read",$rolerawdata, TRUE) ||
 						in_array("goalsheet_write",$rolerawdata, TRUE) || in_array("goalsheet_create",$rolerawdata, TRUE) || in_array("goalsheet_delete",$rolerawdata, TRUE) ||
 						in_array("kt_roles_select_all",$rolerawdata, TRUE))
-						
 						<div class="menu-item">
 							<div class="menu-content">
 								<span class="menu-section fs-5 fw-bolder ps-1 py-1">Goal Task Managment</span>
@@ -135,17 +137,16 @@
 						@endif
 						@endif
 						
-						
-						@if(in_array("timesheet_category_all",$rolerawdata, TRUE) || in_array("timesheet_category_read",$rolerawdata, TRUE) || in_array("timesheet_category_delete",$rolerawdata, TRUE) ||
-						in_array("timesheet_category_write",$rolerawdata, TRUE) || in_array("timesheet_category_create",$rolerawdata, TRUE)||
-						in_array("timesheet_all",$rolerawdata, TRUE) || in_array("timesheet_read",$rolerawdata, TRUE) || in_array("timesheet_delete",$rolerawdata, TRUE) ||
+						<!-- Time Managment -->
+						@if(in_array("timesheet_all",$rolerawdata, TRUE) || in_array("timesheet_read",$rolerawdata, TRUE) || in_array("timesheet_delete",$rolerawdata, TRUE) ||
 						in_array("timesheet_write",$rolerawdata, TRUE) || in_array("timesheet_create",$rolerawdata, TRUE)||
 						in_array("kt_roles_select_all",$rolerawdata, TRUE))
 						<div class="menu-item">
 							<div class="menu-content">
 								<span class="menu-section fs-5 fw-bolder ps-1 py-1">Time Managment</span>
 							</div>
-						</div> 
+						</div>
+						
 						@if(in_array("timesheet_all",$rolerawdata, TRUE) || in_array("timesheet_read",$rolerawdata, TRUE) || in_array("timesheet_delete",$rolerawdata, TRUE) ||
 						in_array("timesheet_write",$rolerawdata, TRUE) || in_array("timesheet_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
@@ -158,11 +159,18 @@
 							</div>
 						@endif
 						@endif
+
+						<!-- Chat Management -->
+						@if(in_array("chat_all",$rolerawdata, TRUE) || in_array("chat_read",$rolerawdata, TRUE) || in_array("chat_delete",$rolerawdata, TRUE) ||
+						in_array("chat_write",$rolerawdata, TRUE) || in_array("chat_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE)) 
 						<div class="menu-item">
 							<div class="menu-content">
 								<span class="menu-section fs-5 fw-bolder ps-1 py-1">Chat Managment</span>
 							</div>
 						</div>
+						
+						@if(in_array("chat_all",$rolerawdata, TRUE) || in_array("chat_read",$rolerawdata, TRUE) || in_array("chat_delete",$rolerawdata, TRUE) ||
+						in_array("chat_write",$rolerawdata, TRUE) || in_array("chat_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE)) 
 						<div class="menu-item">
 							<a class="menu-link" href="{{route('list.chatapp')}}">
 								<span class="menu-bullet">
@@ -171,6 +179,8 @@
 								<span class="menu-title">Chat List</span>
 							</a>
 						</div>
+						@endif
+						@endif
 						<!-- Knowledge Management -->
 						@if(in_array("tvideo_all",$rolerawdata, TRUE) || in_array("tvideo_read",$rolerawdata, TRUE) || in_array("tvideo_delete",$rolerawdata, TRUE) ||
 						in_array("tvideo_write",$rolerawdata, TRUE) || in_array("tvideo_create",$rolerawdata, TRUE) ||
@@ -217,6 +227,12 @@
 				<!-- Project Management -->
 				@if(in_array("project_all",$rolerawdata, TRUE) || in_array("project_read",$rolerawdata, TRUE) || in_array("project_delete",$rolerawdata, TRUE) || in_array("project_write",$rolerawdata, TRUE) || in_array("project_create",$rolerawdata, TRUE) ||
 				in_array("service_all",$rolerawdata, TRUE) || in_array("service_read",$rolerawdata, TRUE) || in_array("service_delete",$rolerawdata, TRUE) || in_array("service_write",$rolerawdata, TRUE) || in_array("service_create",$rolerawdata, TRUE)||
+				in_array("sale_all",$rolerawdata, TRUE) || in_array("sale_read",$rolerawdata, TRUE) || in_array("sale_delete",$rolerawdata, TRUE) || in_array("sale_write",$rolerawdata, TRUE) || in_array("sale_create",$rolerawdata, TRUE)||
+				in_array("studio_booking_all",$rolerawdata, TRUE) || in_array("studio_booking_read",$rolerawdata, TRUE) || in_array("studio_booking_delete",$rolerawdata, TRUE) || in_array("studio_booking_write",$rolerawdata, TRUE) || in_array("studio_booking_create",$rolerawdata, TRUE)||
+				in_array("person_availability_all",$rolerawdata, TRUE) || in_array("person_availability_read",$rolerawdata, TRUE) || in_array("person_availability_delete",$rolerawdata, TRUE) || in_array("person_availability_write",$rolerawdata, TRUE) || in_array("person_availability_create",$rolerawdata, TRUE)||
+				in_array("revenue_expense_all",$rolerawdata, TRUE) || in_array("revenue_expense_read",$rolerawdata, TRUE) || in_array("revenue_expense_delete",$rolerawdata, TRUE) || in_array("revenue_expense_write",$rolerawdata, TRUE) || in_array("revenue_expense_create",$rolerawdata, TRUE)||
+				in_array("repunext_board_all",$rolerawdata, TRUE) || in_array("repunext_board_read",$rolerawdata, TRUE) || in_array("repunext_board_delete",$rolerawdata, TRUE) || in_array("repunext_board_write",$rolerawdata, TRUE) || in_array("repunext_board_create",$rolerawdata, TRUE)||
+				in_array("backlog_all",$rolerawdata, TRUE) || in_array("backlog_read",$rolerawdata, TRUE) || in_array("backlog_delete",$rolerawdata, TRUE) || in_array("backlog_write",$rolerawdata, TRUE) || in_array("backlog_create",$rolerawdata, TRUE)||
 				in_array("kt_roles_select_all",$rolerawdata, TRUE))
 				<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item py-2">
 					<span class="menu-link menu-center">
@@ -253,6 +269,8 @@
 								</a>
 							</div>
 						@endif
+							@if(in_array("sale_all",$rolerawdata, TRUE) || in_array("sale_read",$rolerawdata, TRUE) || in_array("sale_delete",$rolerawdata, TRUE) ||
+							in_array("sale_write",$rolerawdata, TRUE) || in_array("sale_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('list.salesorder')}}">
 									<span class="menu-bullet">
@@ -261,6 +279,9 @@
 									<span class="menu-title">Sale List</span>
 								</a>
 							</div>
+							@endif
+							@if(in_array("Studio_booking_all",$rolerawdata, TRUE) || in_array("Studio_booking_read",$rolerawdata, TRUE) || in_array("Studio_booking_delete",$rolerawdata, TRUE) ||
+							in_array("Studio_booking_write",$rolerawdata, TRUE) || in_array("Studio_booking_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('booking.index')}}">
 									<span class="menu-bullet">
@@ -269,6 +290,9 @@
 									<span class="menu-title">Studio Booking</span>
 								</a>
 							</div>
+							@endif
+							@if(in_array("person_availability_all",$rolerawdata, TRUE) || in_array("person_availability_read",$rolerawdata, TRUE) || in_array("person_availability_delete",$rolerawdata, TRUE) ||
+							in_array("person_availability_write",$rolerawdata, TRUE) || in_array("person_availability_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('availability.index')}}">
 									<span class="menu-bullet">
@@ -277,6 +301,8 @@
 									<span class="menu-title">Person Availability</span>
 								</a>
 							</div>
+							@endif
+							@if(in_array("revenue_expense_all",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('revenue-expense.index')}}">
 									<span class="menu-bullet">
@@ -285,6 +311,9 @@
 									<span class="menu-title">Revenue & Expense</span>
 								</a>
 							</div>
+							@endif
+							@if(in_array("repunext_board_all",$rolerawdata, TRUE) || in_array("repunext_board_read",$rolerawdata, TRUE) || in_array("repunext_board_delete",$rolerawdata, TRUE) ||
+							in_array("repunext_board_write",$rolerawdata, TRUE) || in_array("repunext_board_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('jira-tasks.board')}}">
 									<span class="menu-bullet">
@@ -293,6 +322,9 @@
 									<span class="menu-title">Repunext Board</span>
 								</a>
 							</div>
+							@endif
+							@if(in_array("backlog_all",$rolerawdata, TRUE) || in_array("backlog_read",$rolerawdata, TRUE) || in_array("backlog_delete",$rolerawdata, TRUE) ||
+							in_array("backlog_write",$rolerawdata, TRUE) || in_array("backlog_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('jira-tasks.backlog')}}">
 									<span class="menu-bullet">
@@ -301,12 +333,15 @@
 									<span class="menu-title">Backlog</span>
 								</a>
 							</div>
-							
+							@endif
 					</div>
 				</div>
 				@endif
 			 
-				@if(in_array("tool_all",$rolerawdata, TRUE) || in_array("tool_read",$rolerawdata, TRUE) || in_array("tool_delete",$rolerawdata, TRUE) || in_array("tool_write",$rolerawdata, TRUE) || in_array("tool_create",$rolerawdata, TRUE)||
+				@if(in_array("ai_all",$rolerawdata, TRUE) || in_array("ai_read",$rolerawdata, TRUE) || in_array("ai_delete",$rolerawdata, TRUE) || in_array("ai_write",$rolerawdata, TRUE) || in_array("ai_create",$rolerawdata, TRUE)||
+				in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_read",$rolerawdata, TRUE)|| in_array("domain_delete",$rolerawdata, TRUE) || in_array("domain_write",$rolerawdata, TRUE) || in_array("domain_create",$rolerawdata, TRUE)||
+				in_array("subdomain_all",$rolerawdata, TRUE) || in_array("subdomain_read",$rolerawdata, TRUE)|| in_array("subdomain_delete",$rolerawdata, TRUE) || in_array("subdomain_write",$rolerawdata, TRUE) || in_array("subdomain_create",$rolerawdata, TRUE)||
+				in_array("host_all",$rolerawdata, TRUE) || in_array("host_read",$rolerawdata, TRUE)|| in_array("host_delete",$rolerawdata, TRUE) || in_array("host_write",$rolerawdata, TRUE) || in_array("host_create",$rolerawdata, TRUE)||
 				in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_read",$rolerawdata, TRUE)|| in_array("toolc_delete",$rolerawdata, TRUE) || in_array("toolc_write",$rolerawdata, TRUE) || in_array("toolc_create",$rolerawdata, TRUE)||
 				in_array("sm_all",$rolerawdata, TRUE) || in_array("sm_read",$rolerawdata, TRUE) || in_array("sm_write",$rolerawdata, TRUE) || in_array("sm_create",$rolerawdata, TRUE) || in_array("sm_delete",$rolerawdata, TRUE) ||
 				in_array("kt_roles_select_all",$rolerawdata, TRUE)) 
@@ -316,15 +351,20 @@
 							<i class="bi bi-tools fs-1"></i>
 						</span>
 					</span>
+
+					<!-- Ai Management -->
 					<div class="menu-sub menu-sub-dropdown menu-sub-indention px-2 py-4 w-250px" style="">
-						@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_read",$rolerawdata, TRUE)|| in_array("toolc_delete",$rolerawdata, TRUE)||
-						in_array("toolc_write",$rolerawdata, TRUE) || in_array("toolc_create",$rolerawdata, TRUE)||
-						in_array("kt_roles_select_all",$rolerawdata, TRUE))
+							@if(in_array("ai_all",$rolerawdata, TRUE) || in_array("ai_read",$rolerawdata, TRUE)|| in_array("ai_delete",$rolerawdata, TRUE)||
+							in_array("ai_write",$rolerawdata, TRUE) || in_array("ai_create",$rolerawdata, TRUE)||
+							in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<div class="menu-content">
 									<span class="menu-section fs-5 fw-bolder ps-1 py-1">AI Managment</span>
 								</div>
 							</div>
+							@if(in_array("ai_all",$rolerawdata, TRUE) || in_array("ai_read",$rolerawdata, TRUE)|| in_array("ai_delete",$rolerawdata, TRUE)||
+							in_array("ai_write",$rolerawdata, TRUE) || in_array("ai_create",$rolerawdata, TRUE)||
+							in_array("kt_roles_select_all",$rolerawdata, TRUE))
 								<div class="menu-item">
 									<a class="menu-link" href="{{route('aichat.index')}}">
 										<span class="menu-bullet">
@@ -333,11 +373,19 @@
 										<span class="menu-title">Repunext AI</span>
 									</a>
 								</div>
+							@endif
+							@endif
+
+							<!-- Tools management -->
+							@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_read",$rolerawdata, TRUE)|| in_array("toolc_delete",$rolerawdata, TRUE)||
+							in_array("toolc_write",$rolerawdata, TRUE) || in_array("toolc_create",$rolerawdata, TRUE)||
+							in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<div class="menu-content">
 									<span class="menu-section fs-5 fw-bolder ps-1 py-1">Tools Managment</span>
 								</div>
-							</div>  
+							</div>
+							
 							@if(in_array("toolc_all",$rolerawdata, TRUE) || in_array("toolc_read",$rolerawdata, TRUE)|| in_array("toolc_delete",$rolerawdata, TRUE)||
 							in_array("toolc_write",$rolerawdata, TRUE) || in_array("toolc_create",$rolerawdata, TRUE)||
 							in_array("kt_roles_select_all",$rolerawdata, TRUE)) 
@@ -349,8 +397,10 @@
 										<span class="menu-title">Tools & Login Credentials</span>
 									</a>
 								</div>
-							@endif 
-						@endif 
+							@endif
+							@endif
+
+						 	<!-- Social Media Management -->
 							@if(in_array("sm_all",$rolerawdata, TRUE) || in_array("sm_read",$rolerawdata, TRUE) || in_array("sm_delete",$rolerawdata, TRUE) ||
 							in_array("sm_write",$rolerawdata, TRUE) || in_array("sm_create",$rolerawdata, TRUE)||
 							in_array("kt_roles_select_all",$rolerawdata, TRUE)) 
@@ -359,6 +409,9 @@
 									<span class="menu-section fs-5 fw-bolder ps-1 py-1">Social Media Managment</span>
 								</div>
 							</div>
+							@if(in_array("sm_all",$rolerawdata, TRUE) || in_array("sm_read",$rolerawdata, TRUE) || in_array("sm_delete",$rolerawdata, TRUE) ||
+							in_array("sm_write",$rolerawdata, TRUE) || in_array("sm_create",$rolerawdata, TRUE)||
+							in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('list.smedia')}}">
 									<span class="menu-bullet">
@@ -368,13 +421,23 @@
 								</a>
 							</div>
 							@endif
+							@endif
+
+							<!-- Domain management -->
+							@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_read",$rolerawdata, TRUE) || in_array("domain_delete",$rolerawdata, TRUE) ||
+							in_array("domain_write",$rolerawdata, TRUE) || in_array("domain_create",$rolerawdata, TRUE) ||
+							in_array("subdomain_all",$rolerawdata, TRUE) || in_array("subdomain_read",$rolerawdata, TRUE) || in_array("subdomain_delete",$rolerawdata, TRUE) ||
+							in_array("subdomain_write",$rolerawdata, TRUE) || in_array("subdomain_create",$rolerawdata, TRUE) ||
+							in_array("host_all",$rolerawdata, TRUE) || in_array("host_read",$rolerawdata, TRUE) || in_array("host_delete",$rolerawdata, TRUE) ||
+							in_array("host_write",$rolerawdata, TRUE) || in_array("host_create",$rolerawdata, TRUE) ||
+							in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 							<div class="menu-content">
 								<span class="menu-section fs-5 fw-bolder ps-1 py-1">Domain Managment</span>
 							</div>
-						</div>  
-						@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_read",$rolerawdata, TRUE) || in_array("domain_delete",$rolerawdata, TRUE) ||
-						in_array("domain_write",$rolerawdata, TRUE) || in_array("domain_create",$rolerawdata, TRUE) ||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+							</div>  
+							@if(in_array("domain_all",$rolerawdata, TRUE) || in_array("domain_read",$rolerawdata, TRUE) || in_array("domain_delete",$rolerawdata, TRUE) ||
+							in_array("domain_write",$rolerawdata, TRUE) || in_array("domain_create",$rolerawdata, TRUE) ||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('list.ddetail')}}">
 									<span class="menu-bullet">
@@ -383,9 +446,9 @@
 									<span class="menu-title">Domain List</span>
 								</a>
 							</div>
-						@endif 
-						@if(in_array("subdomain_all",$rolerawdata, TRUE) || in_array("subdomain_read",$rolerawdata, TRUE) || in_array("subdomain_delete",$rolerawdata, TRUE) ||
-						in_array("subdomain_write",$rolerawdata, TRUE) || in_array("subdomain_create",$rolerawdata, TRUE) ||in_array("kt_roles_select_all",$rolerawdata, TRUE))
+							@endif 
+							@if(in_array("subdomain_all",$rolerawdata, TRUE) || in_array("subdomain_read",$rolerawdata, TRUE) || in_array("subdomain_delete",$rolerawdata, TRUE) ||
+							in_array("subdomain_write",$rolerawdata, TRUE) || in_array("subdomain_create",$rolerawdata, TRUE) ||in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('list.sddetail')}}">
 									<span class="menu-bullet">
@@ -394,9 +457,9 @@
 									<span class="menu-title">SubDomain List</span>
 								</a>
 							</div>
-						@endif 
-						@if(in_array("host_all",$rolerawdata, TRUE) || in_array("host_read",$rolerawdata, TRUE) || in_array("host_delete",$rolerawdata, TRUE) ||
-						in_array("host_write",$rolerawdata, TRUE) || in_array("host_create",$rolerawdata, TRUE) ||	in_array("kt_roles_select_all",$rolerawdata, TRUE))
+							@endif 
+							@if(in_array("host_all",$rolerawdata, TRUE) || in_array("host_read",$rolerawdata, TRUE) || in_array("host_delete",$rolerawdata, TRUE) ||
+							in_array("host_write",$rolerawdata, TRUE) || in_array("host_create",$rolerawdata, TRUE) ||	in_array("kt_roles_select_all",$rolerawdata, TRUE))
 							<div class="menu-item">
 								<a class="menu-link" href="{{route('list.hdetail')}}">
 									<span class="menu-bullet">
@@ -405,7 +468,8 @@
 									<span class="menu-title">Hosting List</span>
 								</a>
 							</div>
-						@endif
+							@endif
+							@endif
 					</div>
 				</div>
 				@endif 

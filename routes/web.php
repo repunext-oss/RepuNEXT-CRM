@@ -6,7 +6,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\EmailnotificationController;
 use App\Http\Controllers\StateController; 
 use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\CallCenterController;
+
 use App\Http\Controllers\MasterController; 
 use App\Http\Controllers\InventoryController;  
 use App\Http\Controllers\StorageController;  
@@ -85,15 +85,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/list/employee','userlist')->name('list.employee');
     });
 
-    Route::controller(CallCenterController::class)->group(function(){
-        Route::get('/callcenter','index')->name('callcenter.callcenter');
-        Route::get('/callcenter/add','add')->name('callcenter.add');
-        Route::post('/callcenter/store','store')->name('callcenter.store');
-        Route::put('/callcenter/update','update')->name('callcenter.update');
-        Route::get('/callcenter/edit/{id}','edit')->name('callcenter.edit');
-        Route::get('/callcenter/view/{id}','show')->name('callcenter.view'); 
-        Route::post('/callcenter/destroy/{id}','destroy')->name('callcenter.delete'); 
-    });
 
     Route::controller(WebsitecredentialController::class)->group(function(){
         Route::get('/websitecredentials','index')->name('website.main');

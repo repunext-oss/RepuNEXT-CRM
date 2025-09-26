@@ -14,18 +14,34 @@ class AvailabilityController extends Controller
     /**
      * Display a listing of availabilities
      */
-    public function index()
-    {
-        $availabilities = Availability::with('user')
-            ->where('is_active', true)
-            ->orderBy('user_id')
-            ->orderBy('day_of_week')
-            ->get();
+public function index()
+{
+    // Fetch availabilities with user details
+    $availabilities = Availability::with('user')
+        ->where('is_active', true)
+        ->orderBy('user_id')
+        ->orderBy('day_of_week')
+        ->get();
 
-        $users = User::where('status', 0)->get();
+    // Fetch users with status 0 (example)
+    $users = User::where('status', 0)->get();
 
-        return view('admin.availability.index', compact('availabilities', 'users'));
+    // Initialize $rolerawdata as an empty array to avoid errors if the user is not logged in
+    $rolerawdata = [];
+
+    // Check if the user is authenticated
+    if (auth()->check()) {
+        // Fetch roles from the authenticated user (if any)
+        // Ensure that the 'roles' relationship is defined on the User model
+        if (auth()->user()->roles) {
+            $rolerawdata = auth()->user()->roles->pluck('name')->toArray(); // Assuming roles is a relationship
+        }
     }
+
+    // Pass data to the view
+    return view('admin.availability.index', compact('availabilities', 'users', 'rolerawdata'));
+}
+
 
     /**
      * Show the form for creating a new availability

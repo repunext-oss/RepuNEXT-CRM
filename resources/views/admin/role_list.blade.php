@@ -152,6 +152,7 @@
 
 								<!-- Leave Management -->
 								 <!-- Apply Leave -->
+
 								 @if(in_array("leave_read",$rolelists, TRUE)||in_array("leave_write",$rolelists, TRUE)||in_array("leave_create",$rolelists, TRUE)||in_array("leave_delete",$rolelists, TRUE)||in_array("leave_all",$rolelists, TRUE))
 								<div class="d-flex align-items-center py-2">
 										<span class="bullet bg-primary me-3"></span>
@@ -583,28 +584,203 @@
 								</div>
 								@endif
 
-								<!-- Goal And Time Management -->
-
-								<!-- @if(in_array("cvideo_read",$rolelists, TRUE)||in_array("cvideo_write",$rolelists, TRUE)||in_array("cvideo_create",$rolelists, TRUE)||in_array("cvideo_delete",$rolelists, TRUE)||in_array("cvideo_all",$rolelists, TRUE))
+								<!-- Chat Management -->
+								@if(in_array("chat_read",$rolelists, TRUE)||in_array("chat_write",$rolelists, TRUE)||in_array("chat_create",$rolelists, TRUE)||in_array("chat_delete",$rolelists, TRUE)||in_array("chat_all",$rolelists, TRUE))
 								<div class="d-flex align-items-center py-2">
 										<span class="bullet bg-primary me-3"></span>
-									@if(in_array("cvideo_all",$rolelists, TRUE))
-									Corporate Video All,
+									@if(in_array("chat_all",$rolelists, TRUE))
+									Chat All,
 									@endif
-									@if(in_array("cvideo_read",$rolelists, TRUE))
-									Corporate Video Read,
+									@if(in_array("chat_read",$rolelists, TRUE))
+									Chat Read,
 									@endif
-									@if(in_array("cvideo_write",$rolelists, TRUE))
-									Corporate Video Write,
+									@if(in_array("chat_write",$rolelists, TRUE))
+									Chat Write,
 									@endif
-									@if(in_array("cvideo_create",$rolelists, TRUE))
-									Corporate Video Create,
+									@if(in_array("chat_create",$rolelists, TRUE))
+									Chat Create,
 									@endif
-									@if(in_array("cvideo_create",$rolelists, TRUE))
-									Corporate Video Delete,
+									@if(in_array("chat_create",$rolelists, TRUE))
+									Chat Delete,
 									@endif
 								</div>
-								@endif -->
+								@endif
+
+
+								<!-- Sale Management -->
+								@if(in_array("sale_read",$rolelists, TRUE)||in_array("sale_write",$rolelists, TRUE)||in_array("sale_create",$rolelists, TRUE)||in_array("sale_delete",$rolelists, TRUE)||in_array("sale_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("sale_all",$rolelists, TRUE))
+									Sale All,
+									@endif
+									@if(in_array("sale_read",$rolelists, TRUE))
+									Sale Read,
+									@endif
+									@if(in_array("sale_write",$rolelists, TRUE))
+									Sale Write,
+									@endif
+									@if(in_array("sale_create",$rolelists, TRUE))
+									Sale Create,
+									@endif
+									@if(in_array("sale_delete",$rolelists, TRUE))
+									Sale Delete,
+									@endif
+								</div>
+								@endif
+
+								<!-- Studio Booking -->
+								 @if(in_array("studio_booking_read",$rolelists, TRUE)||in_array("studio_booking_write",$rolelists, TRUE)||in_array("studio_booking_create",$rolelists, TRUE)||in_array("studio_booking_delete",$rolelists, TRUE)||in_array("studio_booking_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("studio_booking_all",$rolelists, TRUE))
+									Studio Booking All,
+									@endif
+									@if(in_array("studio_booking_read",$rolelists, TRUE))
+									Studio Booking Read,
+									@endif
+									@if(in_array("studio_booking_write",$rolelists, TRUE))
+									Studio Booking Write,
+									@endif
+									@if(in_array("studio_booking_create",$rolelists, TRUE))
+									Studio Booking Create,
+									@endif
+									@if(in_array("studio_booking_create",$rolelists, TRUE))
+									Studio Booking Delete,
+									@endif
+								</div>
+								@endif
+
+								<!-- Person Availability -->
+								 @if(in_array("person_availability_read",$rolelists, TRUE)||in_array("person_availability_write",$rolelists, TRUE)||in_array("person_availability_create",$rolelists, TRUE)||in_array("person_availability_delete",$rolelists, TRUE)||in_array("person_availability_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("person_availability_all",$rolelists, TRUE))
+									Person Availability All,
+									@endif
+									@if(in_array("person_availability_read",$rolelists, TRUE))
+									Person Availability Read,
+									@endif
+									@if(in_array("person_availability_write",$rolelists, TRUE))
+									Person Availability Write,
+									@endif
+									@if(in_array("person_availability_create",$rolelists, TRUE))
+									Person Availability Create,
+									@endif
+									@if(in_array("person_availability_create",$rolelists, TRUE))
+									Person Availability Delete,
+									@endif
+								</div>
+								@endif
+
+								<!-- Revenue Expense -->
+								 @if(in_array("revenue_expense_read",$rolelists, TRUE)||in_array("revenue_expense_write",$rolelists, TRUE)||in_array("revenue_expense_create",$rolelists, TRUE)||in_array("revenue_expense_delete",$rolelists, TRUE)||in_array("revenue_expense_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("revenue_expense_all",$rolelists, TRUE))
+									Chat All,
+									@endif
+									@if(in_array("revenue_expense_read",$rolelists, TRUE))
+									Chat Read,
+									@endif
+									@if(in_array("revenue_expense_write",$rolelists, TRUE))
+									Chat Write,
+									@endif
+									@if(in_array("revenue_expense_create",$rolelists, TRUE))
+									Chat Create,
+									@endif
+									@if(in_array("revenue_expense_create",$rolelists, TRUE))
+									Chat Delete,
+									@endif
+								</div>
+								@endif
+
+								<!-- Repunext Board -->
+								 @if(in_array("repunext_board_read",$rolelists, TRUE)||in_array("repunext_board_write",$rolelists, TRUE)||in_array("repunext_board_create",$rolelists, TRUE)||in_array("repunext_board_delete",$rolelists, TRUE)||in_array("repunext_board_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("repunext_board_all",$rolelists, TRUE))
+									RepuNEXT Board All,
+									@endif
+									@if(in_array("repunext_board_read",$rolelists, TRUE))
+									RepuNEXT Board Read,
+									@endif
+									@if(in_array("repunext_board_write",$rolelists, TRUE))
+									RepuNEXT Board Write,
+									@endif
+									@if(in_array("repunext_board_create",$rolelists, TRUE))
+									RepuNEXT Board Create,
+									@endif
+									@if(in_array("repunext_board_create",$rolelists, TRUE))
+									RepuNEXT Board Delete,
+									@endif
+								</div>
+								@endif
+
+								<!-- Backlog -->
+								 @if(in_array("backlog_read",$rolelists, TRUE)||in_array("backlog_write",$rolelists, TRUE)||in_array("backlog_create",$rolelists, TRUE)||in_array("backlog_delete",$rolelists, TRUE)||in_array("backlog_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("backlog_all",$rolelists, TRUE))
+									Backlog All,
+									@endif
+									@if(in_array("backlog_read",$rolelists, TRUE))
+									Backlog Read,
+									@endif
+									@if(in_array("backlog_write",$rolelists, TRUE))
+									Backlog Write,
+									@endif
+									@if(in_array("backlog_create",$rolelists, TRUE))
+									Backlog Create,
+									@endif
+									@if(in_array("backlog_create",$rolelists, TRUE))
+									Backlog Delete,
+									@endif
+								</div>
+								@endif
+							<!-- ai Management -->
+							 @if(in_array("ai_read",$rolelists, TRUE)||in_array("ai_write",$rolelists, TRUE)||in_array("ai_create",$rolelists, TRUE)||in_array("ai_delete",$rolelists, TRUE)||in_array("ai_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("ai_all",$rolelists, TRUE))
+									Ai All,
+									@endif
+									@if(in_array("ai_read",$rolelists, TRUE))
+									Ai Read,
+									@endif
+									@if(in_array("ai_write",$rolelists, TRUE))
+									Ai Write,
+									@endif
+									@if(in_array("ai_create",$rolelists, TRUE))
+									Ai Create,
+									@endif
+									@if(in_array("ai_create",$rolelists, TRUE))
+									Ai Delete,
+									@endif
+								</div>
+								@endif
+							 <!-- host Management -->
+							  @if(in_array("hots_read",$rolelists, TRUE)||in_array("hots_write",$rolelists, TRUE)||in_array("hots_create",$rolelists, TRUE)||in_array("hots_delete",$rolelists, TRUE)||in_array("hots_all",$rolelists, TRUE))
+								<div class="d-flex align-items-center py-2">
+										<span class="bullet bg-primary me-3"></span>
+									@if(in_array("hots_all",$rolelists, TRUE))
+									host All,
+									@endif
+									@if(in_array("host_read",$rolelists, TRUE))
+									host Read,
+									@endif
+									@if(in_array("host_write",$rolelists, TRUE))
+									host Write,
+									@endif
+									@if(in_array("host_create",$rolelists, TRUE))
+									host Create,
+									@endif
+									@if(in_array("host_create",$rolelists, TRUE))
+									host Delete,
+									@endif
+								</div>
+								@endif
+
 							</div>
 						</div> 
 						<div class="card-footer flex-wrap pt-0">
@@ -1290,19 +1466,19 @@
 													<input class="form-check-input" type="checkbox" value="tool_domain_type_all" id="tool_domain_type_all" name="tool_domain_type_all" />
 													<span class="form-check-label" for="tool_domain_type_all">All</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tool_domain_type_read" name="tool_domain_type_read" />
 													<span class="form-check-label">Read</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tool_domain_type_write" name="tool_domain_type_write" />
 													<span class="form-check-label">Write</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tool_domain_type_create" name="tool_domain_type_create" />
 													<span class="form-check-label">Create</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tool_domain_type_delete" name="tool_domain_type_delete" />
 													<span class="form-check-label">Delete</span>
 												</label>
@@ -1319,19 +1495,19 @@
 													<input class="form-check-input" type="checkbox" value="tvideo_all" id="tvideo_all" name="tvideo_all" />
 													<span class="form-check-label" for="tvideo_all">All</span>
 												</label>
-												<label class="form-check form-check-tvideo form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tvideo_read" name="tvideo_read" />
 													<span class="form-check-label">Read</span>
 												</label>
-												<label class="form-check form-check-tvideo form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tvideo_write" name="tvideo_write" />
 													<span class="form-check-label">Write</span>
 												</label>
-												<label class="form-check form-check-tvideo form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tvideo_create" name="tvideo_create" />
 													<span class="form-check-label">Create</span>
 												</label>
-												<label class="form-check form-check-tvideo form-check-custom form-check-solid flex-grow-1 text-center">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
 													<input class="form-check-input" type="checkbox" value="tvideo_delete" name="tvideo_delete" />
 													<span class="form-check-label">Delete</span>
 												</label>
@@ -1347,28 +1523,288 @@
 										<td> 
 											<div class="d-flex justify-content-between w-100">
 												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
-													<input class="form-check-input" type="checkbox" value="tool_domain_type_all" id="tool_domain_type_all" name="tool_domain_type_all" />
-													<span class="form-check-label" for="tool_domain_type_all">All</span>
+													<input class="form-check-input" type="checkbox" value="cvideo_all" id="cvideo_all" name="cvideo_all" />
+													<span class="form-check-label" for="cvideo_all">All</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
-													<input class="form-check-input" type="checkbox" value="tool_domain_type_read" name="tool_domain_type_read" />
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="cvideo_read" name="cvideo_read" />
 													<span class="form-check-label">Read</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
-													<input class="form-check-input" type="checkbox" value="tool_domain_type_write" name="tool_domain_type_write" />
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="cvideo_write" name="cvideo_write" />
 													<span class="form-check-label">Write</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
-													<input class="form-check-input" type="checkbox" value="tool_domain_type_create" name="tool_domain_type_create" />
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="cvideo_create" name="cvideo_create" />
 													<span class="form-check-label">Create</span>
 												</label>
-												<label class="form-check form-check-tool_domain_type form-check-custom form-check-solid flex-grow-1 text-center">
-													<input class="form-check-input" type="checkbox" value="tool_domain_type_delete" name="tool_domain_type_delete" />
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="cvideo_delete" name="cvideo_delete" />
 													<span class="form-check-label">Delete</span>
 												</label>
 											</div>
 										</td>
-									</tr>	
+									</tr>
+									<!-- Chat Management -->
+									 <tr>
+										<td class="text-gray-800">Chat Management</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="chat_all" id="chat_all" name="chat_all" />
+													<span class="form-check-label" for="chat_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="chat_read" name="chat_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="chat_write" name="chat_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="chat_create" name="chat_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="chat_delete" name="chat_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+									
+								<!-- sale Management -->
+								 <tr>
+										<td class="text-gray-800">Sale Management</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="sale_all" id="sale_all" name="sale_all" />
+													<span class="form-check-label" for="sale_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="sale_read" name="sale_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="sale_write" name="sale_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="sale_create" name="sale_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="sale_delete" name="sale_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- Studio Booking -->
+								 <tr>
+										<td class="text-gray-800">Studio Booking</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="studio_booking_all" id="studio_booking_all" name="studio_booking_all" />
+													<span class="form-check-label" for="studio_booking_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="studio_booking_read" name="studio_booking_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="studio_booking_write" name="studio_booking_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="studio_booking_create" name="studio_booking_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="studio_booking_delete" name="studio_booking_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- Person Availability -->
+								 <tr>
+										<td class="text-gray-800">Person Availability</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="person_availability_all" id="person_availability_all" name="person_availability_all" />
+													<span class="form-check-label" for="person_availability_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="person_availability_read" name="person_availability_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="person_availability_write" name="person_availability_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="person_availability_create" name="person_availability_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="person_availability_delete" name="person_availability_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- Revenue Expense -->
+								 <tr>
+										<td class="text-gray-800">Revenue Expense</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="revenue_expense_all" id="revenue_expense_all" name="revenue_expense_all" />
+													<span class="form-check-label" for="revenue_expense_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="revenue_expense_read" name="revenue_expense_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="revenue_expense_write" name="revenue_expense_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="revenue_expense_create" name="revenue_expense_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="revenue_expense_delete" name="revenue_expense_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- Repunext Board -->
+								 <tr>
+										<td class="text-gray-800">Repunext Board</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="repunext_board_all" id="repunext_board_all" name="repunext_board_all" />
+													<span class="form-check-label" for="repunext_board_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="repunext_board_read" name="repunext_board_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="repunext_board_write" name="repunext_board_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="repunext_board_create" name="repunext_board_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="repunext_board_delete" name="repunext_board_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- Backlog -->
+								 <tr>
+										<td class="text-gray-800">Backlog</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="backlog_all" id="backlog_all" name="backlog_all" />
+													<span class="form-check-label" for="backlog_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="backlog_read" name="backlog_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="backlog_write" name="backlog_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="backlog_create" name="backlog_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="backlog_delete" name="backlog_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- ai Management -->
+								 <tr>
+										<td class="text-gray-800">Ai Management</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="ai_all" id="ai_all" name="ai_all" />
+													<span class="form-check-label" for="ai_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="ai_read" name="ai_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="ai_write" name="ai_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="ai_create" name="ai_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="ai_delete" name="ai_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
+
+								<!-- host Management -->
+								 <tr>
+										<td class="text-gray-800">Host Management</td>
+										<td> 
+											<div class="d-flex justify-content-between w-100">
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="host_all" id="host_all" name="host_all" />
+													<span class="form-check-label" for="host_all">All</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="host_read" name="host_read" />
+													<span class="form-check-label">Read</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="host_write" name="host_write" />
+													<span class="form-check-label">Write</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="host_create" name="host_create" />
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="form-check form-check-sm form-check-custom form-check-solid flex-grow-1 text-center">
+													<input class="form-check-input" type="checkbox" value="host_delete" name="host_delete" />
+													<span class="form-check-label">Delete</span>
+												</label>
+											</div>
+										</td>
+									</tr>
 								</tbody>
 								</table>
 							</div>

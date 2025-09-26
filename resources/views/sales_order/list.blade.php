@@ -19,6 +19,7 @@
                             <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Sales /  Order
                         </span>
                     </h3>
+                    @if(in_array("sale_all",$rolerawdata, TRUE) || in_array("sale_create",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                         <a href="{{ route('add.salesorder') }}">
                             <button type="button" class="btn btn-primary">
@@ -29,6 +30,7 @@
                             </button>
                         </a>
                     </div>
+                    @endif
                 </div>
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0">
                     <div class="card-title">
@@ -39,6 +41,7 @@
                             <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search SalesOrder">
                         </div>
                     </div>
+                    @if(in_array("sale_all",$rolerawdata, TRUE) || in_array("sale_create",$rolerawdata, TRUE) || in_array("sale_write",$rolerawdata, TRUE)  || in_array("sale_read",$rolerawdata, TRUE) || in_array("kt_roles_select_all",$rolerawdata, TRUE))
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
                         <button type="button" class="btn btn-light-primary st-drop" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                             <span class="svg-icon svg-icon-2">
@@ -61,6 +64,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
                 
                 <div class="card-body pt-0"> 
@@ -80,6 +84,7 @@
                         </thead>
                         <tbody>
                             @foreach($repn as $repns)
+
                             <tr>
                             <td class="w-8px pe-2"> </td>
                                 <td>{{ $repns->id }}</td>
@@ -94,18 +99,25 @@
                                 </td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        @if(in_array("sale_all",$rolerawdata, TRUE)||in_array("sale_read",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
                                         <a href="{{ route('view.salesorder', $repns->id) }}" class="btn btn-warning btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
                                             <i class="fa fa-eye" style="margin-left: 3px;"></i>
                                         </a>
+                                        @endif
+                                        @if(in_array("sale_all",$rolerawdata, TRUE)||in_array("sale_write",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
                                         <a href="{{ route('preview.salesorder', $repns->id) }}" class="btn btn-primary btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
                                             <i class="fa fa-file-alt" style="margin-left: 3px;"></i>
                                         </a>
+                                        @endif
+                                        @if(in_array("sale_all",$rolerawdata, TRUE)||in_array("sale_delete",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
                                         <button onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
                                             <i class="fa fa-trash" style="margin-left: 3px;"></i>
                                         </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
+                   
                             @endforeach
                         </tbody>
                     </table>

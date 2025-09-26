@@ -351,6 +351,60 @@ class AdminController extends Controller
             $cvideo_create=trim($request->cvideo_create);
             $cvideo_delete=trim($request->cvideo_delete);
 
+            $chat_all=trim($request->chat_all);
+            $chat_read=trim($request->chat_read);
+            $chat_write=trim($request->chat_write);
+            $chat_create=trim($request->chat_create);
+            $chat_delete=trim($request->chat_delete);
+
+            $sale_all=trim($request->sale_all);
+            $sale_read=trim($request->sale_read);
+            $sale_write=trim($request->sale_write);
+            $sale_create=trim($request->sale_create);
+            $sale_delete=trim($request->sale_delete);
+            
+            $studio_booking_all=trim($request->studio_booking_all);
+            $studio_booking_read=trim($request->studio_booking_read);
+            $studio_booking_write=trim($request->studio_booking_write);
+            $studio_booking_create=trim($request->studio_booking_create);
+            $studio_booking_delete=trim($request->studio_booking_delete);
+
+            $person_availability_all=trim($request->person_availability_all);
+            $person_availability_read=trim($request->person_availability_read);
+            $person_availability_write=trim($request->person_availability_write);
+            $person_availability_create=trim($request->person_availability_create);
+            $person_availability_delete=trim($request->person_availability_delete);
+
+            $revenue_expense_all=trim($request->revenue_expense_all);
+            $revenue_expense_read=trim($request->revenue_expense_read);
+            $revenue_expense_write=trim($request->revenue_expense_write);
+            $revenue_expense_create=trim($request->revenue_expense_create);
+            $revenue_expense_delete=trim($request->revenue_expense_delete);
+
+            $repunext_board_all=trim($request->repunext_board_all);
+            $repunext_board_read=trim($request->repunext_board_read);
+            $repunext_board_write=trim($request->repunext_board_write);
+            $repunext_board_create=trim($request->repunext_board_create);
+            $repunext_board_delete=trim($request->repunext_board_delete);
+
+            $backlog_all=trim($request->backlog_all);
+            $backlog_read=trim($request->backlog_read);
+            $backlog_write=trim($request->backlog_write);
+            $backlog_create=trim($request->backlog_create);
+            $backlog_delete=trim($request->backlog_delete);
+
+            $ai_all=trim($request->ai_all);
+            $ai_read=trim($request->ai_read);
+            $ai_write=trim($request->ai_write);
+            $ai_create=trim($request->ai_create);
+            $ai_delete=trim($request->ai_delete);
+
+            $host_all=trim($request->host_all);
+            $host_read=trim($request->host_read);
+            $host_write=trim($request->host_write);
+            $host_create=trim($request->host_create);
+            $host_delete=trim($request->host_delete);
+
 
             $data = array(
                 'user_management_all' => $user_management_all,
@@ -485,6 +539,60 @@ class AdminController extends Controller
                 'cvideo_write' => $cvideo_write,
                 'cvideo_create' => $cvideo_create,
                 'cvideo_delete' => $cvideo_delete,
+
+                'chat_all' => $chat_all,
+                'chat_read' => $chat_read,
+                'chat_write' => $chat_write,
+                'chat_create' => $chat_create,
+                'chat_delete' => $chat_delete,
+                
+                'sale_all' => $sale_all,
+                'sale_read' => $sale_read,
+                'sale_write' => $sale_write,
+                'sale_create' => $sale_create,
+                'sale_delete' => $sale_delete,
+
+                'studio_booking_all' => $studio_booking_all,
+                'studio_booking_read' => $studio_booking_read,
+                'studio_booking_write' => $studio_booking_write,
+                'studio_booking_create' => $studio_booking_create,
+                'studio_booking_delete' => $studio_booking_delete,
+
+                'person_availability_all' => $person_availability_all,
+                'person_availability_read' => $person_availability_read,
+                'person_availability_write' => $person_availability_write,
+                'person_availability_create' => $person_availability_create,
+                'person_availability_delete' => $person_availability_delete,
+
+                'revenue_expense_all' => $revenue_expense_all,
+                'revenue_expense_read' => $revenue_expense_read,
+                'revenue_expense_write' => $revenue_expense_write,
+                'revenue_expense_create' => $revenue_expense_create,
+                'revenue_expense_delete' => $revenue_expense_delete,
+
+                'repunext_board_all' => $repunext_board_all,
+                'repunext_board_read' => $repunext_board_read,
+                'repunext_board_write' => $repunext_board_write,
+                'repunext_board_create' => $repunext_board_create,
+                'repunext_board_delete' => $repunext_board_delete,
+
+                'backlog_all' => $backlog_all,
+                'backlog_read' => $backlog_read,
+                'backlog_write' => $backlog_write,
+                'backlog_create' => $backlog_create,
+                'backlog_delete' => $backlog_delete,
+
+                 'ai_all' => $ai_all,
+                'ai_read' => $ai_read,
+                'ai_write' => $ai_write,
+                'ai_create' => $ai_create,
+                'ai_delete' => $ai_delete,
+
+                'host_all' => $host_all,
+                'host_read' => $host_read,
+                'host_write' => $host_write,
+                'host_create' => $host_create,
+                'host_delete' => $host_delete,
 
               );
             $input =implode(",", $data);
@@ -642,6 +750,62 @@ class AdminController extends Controller
             $cvideo_create=trim($request->cvideo_create);
             $cvideo_delete=trim($request->cvideo_delete);
 
+            $chat_all=trim($request->chat_all);
+            $chat_read=trim($request->chat_read);
+            $chat_write=trim($request->chat_write);
+            $chat_create=trim($request->chat_create);
+            $chat_delete=trim($request->chat_delete);
+
+            $sale_all=trim($request->sale_all);
+            $sale_read=trim($request->sale_read);
+            $sale_write=trim($request->sale_write);
+            $sale_create=trim($request->sale_create);
+            $sale_delete=trim($request->sale_delete);
+
+            $studio_booking_all=trim($request->studio_booking_all);
+            $studio_booking_read=trim($request->studio_booking_read);
+            $studio_booking_write=trim($request->studio_booking_write);
+            $studio_booking_create=trim($request->studio_booking_create);
+            $studio_booking_delete=trim($request->studio_booking_delete);
+
+            $person_availability_all=trim($request->person_availability_all);
+            $person_availability_read=trim($request->person_availability_read);
+            $person_availability_write=trim($request->person_availability_write);
+            $person_availability_create=trim($request->person_availability_create);
+            $person_availability_delete=trim($request->person_availability_delete);
+
+            $revenue_expense_all=trim($request->revenue_expense_all);
+            $revenue_expense_read=trim($request->revenue_expense_read);
+            $revenue_expense_write=trim($request->revenue_expense_write);
+            $revenue_expense_create=trim($request->revenue_expense_create);
+            $revenue_expense_delete=trim($request->revenue_expense_delete);
+
+            $repunext_board_all=trim($request->repunext_board_all);
+            $repunext_board_read=trim($request->repunext_board_read);
+            $repunext_board_write=trim($request->repunext_board_write);
+            $repunext_board_create=trim($request->repunext_board_create);
+            $repunext_board_delete=trim($request->repunext_board_delete);
+
+            $backlog_all=trim($request->backlog_all);
+            $backlog_read=trim($request->backlog_read);
+            $backlog_write=trim($request->backlog_write);
+            $backlog_create=trim($request->backlog_create);
+            $backlog_delete=trim($request->backlog_delete);
+
+            $ai_all=trim($request->ai_all);
+            $ai_read=trim($request->ai_read);
+            $ai_write=trim($request->ai_write);
+            $ai_create=trim($request->ai_create);
+            $ai_delete=trim($request->ai_delete);
+
+            $host_all=trim($request->host_all);
+            $host_read=trim($request->host_read);
+            $host_write=trim($request->host_write);
+            $host_create=trim($request->host_create);
+            $host_delete=trim($request->host_delete);
+
+
+
             $data = array(
 
                 'user_management_all' => $user_management_all,
@@ -777,6 +941,61 @@ class AdminController extends Controller
                 'cvideo_write' => $cvideo_write,
                 'cvideo_create' => $cvideo_create,
                 'cvideo_delete' => $cvideo_delete,
+
+                'chat_all' => $chat_all,
+                'chat_read' => $chat_read,
+                'chat_write' => $chat_write,
+                'chat_create' => $chat_create,
+                'chat_delete' => $chat_delete,
+
+                'sale_all' => $sale_all,
+                'sale_read' => $sale_read,
+                'sale_write' => $sale_write,
+                'sale_create' => $sale_create,
+                'sale_delete' => $sale_delete,
+
+                'studio_booking_all' => $studio_booking_all,
+                'studio_booking_read' => $studio_booking_read,
+                'studio_booking_write' => $studio_booking_write,
+                'studio_booking_create' => $studio_booking_create,
+                'studio_booking_delete' => $studio_booking_delete,
+
+                'person_availability_all' => $person_availability_all,
+                'person_availability_read' => $person_availability_read,
+                'person_availability_write' => $person_availability_write,
+                'person_availability_create' => $person_availability_create,
+                'person_availability_delete' => $person_availability_delete,
+
+                'revenue_expense_all' => $revenue_expense_all,
+                'revenue_expense_read' => $revenue_expense_read,
+                'revenue_expense_write' => $revenue_expense_write,
+                'revenue_expense_create' => $revenue_expense_create,
+                'revenue_expense_delete' => $revenue_expense_delete,
+
+                'repunext_board_all' => $repunext_board_all,
+                'repunext_board_read' => $repunext_board_read,
+                'repunext_board_write' => $repunext_board_write,
+                'repunext_board_create' => $repunext_board_create,
+                'repunext_board_delete' => $repunext_board_delete,
+
+                'backlog_all' => $backlog_all,
+                'backlog_read' => $backlog_read,
+                'backlog_write' => $backlog_write,
+                'backlog_create' => $backlog_create,
+                'backlog_delete' => $backlog_delete,
+
+                'ai_all' => $ai_all,
+                'ai_read' => $ai_read,
+                'ai_write' => $ai_write,
+                'ai_create' => $ai_create,
+                'ai_delete' => $ai_delete,
+
+                'host_all' => $host_all,
+                'host_read' => $host_read,
+                'host_write' => $host_write,
+                'host_create' => $host_create,
+                'host_delete' => $host_delete,
+
               );
             $input =implode(",", $data);
         }

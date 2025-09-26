@@ -191,17 +191,21 @@
                 <h1 class="fw-bold text-dark mb-2">👥 Person Availability Management</h1>
                 <p class="text-muted">Manage and schedule person availability timings</p>
             </div>
+            @if(in_array("person_availability_all",$rolerawdata, TRUE)||in_array("person_availability_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
             <div class="d-flex gap-2">
                 <a href="{{ route('availability.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> Add Availability
                 </a>
+           
                 <a href="{{ route('availability.bulk-create') }}" class="btn btn-success">
                     <i class="bi bi-calendar-plus"></i> Bulk Setup
                 </a>
             </div>
+            @endif
         </div>
 
         <!-- Quick Actions -->
+        @if(in_array("person_availability_all",$rolerawdata, TRUE)||in_array("person_availability_create",$rolerawdata, TRUE)||in_array("kt_roles_select_all",$rolerawdata, TRUE))
         <div class="quick-actions">
             <a href="{{ route('availability.create') }}" class="quick-action-btn btn-primary">
                 <i class="bi bi-person-plus"></i> Add Single Availability
@@ -214,7 +218,7 @@
             </a>
             
         </div>
-
+        @endif
         <!-- Filter Section -->
         <div class="filter-section">
             <div class="row">

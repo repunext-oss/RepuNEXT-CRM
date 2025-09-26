@@ -17,7 +17,6 @@
                         </span>
                     </h3>
 
-                    <!-- @if(in_array("service_all",$rolerawdata, TRUE) || in_array("service_create",$rolerawdata, TRUE)|| in_array("kt_roles_select_all",$rolerawdata, TRUE)) -->
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                         <a href="{{ route('revenue.create') }}">
                             <button type="button" class="btn btn-primary">
@@ -34,7 +33,6 @@
                             </button>
                         </a>
                     </div>
-                    <!-- @endif -->
                 </div>
 
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0">

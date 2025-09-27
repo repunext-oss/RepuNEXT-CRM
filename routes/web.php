@@ -337,7 +337,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/chat/{id}/send', [RoomController::class, 'sendMessage'])->name('chat.sends');
         Route::post('/rooms/{id}/add-users', [RoomController::class, 'addUsers'])->name('rooms.addUsers');
         Route::post('/rooms/{id}/remove-user', [RoomController::class, 'removeUser'])->name('rooms.removeUser');
-        Route::post('/rooms/destroy/{id}', [RoomController::class,'destroy'])->name('rooms.destroy'); 
+        Route::post('/rooms/destroy/{id}', [RoomController::class,'destroy'])->name('rooms.destroy');
+        Route::delete('/message/destroy/{id}', [RoomController::class, 'deleteMessage'])->name('message.destroy');
+        Route::get('/rooms/{id}/messages/{lastMessageId?}', [RoomController::class, 'getNewMessages'])->name('rooms.messages'); 
         Route::post('/message/destroy/{id}', [MessageController::class,'destroy'])->name('message.destroy');
     });
     
@@ -374,10 +376,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/intern/status','status')->name('status.intern');
     });
 
-   Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
-   Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
-   Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');         
-
+    Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
+    Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
+    Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');         
 
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index'); 
     Route::get('/bookings', [BookingController::class, 'fetch'])->name('booking.fetch'); 
@@ -405,7 +406,7 @@ Route::middleware(['auth'])->group(function () {
          Route::delete('/availability/{id}', 'destroy')->name('availability.destroy');
          Route::post('/availability/{id}/toggle', 'toggleStatus')->name('availability.toggle');
      }); 
- 
+
 
     // Jira Tasks Routes
     Route::controller(JiraTaskController::class)->group(function(){

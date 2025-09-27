@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\AiChatMessage;
 use Illuminate\Http\Request; 
-use App\Services\OpenAIService;
 use Illuminate\Support\Facades\Auth;
 
 class AiChatMessageController extends Controller
 {
-    protected $openai;
-
-    public function __construct(OpenAIService $openai)
+    public function __construct()
     {
-        $this->openai = $openai;
+        // Constructor without OpenAI service dependency
     } 
     public function index()
     {

@@ -9,5 +9,5 @@ class Revenue extends Model
 {
     use HasFactory;
     protected $table = 'revenues';
-    protected $fillable = ['category', 'subcategory', 'amount','r_isdeleted'];
+    protected $fillable = ['category', 'subcategory', 'amount','r_isdeleted','r_name'];
 }

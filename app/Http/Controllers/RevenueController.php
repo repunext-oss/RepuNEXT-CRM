@@ -54,37 +54,51 @@ class RevenueController extends Controller
         return view('revenue.add');
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'type' => 'required|in:revenue,expense',
-            'category' => 'required|string|max:255',
-            'subcategory' => 'nullable|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'date' => 'nullable|date',
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'type'         => 'required|in:revenue,expense',
+        'category'     => 'required|string|max:255',
+        'subcategory'  => 'nullable|string|max:255',
+        'amount'       => 'required|numeric|min:0',
+        'date'         => 'nullable|date',
+        'website_name' => 'nullable|string|max:191',
+    ]);
 
-        $timestamp = $validated['date'] ?? now();
+    // Normalize date (use now() if empty)
+    $timestamp = $request->filled('date')
+        ? Carbon::parse($validated['date'])
+        : now();
 
-        if ($validated['type'] === 'revenue') {
-            $revenue = new Revenue();
-            $revenue->category = $validated['category'];
-            $revenue->subcategory = $validated['subcategory'] ?? null;
-            $revenue->amount = $validated['amount'];
-            $revenue->created_at = $timestamp;
-            $revenue->save();
-        } else {
-            $expense = new Expense();
-            $expense->category = $validated['category'];
-            $expense->subcategory = $validated['subcategory'] ?? null;
-            $expense->amount = $validated['amount'];
-            $expense->created_at = $timestamp;
-            $expense->save();
-        }
-
-        return redirect()->route('revenue-expense.index')->with('success', ucfirst($validated['type']) . ' added successfully!');
+    // Normalize subcategory (treat placeholder as null)
+    $subcategory = $validated['subcategory'] ?? null;
+    if ($subcategory === '— Not applicable —') {
+        $subcategory = null;
     }
 
+    // Common fields (without website_name; that maps to r_name/e_name)
+    $base = [
+        'category'   => $validated['category'],
+        'subcategory'=> $subcategory,
+        'amount'     => $validated['amount'],
+        'created_at' => $timestamp,
+        'updated_at' => $timestamp,
+    ];
+
+    if ($validated['type'] === 'revenue') {
+        $data = $base + ['r_name' => $validated['website_name'] ?? null];
+        $revenue = new Revenue($data);
+        $revenue->save();
+    } else { // expense
+        $data = $base + ['e_name' => $validated['website_name'] ?? null];
+        $expense = new Expense($data);
+        $expense->save();
+    }
+
+    return redirect()
+        ->route('revenue-expense.index')
+        ->with('success', ucfirst($validated['type']) . ' added successfully!');
+}
 
 
     /**

@@ -220,6 +220,7 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
                                 <th class="w-10px pe-2"></th>
                                 <th>#</th>
+                                <th class="min-w-125px sorting">R - Name</th>
                                 <th class="min-w-125px sorting">Category</th>
                                 <th class="min-w-125px sorting">Subcategory</th>
                                 <th class="min-w-125px sorting">Amount</th>
@@ -232,6 +233,7 @@
                                 <tr>
                                     <td></td>
                                     <td>{{ $j += 1 }}</td>
+                                    <td>{{ $revenue->r_name }}</td>
                                     <td>{{ $revenue->category }}</td>
                                     <td>{{ $revenue->subcategory }}</td>
                                     <td>${{ number_format($revenue->amount, 2) }}</td>
@@ -251,6 +253,7 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
                                 <th class="w-10px pe-2"></th>
                                 <th>#</th>
+                                <th class="min-w-125px sorting">E - Name</th>
                                 <th class="min-w-125px sorting">Category</th>
                                 <th class="min-w-125px sorting">Subcategory</th>
                                 <th class="min-w-125px sorting">Amount</th>
@@ -263,6 +266,7 @@
                                 <tr>
                                     <td></td>
                                     <td>{{ $j += 1 }}</td>
+                                    <td>{{ $expense->e_name }}</td>
                                     <td>{{ $expense->category }}</td>
                                     <td>{{ $expense->subcategory }}</td>
                                     <td>${{ number_format($expense->amount, 2) }}</td>

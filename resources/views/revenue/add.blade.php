@@ -26,20 +26,34 @@
 					<form action="{{ route('revenue.store') }}" method="post" class="form" enctype="multipart/form-data">
 						@csrf
 						<div class="row">
-							<div class="col-lg-6 fv-row">
+							<div class="col-lg-4 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Type</label>
 								<label class="me-6"><input type="radio" name="type" value="revenue" ...> Revenue</label>
                                 <label class="me-6"><input type="radio" name="type" value="expense" ...> Expense</label>
 
 							</div>  
-							<div class="col-lg-6 fv-row">
+              <div class="col-lg-4 fv-row">
+                            <label for="website_name" class="col-lg-12 col-form-label fw-bold fs-6">Name</label>
+                            <input
+                              id="website_name"
+                              name="website_name"
+                              type="text"
+                              class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                              placeholder="e.g., enter a name"
+                              value="{{ old('website_name') }}"
+                              maxlength="191">
+                          </div>
+							<div class="col-lg-4 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Category</label>
                                     <select name="category" id="category"
                                             class="form-select form-select-lg form-select-solid mb-3 mb-lg-0" required>
                                     <option value="" selected disabled>— Select category —</option>
                                     </select>
                             </div>
-						</div> 
+                            
+					              	</div> 
+            
+
                         <div class="row">  
                         	<div class="col-lg-6 fv-row">
 								   <label class="col-lg-12 col-form-label fw-bold fs-6">Subcategory</label>

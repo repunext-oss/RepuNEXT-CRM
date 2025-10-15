@@ -374,7 +374,8 @@ Route::controller(LeaveController::class)->group(function(){
 
    Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
    Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
-   Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');         
+   Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');
+   Route::get('/revenue-export/{format}', [RevenueController::class, 'export'])->name('revenue.export');         
 
 
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index'); 

@@ -157,7 +157,7 @@
                             <td>{{ $revenue->subcategory ?? '-' }}</td>
                             <td>{{ $revenue->payment_method ?? '-' }}</td>
                             <td class="amount revenue">₹{{ number_format($revenue->amount, 2) }}</td>
-                            <td>{{ $revenue->created_at->format('d-m-Y') }}</td>
+                            <td>{{ $revenue->entry_date ? \Carbon\Carbon::parse($revenue->entry_date)->format('d-m-Y') : $revenue->created_at->format('d-m-Y') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -191,7 +191,7 @@
                             <td>{{ $expense->subcategory ?? '-' }}</td>
                             <td>{{ $expense->payment_method ?? '-' }}</td>
                             <td class="amount expense">₹{{ number_format($expense->amount, 2) }}</td>
-                            <td>{{ $expense->created_at->format('d-m-Y') }}</td>
+                            <td>{{ $expense->entry_date ? \Carbon\Carbon::parse($expense->entry_date)->format('d-m-Y') : $expense->created_at->format('d-m-Y') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

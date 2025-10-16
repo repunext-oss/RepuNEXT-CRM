@@ -61,15 +61,13 @@ class RevenueController extends Controller
         'category'        => 'required|string|max:255',
         'subcategory'     => 'nullable|string|max:255',
         'amount'          => 'required|numeric|min:0',
-        'date'            => 'nullable|date',
+        'entry_date'      => 'required|date',
         'website_name'    => 'nullable|string|max:191',
         'payment_method'  => 'required|string|max:255',
     ]);
 
-    // Normalize date (use now() if empty)
-    $timestamp = $request->filled('date')
-        ? Carbon::parse($validated['date'])
-        : now();
+    // Parse the entry date
+    $timestamp = Carbon::parse($validated['entry_date']);
 
     // Normalize subcategory (treat placeholder as null)
     $subcategory = $validated['subcategory'] ?? null;
@@ -83,6 +81,7 @@ class RevenueController extends Controller
         'subcategory'    => $subcategory,
         'amount'         => $validated['amount'],
         'payment_method' => $validated['payment_method'],
+        'entry_date'     => $validated['entry_date'],
         'created_at'     => $timestamp,
         'updated_at'     => $timestamp,
     ];
@@ -256,7 +255,7 @@ class RevenueController extends Controller
                     $revenue->subcategory ?? '',
                     $revenue->payment_method ?? '',
                     '₹' . number_format($revenue->amount, 2),
-                    $revenue->created_at->format('d-m-Y')
+                    $revenue->entry_date ? \Carbon\Carbon::parse($revenue->entry_date)->format('d-m-Y') : $revenue->created_at->format('d-m-Y')
                 ]);
             }
             fputcsv($file, []); // Empty line
@@ -273,7 +272,7 @@ class RevenueController extends Controller
                     $expense->subcategory ?? '',
                     $expense->payment_method ?? '',
                     '₹' . number_format($expense->amount, 2),
-                    $expense->created_at->format('d-m-Y')
+                    $expense->entry_date ? \Carbon\Carbon::parse($expense->entry_date)->format('d-m-Y') : $expense->created_at->format('d-m-Y')
                 ]);
             }
             
@@ -362,7 +361,7 @@ class RevenueController extends Controller
             $html .= '<td>' . htmlspecialchars($revenue->subcategory ?? '') . '</td>';
             $html .= '<td>' . htmlspecialchars($revenue->payment_method ?? '') . '</td>';
             $html .= '<td class="currency">₹' . number_format($revenue->amount, 2) . '</td>';
-            $html .= '<td>' . $revenue->created_at->format('d-m-Y') . '</td>';
+            $html .= '<td>' . ($revenue->entry_date ? \Carbon\Carbon::parse($revenue->entry_date)->format('d-m-Y') : $revenue->created_at->format('d-m-Y')) . '</td>';
             $html .= '</tr>';
         }
         
@@ -389,7 +388,7 @@ class RevenueController extends Controller
             $html .= '<td>' . htmlspecialchars($expense->subcategory ?? '') . '</td>';
             $html .= '<td>' . htmlspecialchars($expense->payment_method ?? '') . '</td>';
             $html .= '<td class="currency">₹' . number_format($expense->amount, 2) . '</td>';
-            $html .= '<td>' . $expense->created_at->format('d-m-Y') . '</td>';
+            $html .= '<td>' . ($expense->entry_date ? \Carbon\Carbon::parse($expense->entry_date)->format('d-m-Y') : $expense->created_at->format('d-m-Y')) . '</td>';
             $html .= '</tr>';
         }
         

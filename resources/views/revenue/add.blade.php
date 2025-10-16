@@ -113,7 +113,7 @@
 						<div class="form-section">
 							<div class="form-section-title">Basic Information</div>
 							<div class="row g-4">
-								<div class="col-lg-6">
+								<div class="col-lg-4">
 									<label class="form-label required">Type</label>
 									<div class="d-flex gap-4">
 										<div class="form-check">
@@ -127,7 +127,7 @@
 									</div>
 								</div>
 								
-								<div class="col-lg-6">
+								<div class="col-lg-4">
 									<label for="website_name" class="form-label">Name</label>
 									<input
 										id="website_name"
@@ -137,6 +137,17 @@
 										placeholder="e.g., enter a name"
 										value="{{ old('website_name') }}"
 										maxlength="191">
+								</div>
+								
+								<div class="col-lg-4">
+									<label for="entry_date" class="form-label required">Entry Date</label>
+									<input
+										id="entry_date"
+										name="entry_date"
+										type="date"
+										class="form-control"
+										value="{{ old('entry_date', date('Y-m-d')) }}"
+										required>
 								</div>
 							</div>
 						</div>
@@ -267,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const oldCategory = @json(old('category'));
   const oldSubcategory = @json(old('subcategory'));
   const oldPaymentMethod = @json(old('payment_method'));
+  const oldEntryDate = @json(old('entry_date'));
 
   // ========================================
   // UTILITY FUNCTIONS

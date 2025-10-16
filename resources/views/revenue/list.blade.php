@@ -241,7 +241,7 @@
                                     <td>{{ $revenue->subcategory }}</td>
                                     <td>{{ $revenue->payment_method ?? '-' }}</td>
                                     <td>₹{{ number_format($revenue->amount, 2) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($revenue->created_at)->format('d-m-Y') }}</td>
+                                    <td>{{ $revenue->entry_date ? \Carbon\Carbon::parse($revenue->entry_date)->format('d-m-Y') : \Carbon\Carbon::parse($revenue->created_at)->format('d-m-Y') }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="8" class="text-center text-muted">No revenue found for the selected range.</td></tr>
@@ -276,7 +276,7 @@
                                     <td>{{ $expense->subcategory }}</td>
                                     <td>{{ $expense->payment_method ?? '-' }}</td>
                                     <td>₹{{ number_format($expense->amount, 2) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($expense->created_at)->format('d-m-Y') }}</td>
+                                    <td>{{ $expense->entry_date ? \Carbon\Carbon::parse($expense->entry_date)->format('d-m-Y') : \Carbon\Carbon::parse($expense->created_at)->format('d-m-Y') }}</td>
                                 </tr>
                             @empty
                                 <tr><td colspan="8" class="text-center text-muted">No expenses found for the selected range.</td></tr>

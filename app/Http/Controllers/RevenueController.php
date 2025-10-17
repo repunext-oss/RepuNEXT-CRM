@@ -63,7 +63,7 @@ class RevenueController extends Controller
         'amount'          => 'required|numeric|min:0',
         'entry_date'      => 'required|date',
         'website_name'    => 'nullable|string|max:191',
-        'payment_method'  => 'required|string|max:255',
+        'payment_method'  => 'nullable|string|max:255',
     ]);
 
     // Parse the entry date
@@ -80,7 +80,7 @@ class RevenueController extends Controller
         'category'       => $validated['category'],
         'subcategory'    => $subcategory,
         'amount'         => $validated['amount'],
-        'payment_method' => $validated['payment_method'],
+        'payment_method' => $validated['payment_method'] ?? null,
         'entry_date'     => $validated['entry_date'],
         'created_at'     => $timestamp,
         'updated_at'     => $timestamp,
@@ -112,7 +112,7 @@ class RevenueController extends Controller
      */
     public function show(Revenue $revenue)
     {
-        //
+        return view('revenue.view', compact('revenue'));
     }
 
     /**
@@ -120,7 +120,7 @@ class RevenueController extends Controller
      */
     public function edit(Revenue $revenue)
     {
-        //
+        return view('revenue.edit', compact('revenue'));
     }
 
     /**
@@ -128,7 +128,33 @@ class RevenueController extends Controller
      */
     public function update(Request $request, Revenue $revenue)
     {
-        //
+        $validated = $request->validate([
+            'category'        => 'required|string|max:255',
+            'subcategory'     => 'nullable|string|max:255',
+            'amount'          => 'required|numeric|min:0',
+            'entry_date'      => 'required|date',
+            'r_name'          => 'nullable|string|max:191',
+            'payment_method'  => 'nullable|string|max:255',
+        ]);
+
+        // Normalize subcategory (treat placeholder as null)
+        $subcategory = $validated['subcategory'] ?? null;
+        if ($subcategory === '— Not applicable —') {
+            $subcategory = null;
+        }
+
+        $revenue->update([
+            'category'       => $validated['category'],
+            'subcategory'    => $subcategory,
+            'amount'         => $validated['amount'],
+            'payment_method' => $validated['payment_method'] ?? null,
+            'entry_date'     => $validated['entry_date'],
+            'r_name'         => $validated['r_name'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('revenue-expense.index')
+            ->with('success', 'Revenue updated successfully!');
     }
 
     /**
@@ -136,7 +162,11 @@ class RevenueController extends Controller
      */
     public function destroy(Revenue $revenue)
     {
-        //
+        $revenue->delete();
+        
+        return redirect()
+            ->route('revenue-expense.index')
+            ->with('success', 'Revenue deleted successfully!');
     }
     /**
      * Export revenue and expense data in various formats

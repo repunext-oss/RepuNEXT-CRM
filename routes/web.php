@@ -39,6 +39,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\InternController;
 use App\Http\Controllers\RevenueController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\JiraTaskController;
@@ -375,7 +376,14 @@ Route::controller(LeaveController::class)->group(function(){
    Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
    Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
    Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');
-   Route::get('/revenue-export/{format}', [RevenueController::class, 'export'])->name('revenue.export');         
+   Route::get('/revenue/{revenue}', [RevenueController::class, 'show'])->name('revenue.show');
+   Route::get('/revenue/{revenue}/edit', [RevenueController::class, 'edit'])->name('revenue.edit');
+   Route::put('/revenue/{revenue}', [RevenueController::class, 'update'])->name('revenue.update');
+   Route::delete('/revenue/{revenue}', [RevenueController::class, 'destroy'])->name('revenue.destroy');
+   Route::get('/revenue-export/{format}', [RevenueController::class, 'export'])->name('revenue.export');
+
+   // Expense Routes
+   Route::resource('expense', ExpenseController::class);         
 
 
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index'); 

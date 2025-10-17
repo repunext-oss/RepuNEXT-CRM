@@ -1,5 +1,3 @@
-
-
 @extends('admin.admin_master')
 @section('admin')
 <style>
@@ -91,14 +89,18 @@
 			<div class="card "> 
 				<div class="card-header pt-5">
 					<h3 class="card-title align-items-start flex-column">
-						<span class="card-label fw-bold fs-3 mb-1">Add</span>
-						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> </span>
+						<span class="card-label fw-bold fs-3 mb-1">Edit Revenue</span>
+						<span class="text-muted fw-semibold fs-7">
+							<a href="{{route('revenue-expense.index')}}" class="text-muted text-hover-primary">Revenue & Expense</a> /
+							<a href="{{route('revenue.show', $revenue)}}" class="text-muted text-hover-primary">View</a> /
+							<span class="text-primary">Edit</span>
+						</span>
 					</h3> 
 				</div>
                 
                 @if ($errors->any())
-                    <div class="error">
-                        <ul>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -106,36 +108,23 @@
                     </div>
                 @endif
 				<div class="card-body border-0 pt-0"> 
-					<form action="{{ route('revenue.store') }}" method="post" class="form" enctype="multipart/form-data">
+					<form action="{{ route('revenue.update', $revenue) }}" method="post" class="form" enctype="multipart/form-data">
 						@csrf
+						@method('PUT')
 						
 						<!-- Basic Information Section -->
 						<div class="form-section">
 							<div class="form-section-title">Basic Information</div>
 							<div class="row g-4">
 								<div class="col-lg-4">
-									<label class="form-label required">Type</label>
-									<div class="d-flex gap-4">
-										<div class="form-check">
-											<input class="form-check-input" type="radio" name="type" value="revenue" id="type_revenue" {{ old('type') == 'revenue' ? 'checked' : '' }}>
-											<label class="form-check-label fw-semibold" for="type_revenue">Revenue</label>
-										</div>
-										<div class="form-check">
-											<input class="form-check-input" type="radio" name="type" value="expense" id="type_expense" {{ old('type') == 'expense' ? 'checked' : '' }}>
-											<label class="form-check-label fw-semibold" for="type_expense">Expense</label>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-lg-4">
-									<label for="website_name" class="form-label">Name</label>
+									<label for="r_name" class="form-label">Name</label>
 									<input
-										id="website_name"
-										name="website_name"
+										id="r_name"
+										name="r_name"
 										type="text"
 										class="form-control"
 										placeholder="e.g., enter a name"
-										value="{{ old('website_name') }}"
+										value="{{ old('r_name', $revenue->r_name) }}"
 										maxlength="191">
 								</div>
 								
@@ -146,7 +135,7 @@
 										name="entry_date"
 										type="date"
 										class="form-control"
-										value="{{ old('entry_date', date('Y-m-d')) }}"
+										value="{{ old('entry_date', $revenue->entry_date) }}"
 										required>
 								</div>
 							</div>
@@ -165,7 +154,7 @@
 								
 								<div class="col-lg-4">
 									<label class="form-label">Subcategory</label>
-									<select name="subcategory" id="subcategory" class="form-select" required disabled>
+									<select name="subcategory" id="subcategory" class="form-select">
 										<option value="" selected disabled>— Select subcategory —</option>
 									</select>
 								</div>
@@ -177,7 +166,7 @@
 										id="amount" 
 										type="number" 
 										name="amount" 
-										value="{{ old('amount') }}" 
+										value="{{ old('amount', $revenue->amount) }}" 
 										step="0.01" 
 										min="0" 
 										placeholder="0.00" 
@@ -201,15 +190,18 @@
 						</div>
 						
 						<!-- Form Actions -->
-						<div class="d-flex justify-content-end mt-6">
+						<div class="d-flex justify-content-end mt-6 gap-3">
+							<a href="{{ route('revenue.show', $revenue) }}" class="btn btn-light btn-lg px-6">
+								Cancel
+							</a>
 							<button type="submit" class="btn btn-primary btn-lg px-6">
 								<span class="svg-icon svg-icon-2 me-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-										<rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor"/>
-										<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"/>
+										<path d="M17.5 11H6.5L4 13.5L6.5 16H17.5L20 13.5L17.5 11Z" fill="currentColor"/>
+										<path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="currentColor"/>
 									</svg>
 								</span>
-								Add Entry
+								Update Revenue
 							</button>
 						</div> 
 					</form> 
@@ -232,33 +224,16 @@ document.addEventListener('DOMContentLoaded', function () {
       "Consulting Revenue": ["Brand Consulting", "Technical Consulting"],
       "Rent Revenue": ["Photoshoot", "Podcast"],
       "Training Revenue": ["nil"] // no subcategories
-    },
-    expense: {
-      "Administrative Expense": ["Office Rent & Utilities", "Office Stationaries", "Office Pantry", "Employee Accessories", "Repair & Maintenances", "Petty Cash"],
-      "Marketing Expense": ["Travel Conveyance", "ATL Activities (Brand & Market reach)", "BTL Activities (Lead Generation)", "Classified Portals", "Auto Dialer", "Awards"],
-      "HR Expense": ["Employee Salary", "Contract / Consultant Salary", "Bonus & Incentives", "Employment Welfare Program", "HR Software Monitoring"],
-      "Office Asset": ["Electronics Equipments", "Electrical Equipments", "Furniture", "Others"],
-      "Software License Expense": ["Software Licenses", "Subscriptions"],
-      "Professional Services": ["Accounting", "Legal", "Banking"],
-      "Tax Payments": ["GST Payment", "Income Tax Payment"],
-      "Interest Payments": ["Interest Payments"]
     }
   };
 
-  // Payment method options
+  // Payment method options for revenue
   const PAYMENT_METHODS = {
     revenue: [
       { value: 'Cash', label: 'Cash' },
       { value: 'Repunext Acc', label: 'Repunext Acc' },
       { value: 'Repunext LLP Acc', label: 'Repunext LLP Acc' },
       { value: 'Normal Acc', label: 'Normal Acc' }
-    ],
-    expense: [
-      { value: 'Cash', label: 'Cash' },
-      { value: 'RepuNEXT Acc', label: 'RepuNEXT Acc' },
-      { value: 'RepuNEXT LLP Acc', label: 'RepuNEXT LLP Acc' },
-      { value: 'Normal Acc', label: 'Normal Acc' },
-      { value: 'Credit Card', label: 'Credit Card' }
     ]
   };
 
@@ -266,20 +241,17 @@ document.addEventListener('DOMContentLoaded', function () {
   // DOM ELEMENTS
   // ========================================
   
-  const typeRadios = document.querySelectorAll('input[name="type"]');
   const categorySel = document.getElementById('category');
   const subcategorySel = document.getElementById('subcategory');
   const paymentMethodContainer = document.getElementById('payment-method-container');
 
   // ========================================
-  // OLD VALUES (for form restoration)
+  // CURRENT VALUES
   // ========================================
   
-  const oldType = @json(old('type'));
-  const oldCategory = @json(old('category'));
-  const oldSubcategory = @json(old('subcategory'));
-  const oldPaymentMethod = @json(old('payment_method'));
-  const oldEntryDate = @json(old('entry_date'));
+  const currentCategory = @json($revenue->category);
+  const currentSubcategory = @json($revenue->subcategory);
+  const currentPaymentMethod = @json($revenue->payment_method);
 
   // ========================================
   // UTILITY FUNCTIONS
@@ -307,17 +279,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // ========================================
   
   /**
-   * Populate categories based on selected type
-   * @param {string} type - Revenue or Expense
+   * Populate categories for revenue
    * @param {string} selectedCategory - Previously selected category
    */
-  function populateCategories(type, selectedCategory = null) {
+  function populateCategories(selectedCategory = null) {
     clearSelect(categorySel, '— Select category —', false);
     clearSelect(subcategorySel, '— Select subcategory —', true);
 
-    if (!type || !CATEGORIES_DATA[type]) return;
-
-    Object.keys(CATEGORIES_DATA[type]).forEach(cat => {
+    Object.keys(CATEGORIES_DATA.revenue).forEach(cat => {
       const option = document.createElement('option');
       option.value = cat;
       option.textContent = cat;
@@ -325,20 +294,19 @@ document.addEventListener('DOMContentLoaded', function () {
       categorySel.appendChild(option);
     });
 
-    // If a category is already selected (e.g., after validation error), populate its subcategories
+    // If a category is already selected, populate its subcategories
     if (selectedCategory) {
-      populateSubcategories(type, selectedCategory, oldSubcategory);
+      populateSubcategories(selectedCategory, currentSubcategory);
     }
   }
 
   /**
    * Populate subcategories based on selected category
-   * @param {string} type - Revenue or Expense
    * @param {string} category - Selected category
    * @param {string} selectedSubcategory - Previously selected subcategory
    */
-  function populateSubcategories(type, category, selectedSubcategory = null) {
-    const subcategories = (CATEGORIES_DATA[type] && CATEGORIES_DATA[type][category]) ? CATEGORIES_DATA[type][category] : [];
+  function populateSubcategories(category, selectedSubcategory = null) {
+    const subcategories = CATEGORIES_DATA.revenue[category] || [];
     clearSelect(subcategorySel, subcategories.length ? '— Select subcategory —' : '— Not applicable —', subcategories.length === 0);
 
     if (subcategories.length === 0) {
@@ -362,16 +330,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // ========================================
   
   /**
-   * Populate payment methods based on selected type
-   * @param {string} type - Revenue or Expense
+   * Populate payment methods for revenue
    * @param {string} selectedPaymentMethod - Previously selected payment method
    */
-  function populatePaymentMethods(type, selectedPaymentMethod = null) {
+  function populatePaymentMethods(selectedPaymentMethod = null) {
     paymentMethodContainer.innerHTML = '';
     
-    if (!type || !PAYMENT_METHODS[type]) return;
-
-    const methods = PAYMENT_METHODS[type];
+    const methods = PAYMENT_METHODS.revenue;
 
     // Create a grid container for better layout
     const gridContainer = document.createElement('div');
@@ -398,6 +363,11 @@ document.addEventListener('DOMContentLoaded', function () {
         input.checked = true;
         formCheck.style.backgroundColor = '#e3f2fd';
         formCheck.style.borderColor = '#009ef7';
+        // Remove the hidden input since we have a pre-selected value
+        const hiddenInput = document.getElementById('payment_method_hidden');
+        if (hiddenInput) {
+          hiddenInput.remove();
+        }
       }
       
       const label = document.createElement('label');
@@ -451,22 +421,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // ========================================
   
   /**
-   * Handle type radio button changes
-   */
-  typeRadios.forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      const selectedType = e.target.value;
-      populateCategories(selectedType);
-      populatePaymentMethods(selectedType);
-    });
-  });
-
-  /**
    * Handle category selection changes
    */
   categorySel.addEventListener('change', function () {
-    const selectedType = [...typeRadios].find(r => r.checked)?.value;
-    populateSubcategories(selectedType, this.value);
+    populateSubcategories(this.value);
   });
 
   // ========================================
@@ -474,18 +432,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // ========================================
   
   /**
-   * Initialize form with old values if available (for form restoration after validation errors)
+   * Initialize form with current values
    */
   function initializeForm() {
-    if (oldType) {
-      // Ensure the matching radio is checked
-      const radio = [...typeRadios].find(r => r.value === oldType);
-      if (radio) radio.checked = true;
-      
-      // Populate form fields with old values
-      populateCategories(oldType, oldCategory);
-      populatePaymentMethods(oldType, oldPaymentMethod);
-    }
+    populateCategories(currentCategory);
+    populatePaymentMethods(currentPaymentMethod);
   }
 
   // Initialize the form
@@ -493,5 +444,3 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
-
- 

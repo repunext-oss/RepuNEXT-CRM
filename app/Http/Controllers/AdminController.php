@@ -40,12 +40,10 @@ class AdminController extends Controller
         $currentMonth = Carbon::now()->startOfMonth();
         $currentMonthEnd = Carbon::now()->endOfMonth();
         
-        $monthlyRevenue = Revenue::where('r_isdeleted', '!=', 1)
-            ->whereBetween('created_at', [$currentMonth, $currentMonthEnd])
+        $monthlyRevenue = Revenue::whereBetween('created_at', [$currentMonth, $currentMonthEnd])
             ->sum('amount');
             
-        $monthlyExpense = Expense::where('e_isdeleted', '!=', 1)
-            ->whereBetween('created_at', [$currentMonth, $currentMonthEnd])
+        $monthlyExpense = Expense::whereBetween('created_at', [$currentMonth, $currentMonthEnd])
             ->sum('amount');
 
         $monthlyIntern = Intern::where('i_isdeleted', '!=', 1)
@@ -54,8 +52,8 @@ class AdminController extends Controller
             
         $monthlyProfit = $monthlyRevenue - $monthlyExpense;
         $totalInternPaid=Intern::where('i_isdeleted', '!=', 1)->sum('amount');
-        $totalRevenue = Revenue::where('r_isdeleted', '!=', 1)->sum('amount');
-        $totalExpense = Expense::where('e_isdeleted', '!=', 1)->sum('amount');
+        $totalRevenue = Revenue::sum('amount');
+        $totalExpense = Expense::sum('amount');
         $totalProfit = $totalRevenue - $totalExpense;
         $Final = $totalRevenue + $totalInternPaid;
         $MonthlyFinal = $monthlyRevenue+ $monthlyIntern;

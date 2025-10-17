@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Revenue extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'revenues';
-    protected $fillable = ['category', 'subcategory', 'amount','r_isdeleted','r_name','payment_method','entry_date'];
+    protected $fillable = ['category', 'subcategory', 'amount','r_name','payment_method','entry_date'];
+    
+    protected $dates = ['deleted_at'];
 }

@@ -35,13 +35,12 @@
 				<div class="card-body border-0 pt-0"> 
 					<form action="{{ route('store.intern') }}" method="post" class="form" enctype="multipart/form-data">
 						@csrf
-
 						<div class="row">
 							<div class="col-lg-6 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Name</label>
 								<input type="text" name="Name" id="Name"  placeholder="Name" required class="form-control form-control-lg form-control mb-3 mb-lg-0 "/>
 							</div>  
-							 <div class="col-lg-6 fv-row">
+							<div class="col-lg-6 fv-row">
                                 <label class="col-lg-12 col-form-label required fw-bold fs-6">Phone Number</label>
                                 <input type="text" class="form-control" id="Mobile" name="Mobile" placeholder="Mobile" minlength="10" maxlength="10" required>
                                 <small id="Mobile" class="text-danger"></small>

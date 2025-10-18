@@ -360,7 +360,6 @@ function startTimer() {
         const remainingTime = timer - runningTime;
         if (timer > 0 && remainingTime <= WARNING_TIME && remainingTime > 0 && !notifiedBeforeEnd) {
             notifiedBeforeEnd = true;
-
             alertSound.play();
             alert('⏰ Reminder: Only 5 minutes left to complete this goal!');
         }
@@ -395,20 +394,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize with database value or localStorage value
     const dbRunningTime = parseInt(document.getElementById('running_time').value) || 0;
     const storedRunningTime = parseInt(localStorage.getItem(`${taskKey}_runningTime`)) || 0;
+   
     
-    // Use the higher value (most recent) between database and localStorage
     runningTime = Math.max(dbRunningTime, storedRunningTime);
     startTime = parseInt(localStorage.getItem(`${taskKey}_startTime`)) || null;
     isRunning = localStorage.getItem(`${taskKey}_isRunning`) === 'true';
     timerInterval = null;
     notifiedBeforeEnd = false;
-    
-    // Get DOM elements
+
     runtimeDisplay = document.getElementById('runtimeDisplay');
     playPauseButton = document.getElementById('playPauseButton');
     stopButton = document.getElementById('stopButton');
-    
-    // Debug: Log initialization values
+
     console.log('Initialization:', {
         goalId: goalId,
         dbRunningTime: dbRunningTime,
@@ -416,8 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         finalRunningTime: runningTime,
         isRunning: isRunning
     });
-    
-    // Initialize display with the correct running time
+
     updateRuntimeDisplay(runningTime);
     
     if (isRunning) {
@@ -425,12 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
         playPauseButton.textContent = 'Pause';
         stopButton.disabled = false;
     }
-    
-    // Attach event listeners after DOM elements are ready
     attachEventListeners();
 });
 
-// Check if task is stopped after initialization
+
 setTimeout(() => {
     // Check if task is stopped (either in localStorage or database)
     const isStopped = localStorage.getItem(`goal_${goalId}`) === "stopped" || 

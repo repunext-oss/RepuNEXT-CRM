@@ -65,10 +65,12 @@
     .address-card {
         width: 45%;
         padding: 15px;
+        margin-left:10px !important;
         border-radius: 0;
         background: none;
         box-shadow: none;
     }
+
 
     .address-card h5 {
         font-weight: bold;
@@ -106,6 +108,11 @@
 
     /* Print-specific styles */
     @media print {
+    @page {
+        size: A4;
+        margin: 0.1cm;
+    }
+
     * {
         margin: 0 !important;
         padding: 0 !important;
@@ -116,7 +123,8 @@
         margin: 0 !important;
         padding: 0 !important;
         height: auto !important;
-        width: 100%;
+        width: 210mm;
+        max-width: 210mm;
     }
 
     .totals-section, .divider1, .card-footer {
@@ -134,7 +142,7 @@
     #sales-order-print-header {
         display: block !important;
         visibility: visible !important;
-        margin-bottom: 5px !important;
+        margin-bottom: 1px !important;
 
     }
 
@@ -147,8 +155,8 @@
         visibility: visible !important;
         position: center;
         width: 100%;
-        margin-bottom: 1px !important;
-        padding-bottom: 3px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
         border-bottom: none !important;
     }
 
@@ -160,43 +168,82 @@
         width: 100%;
         border-collapse: collapse;
         border: 1px solid black;
-        margin: 0 auto;
-        padding: 2px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        table-layout: fixed;
     }
 
     .header-table td {
         border: 1px solid black;
-        padding: 4px !important;
-        text-align: center;
-        font-size: 11px;
+        padding: 1mm !important;
+        font-size: 9px;
+        vertical-align: middle;
+        height: 80px;
+    }
 
+    .header-table td:first-child {
+        width: 25%;
+        text-align: center;
+    }
+
+    .header-table td:nth-child(2) {
+        width: 55%;
+        text-align: center;
+        padding-left: 1mm !important;
+        padding-right: 1mm !important;
+    }
+
+    .header-table td:last-child {
+        width: 20%;
+        text-align: right;
+        padding-right: 1mm !important;
+    }
+
+    .company-logo {
+        text-align: center;
+        vertical-align: middle;
+        height: 100%;
     }
 
     .company-logo img {
-        height: 80px;
-        margin: 0 auto;
+        height: 50px;
         text-align: center;
+        vertical-align: middle;
+        max-width: 50px;
+        margin: 0 auto;
+        display: block;
+        object-fit: contain;
     }
 
     .company-name {
-        font-size: 12px;
+        font-size: 16px !important;
         font-family: 'Merriweather';
         color: black;
         text-align: center;
-        padding: 3px;
+        line-height: 1.1;
+        padding: 0;
+        margin: 0;
+        vertical-align: middle;
     }
 
     .company_email {
         font-family: 'Merriweather';
-        font-size: 10px;
-        text-align: center;
+        font-size: 16px !important;
+        text-align: center !important;
+        line-height: 1.1;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
     }
 
     #invoiceContent {
         width: 100% !important;  
-        margin: 0 auto !important; 
-        padding: 3px !important;
-        border: 1px solid black; 
+        margin: 0 !important; 
+        padding: 0.2mm !important;
+        border: 1px solid black;
+        max-width: none !important;
+        box-sizing: border-box;
+        min-height: auto;
     }
 
     .invoice-details {
@@ -211,39 +258,158 @@
     .invoice-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 5px;
-        margin-bottom: 10px !important; 
+        margin: 0 !important; 
     }
 
     .invoice-table th, .invoice-table td {
         border: 1px solid #000;
-        padding: 6px !important;
-        font-size: 11px;
+        padding: 0.5mm !important;
+        font-size: 9px;
         text-align: center;
     }
 
     .total-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 5px;
-        margin-bottom: 2px !important;
+        margin: 0 !important;
     }
 
     .total-table td {
         border: 1px solid #000;
-        padding: 4px !important;
+        padding: 0.5mm !important;
         text-align: right;
         font-weight: bold;
-        font-size: 11px;
+        font-size: 9px;
     }
 
     .total-table td:first-child {
         text-align: left;
     }
 
+    /* Full space utilization */
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .container-fluid {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        width: 100% !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+
+    .card-body {
+        padding: 0.5mm !important;
+        width: 100% !important;
+    }
+
+    .table {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .table th, .table td {
+        width: auto !important;
+    }
+
+    .table th:nth-child(1) { width: 8% !important; }
+    .table th:nth-child(2) { width: 35% !important; }
+    .table th:nth-child(3) { width: 12% !important; }
+    .table th:nth-child(4) { width: 10% !important; }
+    .table th:nth-child(5) { width: 15% !important; }
+    .table th:nth-child(6) { width: 10% !important; }
+    .table th:nth-child(7) { width: 10% !important; }
+
+    /* Page break control */
+    .page-break-inside-avoid {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .page-break-before-avoid {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+    }
+
+    .page-break-after-avoid {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    /* New page styles */
+    .new-page {
+        page-break-before: always !important;
+        break-before: page !important;
+        margin-top: 0 !important;
+    }
+
+    .invoice-page {
+        width: 100%;
+        min-height: 100vh;
+        display: block;
+    }
+
+    .invoice-page:first-child {
+        page-break-before: avoid !important;
+    }
+
+    /* Print table handling for many items */
+    .table {
+        page-break-inside: auto !important;
+    }
+
+    .table tr {
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
+    }
+
+    .table thead {
+        display: table-header-group !important;
+    }
+
+    .table tbody {
+        display: table-row-group !important;
+    }
+
+    /* Ensure table headers repeat on each page */
+    .table thead tr {
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+    }
+
+    /* Compact spacing for single page */
+    .invoice-details {
+        margin-bottom: 2px !important;
+        padding: 1px !important;
+    }
+
+    .divider1, .divider3 {
+        height: 1px !important;
+        margin: 1px 0 !important;
+    }
+
+    .totals-section {
+        padding: 2px 0 !important;
+        margin: 0 !important;
+    }
+
+    .bank-certification-table {
+        margin-top: 2px !important;
+        padding: 1px !important;
+    }
+
     .amount-table {
         width: 100%;
-        margin-top: 5px;
+        margin-top: 3px;
         border-collapse: collapse;
     }
 
@@ -258,7 +424,7 @@
         display: block !important;
         visibility: visible !important;
         margin: 0;
-        margin-top: 5px;
+        margin-top: 3px;
         padding: 0;
         border: none;
         background-color: transparent;
@@ -280,7 +446,8 @@
     }
     
     #sales-order-print-header {
-        margin-top: 5px;
+        margin-top: 1px;
+        margin-right: 10px !important;
         width: 50%;
         text-align: right;
         font-size: 11px;
@@ -288,12 +455,12 @@
     
     #sales-order-print-header span {
         display: block;
-        margin-bottom: 2px;
+        margin-bottom: 1px;
         font-size: 11px;
     }
     
     .terms-box {
-        margin-top: 10px;
+        margin-top: 1px !important;
         padding: 10px;
         background-color: #fff; 
         color: #000; 
@@ -318,7 +485,7 @@
     }
 
     #bankCertificationSection {
-        margin-top: 10px !important;
+        margin-top: 5px !important;
         width: 100%;
         display: block !important;
         visibility: visible;
@@ -372,8 +539,8 @@
         display: block !important;
         justify-content: space-between;
         align-items: center;
-        margin-top: 20px; 
-        padding-bottom: 30px; 
+        margin-top: 10px; 
+        padding-bottom: 0 !important; 
         border-bottom: 1px solid black;
         position: relative;
         margin-bottom: 50px !important; 
@@ -417,7 +584,7 @@
 
 #printTotals {
     display: none;
-    margin-top: 20px !important;
+    margin-top: 10px !important;
 }
 
 #bankCertificationSection {
@@ -478,25 +645,6 @@
     color: black !important;
 }
 
-#editBtn {
-    position: absolute;
-    right: 20px;
-    top: 120px;
-    padding: 8px 15px; 
-    font-size: 14px; 
-    border-radius: 6px; 
-    margin-bottom:20px;
-}
-
-#savebtn {
-    position: absolute;
-    right: 20px;
-    top: 120px;
-    padding: 8px 15px; 
-    font-size: 14px; 
-    border-radius: 6px; 
-    margin-bottom:20px;
-}
 
 #printInvoiceHeader {
     display: none;
@@ -504,6 +652,39 @@
 
 #sales-order-print-header {
     display: none; 
+}
+
+/* Remove input field styling to make them look like plain text */
+input[type="text"], input[type="number"] {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    font-size: inherit !important;
+    color: inherit !important;
+    font-weight: inherit !important;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Make input fields look seamless in the table */
+.table td input {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
 }
 </style>
 
@@ -521,20 +702,22 @@
                     </h3>
                 </div>
                 <br>
-                <button class="btn btn-warning" id="editBtn">Edit</button>
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-warning" id="editBtn">Edit</button>
+                </div>
                 <div id="printHeader">
                     <table class="header-table">
                         <tr>
                             <td class="company-logo">
-                                <img src="{{ asset('backend/assets/media/logos/print_logo.jpg') }}" alt="Company Logo">
+                                <img src="{{ asset('backend/assets/media/logos/logo2.png') }}" alt="RepuNext Logo" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
                             </td>
                             <td class="company-name">
-                                <strong>REPUNEXT</strong><br>
-                                D.No. 24, Plot 41A,6th Main Road, <br>
-                                Ram Nagar North Extention,<br>
-                                Velachery, Chennai – 600042,<br>
-                                Phone: [+91 95001 555 23 / 24] <br>
-                                Landline: 044 486 555 23
+                                <h2>REPUNEXT LLP</h2>
+                                Plot No. 22 and 23, 2nd Floor, 2nd Main Road,<br>
+                                V.G.P. Selva Nagar, <br>
+                                Velachery, Chennai – 600042,<br>                            
+                                Phone: [+91 95001 555 23 / 24 / 90 / 91] <br>
+                                Landline : 044 486 555 23
                             </td>
                             <td class="company_email">
                                 Email: info@repunext.com <br>
@@ -546,7 +729,6 @@
                 <form method="POST" action="{{ route('update.salesorder', ['id' => $salesOrder->id]) }}">
                     @csrf
                     <div id="invoiceContent">
-                        <input type="hidden" id="no" name="no" value="{{ $SalesOrderProformaInvoice->first()->no ?? $formattedNo }}">
                         <div id="printInvoiceHeader">
                             <h2>PROFORMA INVOICE</h2>
                             <div class="no">Ref No: {{ $SalesOrderProformaInvoice->first()->no ?? $formattedNo }}</div>
@@ -562,10 +744,8 @@
                                 <span><strong>GST IN:</strong> {{ $salesOrder->gst_number }} </span>
                             </div>
                             <div id="sales-order-print-header">
-                                <span><strong>Invoice Number:</strong> RN/D/12/{{ str_pad($salesOrder->invoice_number, 3, '0', STR_PAD_LEFT) }}</span>
-                                <br>
-                                <span><strong>Date:</strong> {{ date('d-m-Y', strtotime($salesOrder->date)) }}</span>
-                                <br>
+                                <span><strong>Invoice Number:</strong> RN/D/12/{{ str_pad($salesOrder->invoice_number, 3, '0', STR_PAD_LEFT) }} | </span>
+                                <span><strong>Date:</strong> {{ date('d-m-Y', strtotime($salesOrder->date)) }} | </span>
                                 <span><strong>GST IN:</strong> 33ARFPP5003N1ZR</span>
                                 <br>
                                 <br>
@@ -598,7 +778,12 @@
                         </div>
                         <br>
                         <div class="card-body border-0 pt-0">
-                            <table class="table table-bordered mt-3 text-center">
+                            @php
+                                $hasDiscount = true; // Always show discount column
+                            @endphp
+                            
+                            
+                            <table class="table table-bordered mt-0 text-center">
                                 <thead>
                                     <tr class="text-muted-custom">
                                         <th>S.No</th>
@@ -606,30 +791,32 @@
                                         <th>Month</th>
                                         <th>QTY</th>
                                         <th>Price</th>
-                                        @if($SalesOrderProformaInvoice->where('discount', '>', 0)->count() > 0)
+                                        @if($hasDiscount)
                                         <th>Disc</th>
                                         @endif
                                         <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($SalesOrderProformaInvoice  as $key => $item)
-                                    <tr class="text-muted-custom-product">
-                                        <td>{{ $key + 1 }}</td>
-                                        <input type="hidden" name="salereferenceid" value="{{ $item->salereferenceid }}">
-                                        <input type="hidden" name="gst_status" value="{{ $item->gst_status }}">
-                                        <td><input type="text" class="descr" name="product_name[]" value="{{ $item->product_name }}" readonly></td>
-                                        <td><input type="text" class="month" name="month[]" value="{{ $item->month }}" readonly></td>
-                                        <td><input type="number" class="editable-input qty" name="quantity[]" value="{{ $item->quantity }}" readonly></td>
-                                        <td><input type="number" class="editable-input rate" name="rate[]" value="{{ $item->rate }}" readonly></td>
-                                        @if($item->discount > 0)
-                                        <td><input type="number" class="editable-input discount" name="discount[]" value="{{ $item->discount }}"></td>
-                                        @endif
-                                        <td class="total-amount" name="total_amount[]">₹{{ $item->total_amount }}</td>
-                                    </tr>
+                                    @foreach($SalesOrderProformaInvoice as $index => $item)
+                                        <tr class="text-muted-custom-product">
+                                            <td>{{ $index + 1 }}</td>
+                                            <input type="hidden" name="salereferenceid" value="{{ $item->salereferenceid }}">
+                                            <input type="hidden" name="gst_status" value="{{ $item->gst_status }}">
+                                            <td><input type="text" class="descr" name="product_name[]" value="{{ $item->product_name }}" readonly></td>
+                                            <td><input type="text" class="month" name="month[]" value="{{ $item->month }}" readonly></td>
+                                            <td><input type="number" class="editable-input qty" name="quantity[]" value="{{ $item->quantity }}" readonly></td>
+                                            <td><input type="number" class="editable-input rate" name="rate[]" value="{{ $item->rate }}" readonly></td>
+                                            @if($hasDiscount)
+                                            <td><input type="number" class="editable-input discount" name="discount[]" value="{{ $item->discount ?? '' }}"></td>
+                                            @endif
+                                            <td class="total-amount" name="total_amount[]">₹{{ $item->total_amount }}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            
+                            <!-- Show totals -->
                             <div class="divider1"></div>
                             <div class="totals-section">
                                 <div class="text-muted-custom">Sub Total: ₹<span id="sub-total">{{ number_format($SalesOrderProformaInvoice->sum('total_amount'), 2) }}</span></div>
@@ -639,11 +826,12 @@
                                 @else
                                 <div class="text-muted-custom">IGST (18%): ₹<span id="igst-total">{{ number_format($SalesOrderProformaInvoice->sum('total_amount') * 18 / 100, 2) }}</span></div>
                                 @endif
-                                <div class="text-bold-black" id="grand-total-db-section"><span id="grand-total-db" class="fw-bold fs-7 text-primary">Grand Total:₹{{ number_format(optional($SalesOrderProformaInvoice->where('salereferenceid', $salesOrder->id)->whereNotNull('grandtotal_amount')->first())->grandtotal_amount, 2) }}</span></div>
+                                <div class="text-bold-black" id="grand-total-db-section">Grand Total: <span id="grand-total-db" class="fw-bold fs-7 text-primary">₹{{ number_format(optional($SalesOrderProformaInvoice->where('salereferenceid', $salesOrder->id)->whereNotNull('grandtotal_amount')->first())->grandtotal_amount, 2) }}</span></div>
                                 <div class="text-bold-black" id="grand-total-section" style="display: none;">Grand Total:<span id="grand-total">0.00</span></div>
                             </div>
+                        <div class="d-flex justify-content-end mt-3">
                             <button type="submit" id="savebtn" class="btn btn-primary" style="display: none;">Save</button>
-                        </form>
+                        </div>
                         <div class="divider3"></div>
                         <div id="printTotals" class="print-totals-section">
                             <table class="total-table">
@@ -693,11 +881,12 @@
                                     <td class="bank-details" rowspan="2">
                                         <strong>Bank Details</strong>
                                         <hr><br>
-                                        <p>M/S REPUNEXT</p>
-                                        <p>Current A/C No: 50200050527113</p>
+                                        <p> HDFC Bank: Praveen Dilip S</p>
+                                        <p>Current A/C No: 50100 17489 4841</p>
                                         <p>Bank: HDFC  Branch: Velachery</p>
-                                        <p>IFSC CODE: HDFC0000444</p>
-                                        <p>SWIFT CODE: HDFCINBBCHE</p>
+                                        <p>IFSC CODE: HDFC 0000 010</p>
+                                        <p>MG Road, Besant Nagar, Chennai - 600090, Tamil Nadu Or Google Pay/Bhim
+                                        9884454104</p>
                                     </td>
                                     <td class="certification-details">
                                         <strong>Certified in Quality Management System</strong><br>
@@ -720,6 +909,7 @@
                             </table>
                         </div>
                     </div>
+                </form>
                 </div>
                 <div class="card-footer d-flex justify-content-end py-6 px-9">
                     <a href="{{ route('list.salesorder') }}" class="btn btn-light-success me-2">Back</a>
@@ -769,110 +959,124 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         function calculateGST() {
-    let productRows = document.querySelectorAll(".text-muted-custom-product");
+            let productRows = document.querySelectorAll(".text-muted-custom-product");
 
-    if (productRows.length === 0) {
-        console.error("No product rows found.");
-        return;
-    }
+            if (productRows.length === 0) {
+                console.error("No product rows found.");
+                return;
+            }
 
-    let totalAmount = 0;
-    let totalCGST = 0;
-    let totalSGST = 0;
-    let totalIGST = 0;
-    let totalGSTAmount = 0;
-    let grandTotal = 0;
+            let totalAmount = 0;
+            let totalCGST = 0;
+            let totalSGST = 0;
+            let totalIGST = 0;
+            let totalGSTAmount = 0;
+            let grandTotal = 0;
 
-    productRows.forEach(row => {
-        let rateInput = row.querySelector("[name='rate[]']");
-        let quantityInput = row.querySelector("[name='quantity[]']");
-        let discountInput = row.querySelector("[name='discount[]']");
-        let gstStatusInput = row.querySelector("input[name='gst_status']");
-        
-        if (!rateInput || !quantityInput || !gstStatusInput) {
-            console.error("Missing input in row:", row);
-            return;
+            productRows.forEach(row => {
+                let rateInput = row.querySelector("[name='rate[]']");
+                let quantityInput = row.querySelector("[name='quantity[]']");
+                let discountInput = row.querySelector("[name='discount[]']");
+                let gstStatusInput = row.querySelector("input[name='gst_status']");
+                
+                if (!rateInput || !quantityInput || !gstStatusInput) {
+                    console.error("Missing input in row:", row);
+                    return;
+                }
+
+                let rate = parseFloat(rateInput.value) || 0;
+                let quantity = parseInt(quantityInput.value) || 1;
+                let discountInputValue = discountInput?.value || '';
+                let discount = discountInputValue.trim() === "" ? 0 : parseFloat(discountInputValue) || 0;
+                let gstStatus = gstStatusInput.value;
+
+                // Skip empty rows
+                if (rate === 0 && quantity === 0) {
+                    return;
+                }
+
+                let discountAmount = (rate * quantity) * (discount / 100);
+                let taxableAmount = (rate * quantity) - discountAmount;
+
+                totalAmount += taxableAmount;
+
+                let totalAmountCell = row.querySelector(".total-amount");
+                if (totalAmountCell) {
+                    totalAmountCell.textContent = `₹${taxableAmount.toFixed(2)}`;
+                }
+
+                if (gstStatus === "0") { 
+                    let cgstAmount = (taxableAmount * 9) / 100;
+                    let sgstAmount = (taxableAmount * 9) / 100;
+                    totalCGST += cgstAmount;
+                    totalSGST += sgstAmount;
+                    totalGSTAmount += (cgstAmount + sgstAmount);
+                } else if (gstStatus === "1") { 
+                    let igstAmount = (taxableAmount * 18) / 100;
+                    totalIGST += igstAmount;
+                    totalGSTAmount += igstAmount;
+                }
+            });
+
+            grandTotal = totalAmount + totalGSTAmount;
+
+            // Update all instances of totals (since they might be on different pages)
+            let subTotalElements = document.querySelectorAll("#sub-total");
+            subTotalElements.forEach(element => {
+                element.textContent = totalAmount.toFixed(2);
+            });
+            
+            let cgstTotalElements = document.querySelectorAll("#cgst-total");
+            cgstTotalElements.forEach(element => {
+                element.textContent = totalCGST.toFixed(2);
+            });
+            
+            let sgstTotalElements = document.querySelectorAll("#sgst-total");
+            sgstTotalElements.forEach(element => {
+                element.textContent = totalSGST.toFixed(2);
+            });
+            
+            let igstTotalElements = document.querySelectorAll("#igst-total");
+            igstTotalElements.forEach(element => {
+                element.textContent = totalIGST.toFixed(2);
+            });
+
+            let grandTotalElements = document.querySelectorAll("#grand-total");
+            grandTotalElements.forEach(element => {
+                element.textContent = `₹${grandTotal.toFixed(2)}`;
+            });
         }
 
-        let rate = parseFloat(rateInput.value) || 0;
-        let quantity = parseInt(quantityInput.value) || 1;
-        let discount = parseFloat(discountInput?.value || 0);
-        let gstStatus = gstStatusInput.value;
+        document.addEventListener("input", function (event) {
+            if (event.target.classList.contains("editable-input")) {
+                calculateGST();
+            }
+        });
 
-        let discountAmount = (rate * quantity) * (discount / 100);
-        let taxableAmount = (rate * quantity) - discountAmount;
+        // Edit Mode Functionality
+        document.getElementById("editBtn").addEventListener("click", function () {
+            let inputs = document.querySelectorAll(".editable-input, .qty, .rate, .discount");
+            let editBtn = document.getElementById("editBtn");
+            let saveBtn = document.getElementById("savebtn");
 
-        totalAmount += taxableAmount;
+            document.getElementById("grand-total-db-section").style.display = "none";
+            document.getElementById("grand-total-section").style.display = "block";
 
-        let totalAmountCell = row.querySelector(".total-amount");
-        if (totalAmountCell) {
-            totalAmountCell.textContent = `₹${taxableAmount.toFixed(2)}`;
-        }
+            inputs.forEach(input => {
+                input.removeAttribute("readonly");
+                input.style.border = "1px solid #ddd";
+                input.style.background = "#f9f9f9";
+                input.style.padding = "2px 4px";
+            });
 
-        if (gstStatus === "0") { 
-            let cgstAmount = (taxableAmount * 9) / 100;
-            let sgstAmount = (taxableAmount * 9) / 100;
-            totalCGST += cgstAmount;
-            totalSGST += sgstAmount;
-            totalGSTAmount += (cgstAmount + sgstAmount);
-        } else if (gstStatus === "1") { 
-            let igstAmount = (taxableAmount * 18) / 100;
-            totalIGST += igstAmount;
-            totalGSTAmount += igstAmount;
-        }
+            editBtn.style.display = "none";
+            saveBtn.style.display = "inline-block";
+
+            setTimeout(() => {
+                calculateGST();
+            }, 100);
+        });
     });
-
-    grandTotal = totalAmount + totalGSTAmount;
-
-    if (document.getElementById("sub-total")) {
-        document.getElementById("sub-total").textContent = totalAmount.toFixed(2);
-    }
-    if (document.getElementById("cgst-total")) {
-        document.getElementById("cgst-total").textContent = totalCGST.toFixed(2);
-    }
-    if (document.getElementById("sgst-total")) {
-        document.getElementById("sgst-total").textContent = totalSGST.toFixed(2);
-    }
-    if (document.getElementById("igst-total")) {
-        document.getElementById("igst-total").textContent = totalIGST.toFixed(2);
-    }
-
-    let grandTotalElement = document.getElementById("grand-total");
-    if (grandTotalElement) {
-        grandTotalElement.textContent = `₹${grandTotal.toFixed(2)}`;
-    } else {
-        console.error("Grand Total element not found.");
-    }
-}
-    document.addEventListener("input", function (event) {
-        if (event.target.classList.contains("editable-input")) {
-            calculateGST();
-        }
-    });
-
-});
-  
-// Edit Mode Functionality
-document.getElementById("editBtn").addEventListener("click", function () {
-    let inputs = document.querySelectorAll(".editable-input, .qty, .rate, .discount");
-    let editBtn = document.getElementById("editBtn");
-    let saveBtn = document.getElementById("savebtn");
-
-    document.getElementById("grand-total-db-section").style.display = "none";
-    document.getElementById("grand-total-section").style.display = "block";
-
-    inputs.forEach(input => {
-        input.removeAttribute("readonly");
-        input.style.border = "1px solid #ccc";
-    });
-
-    editBtn.style.display = "none";
-    saveBtn.style.display = "inline-block";
-
-    setTimeout(() => {
-        calculateGST();
-    }, 100);
-});
 
 </script>
 

@@ -11,25 +11,7 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <div class="container-xxl" id="kt_content_container">
-            <div class="card">
-                <div class="card-header pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold fs-3 mb-1">List</span>
-                        <span class="text-muted fw-semibold fs-7">
-                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a> / Sales /  Order
-                        </span>
-                    </h3>
-                    <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                        <a href="{{ route('add.salesorder') }}">
-                            <button type="button" class="btn btn-primary">
-                                <span class="svg-icon svg-icon-2">
-                                    <i class="fa fa-plus"></i>
-                                </span>
-                                Add
-                            </button>
-                        </a>
-                    </div>
-                </div>
+            <div class="card card-flush">
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0">
                     <div class="card-title">
                         <div class="d-flex align-items-center position-relative my-1">
@@ -60,56 +42,65 @@
                                 <a href="#" class="menu-link px-3" data-kt-ecommerce-export="pdf">Export as PDF</a>
                             </div>
                         </div>
+                        <a href="{{ route('add.salesorder') }}" class="btn btn-primary">Add</a>
                     </div>
                 </div>
-                
                 <div class="card-body pt-0"> 
-                    <table class="table border align-middle rounded dataTable table-row-dashed fs-6 gy-5" id="kt_ecommerce_report_views_table">
-                        <thead> 
-                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
-                            <th class="w-8px pe-2"> </th>
-                            <th style="width: 50px;">#</th>
-                            <th style="width: 200px;">Date</th>
-                            <th style="width: 200px;">Invoice Number</th>
-                            <th style="width: 200px;">Company Name</th>
-                            <th style="width: 300px;">Customer Contact</th>
-                            <th style="width: 300px;">Amount</th>
-                            <th style="width: 150px;">Status</th>
-                            <th style="width: 150px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($repn as $repns)
-                            <tr>
-                            <td class="w-8px pe-2"> </td>
-                                <td>{{ $repns->id }}</td>
-                                <td>{{ $repns->date }}</td>
-                                <td>{{ 'RN/D/12/' . str_pad($repns->invoice_number, 3, '0', STR_PAD_LEFT) }}</td>
-                                <td>{{ $repns->company_name}}</td>
-                                <td>{{ $repns->customer_phone_number}}</td>
-                                <td>₹{{ number_format($repns->grandtotal_amount) }}</td>
-                                <td>
-                                <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid flex-stack mb-0">    
-                                    <input class="form-check-input" type="checkbox" onchange="Check(this,{{$repns->id}})" @if($repns->status==1) checked @endif></label>
-                                </td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <a href="{{ route('view.salesorder', $repns->id) }}" class="btn btn-warning btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                                            <i class="fa fa-eye" style="margin-left: 3px;"></i>
+                    <div class="table-responsive">
+                        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4" id="kt_ecommerce_report_views_table">
+                            <thead> 
+                                <tr class="fw-bold text-muted">
+                                    <th class="min-w-90px text-start">S.No</th>
+                                    <th class="min-w-100px text-start">Date</th>
+                                    <th class="min-w-100px text-start">Invoice Number</th>
+                                    <th class="min-w-100px text-start">Company Name</th>
+                                    <th class="min-w-100px text-start">Customer Phone Number</th>
+                                    <th class="min-w-100px text-start">Address</th>
+                                    <th class="min-w-100px text-start">GST Number</th>
+                                    <th class="min-w-100px text-start">Grand Total Amount</th>
+                                    <th class="min-w-100px text-start">Status</th>
+                                    <th class="min-w-100px text-start">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($repn as $repns)
+                                <tr>
+                                    <td class="text-start">{{ $repns->id }}</td>
+                                    <td class="text-start">{{ $repns->date }}</td>
+                                    <td class="text-start">{{ $repns->invoice_number }}</td>
+                                    <td class="text-start">{{ $repns->company_name }}</td>
+                                    <td class="text-start">{{ $repns->customer_phone_number }}</td>
+                                    <td class="text-start">{{ $repns->address }}</td>
+                                    <td class="text-start">{{ $repns->gst_number }}</td>
+                                    <td class="text-start">{{ $repns->grandtotal_amount }}</td>
+                                    <td class="text-start">
+                                        <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
+                                            <input class="form-check-input" type="checkbox" onchange="Check(this,{{$repns->id}})" @if($repns->status==1) checked @endif>
+                                        </div>  
+                                    </td>
+                                    <td class="text-start">
+                                        <a href="{{ route('view.salesorder', $repns->id) }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                            <span class="svg-icon svg-icon-3">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
                                         </a>
-                                        <a href="{{ route('preview.salesorder', $repns->id) }}" class="btn btn-primary btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                                            <i class="fa fa-file-alt" style="margin-left: 3px;"></i>
+                                        <a href="{{ route('preview.salesorder', $repns->id) }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                            <span class="svg-icon svg-icon-3">
+                                                <i class="fa fa-file-alt"></i>
+                                            </span>
                                         </a>
-                                        <button onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                                            <i class="fa fa-trash" style="margin-left: 3px;"></i>
+                                        <button onclick="deleteConfirmation({{ $repns->id }})" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                            <span class="svg-icon svg-icon-3">
+                                                <i class="fa fa-trash"></i>
+                                            </span>
                                         </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>           
             </div>
         </div>
     </div>

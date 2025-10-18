@@ -76,13 +76,13 @@ class SalesOrderController extends Controller
             'company_name' => $validatedData['company_name'],
             'invoice_number' => $numericInvoice,
             'date' => $validatedData['date'],
-            'customer_emailid' => $validatedData['customer_emailid'],
-            'customer_phone_number' => $validatedData['customer_phone_number'],
-            'payment_mode' => $validatedData['payment_mode'],
+            'customer_emailid' => $validatedData['customer_emailid'] ?? null,
+            'customer_phone_number' => $validatedData['customer_phone_number'] ?? null,
+            'payment_mode' => $validatedData['payment_mode'] ?? 'Cash',
             'address' => $validatedData['address'],
-            'customer_status' => $validatedData['customer_status'],
+            'customer_status' => $validatedData['customer_status'] ?? null,
             'gst_number' => $validatedData['gst_number'],
-            'terms_of_payment_and_delivery' => $validatedData['terms_of_payment_and_delivery'],
+            'terms_of_payment_and_delivery' => $validatedData['terms_of_payment_and_delivery'] ?? null,
         ]);
         
         $lastInvoice = SalesOrderProformaInvoice::latest()->first();
@@ -151,7 +151,7 @@ class SalesOrderController extends Controller
                 'sgst_amount' => $sgst,
                 'igst_amount' => $igst,
                 'month' => $month,
-                'terms_of_payment_and_delivery' => $validatedData['terms_of_payment_and_delivery'],
+                'terms_of_payment_and_delivery' => $validatedData['terms_of_payment_and_delivery'] ?? null,
             ]);
         }
         
@@ -191,8 +191,22 @@ class SalesOrderController extends Controller
     public function preview($id)
     {
         $salesOrder = SalesOrder::findOrFail($id);
-        $SalesOrderProformaInvoice = SalesOrderProformaInvoice::where('salereferenceid', $salesOrder->id)->get();
-        return view('sales_order.preview', compact('salesOrder', 'SalesOrderProformaInvoice'));
+        $SalesOrderProformaInvoice = SalesOrderProformaInvoice::where('salereferenceid', $salesOrder->id)
+            ->where('isdeleted', 0)
+            ->orderBy('id', 'asc')
+            ->get();
+        
+        // Debug: Check how many items are retrieved
+        \Log::info('Preview Debug:', [
+            'salesOrderId' => $salesOrder->id,
+            'totalItemsRetrieved' => $SalesOrderProformaInvoice->count(),
+            'itemsData' => $SalesOrderProformaInvoice->pluck('product_name', 'id')->toArray()
+        ]);
+        
+        // Generate formatted invoice number
+        $formattedNo = 'RN/D/12/' . str_pad($salesOrder->invoice_number, 3, '0', STR_PAD_LEFT);
+        
+        return view('sales_order.preview', compact('salesOrder', 'SalesOrderProformaInvoice', 'formattedNo'));
     }
 
     /**

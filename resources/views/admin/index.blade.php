@@ -29,7 +29,7 @@
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     border-radius: 16px;
-    padding: 35px;
+    padding: 15px;
     margin-bottom: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1254,65 +1254,72 @@
 <div class="dashboard-container">
     <div class="container-xxl">
         <!-- Analytical Dashboard Header -->
-        <div class="dashboard-header fade-in">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="me-3">
-                            <div class="bg-primary rounded-circle p-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-graph-up-arrow text-white fs-3"></i>
+        <div class="dashboard-header mb-4">
+        
+                <div class="card-body p-4">
+                    <!-- Main Header Row -->
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center">
+                                <div class="me-4">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="bi bi-graph-up-arrow text-white fs-3"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h1 class="h4 fw-bold text-dark mb-1">Analytics Dashboard</h1>
+                                    <p class="text-muted mb-0">Real-time business intelligence & performance analytics</p>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <h1 class="h2 fw-bold text-dark mb-1">Analytics Dashboard</h1>
-                            <p class="text-muted mb-0">Real-time business intelligence & performance analytics</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="d-flex justify-content-end align-items-center">
-                        <div class="me-4 text-end">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></div>
-                                <small class="text-success fw-semibold">System Online</small>
+                        <div class="col-lg-4">
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="text-end me-3">
+                                    <div class="d-flex align-items-center justify-content-end mb-1">
+                                        <div class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></div>
+                                        <small class="text-success fw-semibold">System Online</small>
+                                    </div>
+                                    <div class="fw-bold text-dark fs-6">{{ now()->format('M d, Y') }}</div>
+                                    <small class="text-muted">{{ now()->format('H:i:s') }} UTC</small>
+                                </div>
+                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                    <i class="bi bi-speedometer2 text-white"></i>
+                                </div>
                             </div>
-                            <div class="fw-bold text-dark fs-6">{{ now()->format('l, F d, Y') }}</div>
-                            <small class="text-muted">{{ now()->format('H:i:s') }} UTC</small>
                         </div>
-                        <div class="bg-gradient-primary rounded-circle p-3" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <i class="bi bi-speedometer2 text-white fs-4"></i>
+                    </div>
+                    
+                    <!-- Quick Analytics Bar -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="bg-light rounded-3 p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-lightning-charge text-primary me-2"></i>
+                                        <span class="fw-semibold text-dark">Live Analytics</span>
+                                    </div>
+                                    <div class="d-flex gap-5">
+                                        <div class="text-center">
+                                            <div class="fw-bold text-primary fs-4">{{ $totalBookings }}</div>
+                                            <small class="text-muted">Total Sessions</small>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="fw-bold text-success fs-4">{{ $activeAvailabilities }}</div>
+                                            <small class="text-muted">Active Schedules</small>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="fw-bold text-info fs-4">{{ $allUsers->count() }}</div>
+                                            <small class="text-muted">Total Users</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 12px;">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-lightning-charge text-primary me-2"></i>
-                        <span class="fw-semibold text-dark">Live Analytics</span>
-                    </div>
-                    <div class="d-flex gap-4">
-                        <div class="text-center">
-                            <div class="fw-bold text-primary">{{ $totalBookings }}</div>
-                            <small class="text-muted">Total Sessions</small>
-                        </div>
-                        <div class="text-center">
-                            <div class="fw-bold text-success">{{ $activeAvailabilities }}</div>
-                            <small class="text-muted">Active Schedules</small>
-                        </div>
-                        <div class="text-center">
-                            <div class="fw-bold text-info">{{ $allUsers->count() }}</div>
-                            <small class="text-muted">Total Users</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+         
         </div>
-        </div>
-        
-        <!-- Quick Analytics Bar -->
-        
+
         <div class="row">
             <div class="col-xl-4">
                 @php
@@ -1354,7 +1361,7 @@
 
                         <div class="d-flex align-items-center justify-content-center gap-5 text-start">
                             <div>
-                                    <canvas id="goalStatusChart" width="140" height="140"></canvas>
+                                <canvas id="goalStatusChart" width="140" height="140"></canvas>
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <div class="d-flex fw-semibold align-items-center mb-2">
@@ -1482,7 +1489,7 @@
 
         @if ($user && in_array($user->role, ['Admin', 'Customer Support']))
             <div class="text-center mb-5">
-                <h2 class="fw-bold">📈 Support Insights</h2>
+                <h2 class="fw-bold">Support Insights</h2>
                 <p class="text-muted">Visual summary of your support categorized by time and status</p>
             </div>
 
@@ -1576,7 +1583,7 @@
                                     <a href="http://127.0.0.1:8000/salesorder/add"
                                     class="btn px-4 py-2 me-2 fw-semibold"
                                     style="background-color: #002244; border: none; color: white;">
-                                        🚀 Try Now
+                                        ðŸš€ Try Now
                                     </a>
                                 </div>
                             </div>
@@ -1585,7 +1592,7 @@
                 </div>
             </div>
             <div class="col-xl-9">
-                <div class="card mb-2" style="height: 488px; overflow: hidden;">
+                <div class="card mb-2" style="height: 465px; overflow: hidden;">
                     <div class="card-header position-relative py-4 border-0 bg-light rounded-top shadow-sm">
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
                             <h3 class="card-title text-dark fw-bold fs-3 mb-0 ps-4">Active Tasks</h3>
@@ -1610,7 +1617,7 @@
                                 </span>Add</button>
                             </a>
 
-                            <button id="refreshButton" class="btn btn-primary ms-2">↻</button>
+                            <button id="refreshButton" class="btn btn-primary ms-2">â†»</button>
                         </div>
                         <ul class="nav nav-pills gap-2 justify-content-center mt-5" role="tablist">
                             @php
@@ -1898,7 +1905,7 @@
                                         <span class="trend-chip down"><i class="bi bi-arrow-down-right"></i>{{ $bookingTrend['val'] }}%</span>
                                     @endif
                                     <h4 class="stat-number">{{ $todayBookings }}</h4>
-                                    <p class="stat-label">Today’s Slots</p>
+                                    <p class="stat-label">Todayâ€™s Slots</p>
                                 </div>
 
                                 <div class="stat-box">
@@ -1915,7 +1922,7 @@
                             </div>
                         @endif
 
-                        <div class="action-buttons">
+                        <div class="action-buttons d-flex justify-content-center gap-2 mt-3">
                             <a href="{{ route('booking.index') }}" class="btn btn-brand btn-sm"><i class="bi bi-list-ul me-1"></i>Bookings</a>
                             <a href="{{ route('booking.index') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-plus-circle me-1"></i>New</a>
                             
@@ -2016,7 +2023,7 @@
                 success: function (response) {
                     $('#dashboard-content').html(response.html);
 
-                    // ✅ Render the bar chart after AJAX
+                    // âœ… Render the bar chart after AJAX
                     if (document.getElementById('categoryChart')) {
                         const ctx = document.getElementById('categoryChart').getContext('2d');
                         const labels = JSON.parse(document.getElementById('categoryChart').getAttribute('data-labels'));
@@ -2199,7 +2206,7 @@
             return;
         }
 
-        $('#balanceLeaveTableWrapper').show(); // ✅ Show the table
+        $('#balanceLeaveTableWrapper').show(); // âœ… Show the table
         $('#leave-balance-table').html('<tr><td colspan="3" class="text-center text-primary">Loading data...</td></tr>');
 
         $.ajax({
@@ -2245,7 +2252,7 @@
         $('#start_date').val('2025-01-01');
         $('#end_date').val('{{ \Carbon\Carbon::now()->format("Y-m-d") }}');
 
-        // ✅ Hide the whole balance leave table (including thead)
+        // âœ… Hide the whole balance leave table (including thead)
         $('#balanceLeaveTableWrapper').hide();
 
         // Optionally clear the rows (not required if hiding the whole wrapper)
@@ -2900,7 +2907,8 @@ function updateFinancialChartType(chartType) {
             easing: 'easeInOutQuart'
         }
     };
-   
+    
+    // Adjust options based on chart type
     if (chartType === 'doughnut') {
         chartOptions.cutout = '60%';
         chartOptions.plugins.legend.position = 'bottom';
@@ -2926,7 +2934,7 @@ function updateFinancialChartType(chartType) {
         };
     } else {
         chartOptions.scales = {
-     l       y:  {
+            y: {
                 beginAtZero: true,
                 grid: {
                     color: 'rgba(0, 0, 0, 0.1)',

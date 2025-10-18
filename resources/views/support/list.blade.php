@@ -27,8 +27,6 @@
 						
 					</span>
 
-
-
 						<span class="text-muted fw-semibold fs-7"><a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a> / Enquiry</span>
 					</h3>
 					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">

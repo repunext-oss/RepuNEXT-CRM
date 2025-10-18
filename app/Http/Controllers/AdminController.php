@@ -52,16 +52,29 @@ class AdminController extends Controller
             ->sum('amount');
 
         $monthlyIntern = Intern::where('i_isdeleted', '!=', 1)
+            ->where('amt', 'paid')
             ->whereBetween('created_at', [$currentMonth, $currentMonthEnd])
             ->sum('Amount');
             
         $monthlyProfit = $monthlyRevenue - $monthlyExpense;
-        $totalInternPaid=Intern::where('i_isdeleted', '!=', 1)->sum('amount');
+        $totalInternPaid=Intern::where('i_isdeleted', '!=', 1)->where('amt', 'paid')->sum('amount');
         $totalRevenue = Revenue::where('r_isdeleted', '!=', 1)->sum('amount');
         $totalExpense = Expense::where('e_isdeleted', '!=', 1)->sum('amount');
         $totalProfit = $totalRevenue - $totalExpense;
         $Final = $totalRevenue + $totalInternPaid;
         $MonthlyFinal = $monthlyRevenue+ $monthlyIntern;
+        
+        // Debug: Log financial data
+        \Log::info('Financial Data Debug:', [
+            'totalRevenue' => $totalRevenue,
+            'totalExpense' => $totalExpense,
+            'monthlyRevenue' => $monthlyRevenue,
+            'monthlyExpense' => $monthlyExpense,
+            'totalInternPaid' => $totalInternPaid,
+            'monthlyIntern' => $monthlyIntern,
+            'Final' => $Final,
+            'MonthlyFinal' => $MonthlyFinal
+        ]);
 
         // Studio Booking Data
         $todayBookings = Booking::whereDate('start', Carbon::today())->count();
@@ -433,7 +446,6 @@ class AdminController extends Controller
             $cvideo_write=trim($request->cvideo_write);
             $cvideo_create=trim($request->cvideo_create);
             $cvideo_delete=trim($request->cvideo_delete);
-
 
             $data = array(
                 'user_management_all' => $user_management_all,

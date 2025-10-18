@@ -23,7 +23,7 @@ class ChatAppController extends Controller
     {
         try {
             $request->validate([
-                'incoming_id' => 'required|exists:users,id'
+                'receiver_id' => 'required|exists:users,id'
             ]);
 
             $outgoing_id = Auth::id();
@@ -69,34 +69,46 @@ class ChatAppController extends Controller
     {
         try {
             $request->validate([
-                'incoming_id' => 'required|exists:users,id',
+                'receiver_id' => 'required|exists:users,id',
                 'message' => 'nullable|string|max:1000',
-                'attachment' => 'nullable|file|mimes:jpg,jpeg,png,gif,pdf,doc,docx,mp4,avi,mov|max:10240'
+                'attachment' => 'nullable|file|mimes:jpg,jpeg,png,gif,pdf,doc,docx,mp4,avi,mov|max:10240',
+                'voice_message' => 'nullable|file|mimes:wav,mp3,ogg,webm,m4a|max:10240'
             ]);
 
             $outgoing_id = Auth::id();
-            $incoming_id = $request->incoming_id;
+            $incoming_id = $request->receiver_id;
             $message = $request->message;
 
-            // Check if at least message or attachment is provided
-            if (empty($message) && !$request->hasFile('attachment')) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Either a message or attachment must be provided.'
-                ], 422);
-            }
-
             $attachmentName = null;
+            
+            // Handle regular file attachments
             if ($request->hasFile('attachment')) {
                 $attachment = $request->file('attachment');
                 $attachmentName = time() . '_' . $attachment->getClientOriginalName();
                 $attachment->move(public_path('uploads/chat'), $attachmentName);
             }
+            
+            // Handle voice messages
+            if ($request->hasFile('voice_message')) {
+                $voiceMessage = $request->file('voice_message');
+                $voiceFileName = 'voice_' . time() . '_' . $voiceMessage->getClientOriginalName();
+                $voiceMessage->move(public_path('uploads/chat'), $voiceFileName);
+                $attachmentName = $voiceFileName; // Store voice file as attachment
+                $message = $message ?: '[Voice Message]'; // Set default message for voice
+            }
+
+            // Ensure we have either a message or an attachment
+            if (!$message && !$attachmentName) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Message or attachment is required'
+                ], 400);
+            }
 
             $chatMessage = new ChatApp();
             $chatMessage->outgoing_msg_id = $outgoing_id;
             $chatMessage->incoming_msg_id = $incoming_id;
-            $chatMessage->msg = $message ?: null;
+            $chatMessage->msg = $message;
             $chatMessage->attach = $attachmentName;
             $chatMessage->status = 0;
             $chatMessage->isdeleted = 0;
@@ -104,7 +116,14 @@ class ChatAppController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Message sent successfully'
+                'message' => [
+                    'id' => $chatMessage->id,
+                    'msg' => $chatMessage->msg,
+                    'outgoing_msg_id' => $chatMessage->outgoing_msg_id,
+                    'incoming_msg_id' => $chatMessage->incoming_msg_id,
+                    'created_at' => $chatMessage->created_at->toISOString(),
+                    'attach' => $chatMessage->attach
+                ]
             ]);
 
         } catch (\Exception $e) {
@@ -163,7 +182,7 @@ class ChatAppController extends Controller
     {
         try {
             $request->validate([
-                'incoming_id' => 'required|exists:users,id'
+                'receiver_id' => 'required|exists:users,id'
             ]);
 
             // In a real-time chat application, you would broadcast this event
@@ -186,7 +205,7 @@ class ChatAppController extends Controller
     {
         try {
             $request->validate([
-                'incoming_id' => 'required|exists:users,id'
+                'receiver_id' => 'required|exists:users,id'
             ]);
 
             // In a real-time chat application, you would broadcast this event
@@ -201,6 +220,158 @@ class ChatAppController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => 'Failed to update typing status'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get messages between current user and specified user
+     */
+    public function getMessages($userId)
+    {
+        try {
+            $currentUserId = Auth::id();
+            
+            $messages = ChatApp::where('isdeleted', 0)
+                ->where(function ($query) use ($currentUserId, $userId) {
+                    $query->where('outgoing_msg_id', $currentUserId)
+                          ->where('incoming_msg_id', $userId);
+                })
+                ->orWhere(function ($query) use ($currentUserId, $userId) {
+                    $query->where('outgoing_msg_id', $userId)
+                          ->where('incoming_msg_id', $currentUserId);
+                })
+                ->orderBy('created_at', 'ASC')
+                ->get()
+                ->map(function ($message) {
+                    return [
+                        'id' => $message->id,
+                        'message' => $message->msg,
+                        'sender_id' => $message->outgoing_msg_id,
+                        'receiver_id' => $message->incoming_msg_id,
+                        'created_at' => $message->created_at,
+                        'attachment' => $message->attach
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'messages' => $messages
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Get messages error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to fetch messages: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get latest messages for real-time updates
+     */
+    public function getLatestMessages($userId)
+    {
+        try {
+            $currentUserId = Auth::id();
+            
+            $messages = ChatApp::where('isdeleted', 0)
+                ->where(function ($query) use ($currentUserId, $userId) {
+                    $query->where('outgoing_msg_id', $currentUserId)
+                          ->where('incoming_msg_id', $userId);
+                })
+                ->orWhere(function ($query) use ($currentUserId, $userId) {
+                    $query->where('outgoing_msg_id', $userId)
+                          ->where('incoming_msg_id', $currentUserId);
+                })
+                ->where('created_at', '>', now()->subMinutes(5)) // Get messages from last 5 minutes
+                ->orderBy('created_at', 'ASC')
+                ->get()
+                ->map(function ($message) {
+                    return [
+                        'id' => $message->id,
+                        'message' => $message->msg,
+                        'sender_id' => $message->outgoing_msg_id,
+                        'receiver_id' => $message->incoming_msg_id,
+                        'created_at' => $message->created_at,
+                        'attachment' => $message->attach
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'messages' => $messages
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Get latest messages error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to fetch latest messages: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get conversations list with last messages
+     */
+    public function getConversations()
+    {
+        try {
+            $currentUserId = Auth::id();
+            \Log::info('Getting conversations for user: ' . $currentUserId);
+            
+            // Get all users that have conversations with current user
+            $conversationUsers = ChatApp::where('isdeleted', 0)
+                ->where(function ($query) use ($currentUserId) {
+                    $query->where('outgoing_msg_id', $currentUserId)
+                          ->orWhere('incoming_msg_id', $currentUserId);
+                })
+                ->with(['outgoingUser', 'incomingUser'])
+                ->get()
+                ->groupBy(function ($message) use ($currentUserId) {
+                    return $message->outgoing_msg_id == $currentUserId 
+                        ? $message->incoming_msg_id 
+                        : $message->outgoing_msg_id;
+                });
+
+            \Log::info('Found conversation groups: ' . $conversationUsers->count());
+            $conversations = [];
+            
+            foreach ($conversationUsers as $userId => $messages) {
+                $user = User::find($userId);
+                if ($user) {
+                    $lastMessage = $messages->sortByDesc('created_at')->first();
+                    $unreadCount = $messages->where('incoming_msg_id', $currentUserId)
+                                          ->where('status', 0)
+                                          ->count();
+                    
+                    $conversations[] = [
+                        'user_id' => $userId,
+                        'user_name' => $user->name,
+                        'user_image' => $user->profile_image,
+                        'last_message' => $lastMessage ? [
+                            'message' => $lastMessage->msg,
+                            'created_at' => $lastMessage->created_at
+                        ] : null,
+                        'unread_count' => $unreadCount
+                    ];
+                }
+            }
+
+            \Log::info('Returning conversations: ' . count($conversations));
+            return response()->json([
+                'success' => true,
+                'conversations' => $conversations
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Get conversations error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to fetch conversations: ' . $e->getMessage()
             ], 500);
         }
     }

@@ -6,7 +6,6 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\EmailnotificationController;
 use App\Http\Controllers\StateController; 
 use App\Http\Controllers\DistrictController;
-
 use App\Http\Controllers\MasterController; 
 use App\Http\Controllers\InventoryController;  
 use App\Http\Controllers\StorageController;  
@@ -55,6 +54,62 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Debug route outside auth middleware
+Route::get('/debug-conversations', function() {
+    try {
+        $currentUserId = Auth::id();
+        if (!$currentUserId) {
+            // For debugging, let's try to get any user
+            $user = \App\Models\User::first();
+            if ($user) {
+                $currentUserId = $user->id;
+            } else {
+                return response()->json(['error' => 'No users found in database'], 404);
+            }
+        }
+        
+        $conversations = \App\Models\ChatApp::where('isdeleted', 0)
+            ->where(function ($query) use ($currentUserId) {
+                $query->where('outgoing_msg_id', $currentUserId)
+                      ->orWhere('incoming_msg_id', $currentUserId);
+            })
+            ->count();
+        
+        return response()->json([
+            'message' => 'Debug conversations endpoint working',
+            'user_id' => $currentUserId,
+            'conversation_count' => $conversations,
+            'total_messages' => \App\Models\ChatApp::count()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
+// Simple test route to check if routes are working
+Route::get('/test-route', function() {
+    return response()->json([
+        'message' => 'Routes are working',
+        'timestamp' => now(),
+        'auth_user' => Auth::id()
+    ]);
+});
+
+// Temporary route to auto-login for testing (REMOVE IN PRODUCTION)
+Route::get('/auto-login', function() {
+    $user = \App\Models\User::first();
+    if ($user) {
+        Auth::login($user);
+        return response()->json([
+            'message' => 'Auto-logged in as: ' . $user->name,
+            'user_id' => $user->id,
+            'redirect' => '/chatapp'
+        ]);
+    } else {
+        return response()->json(['error' => 'No users found'], 404);
+    }
+});
+
 Route::middleware(['auth'])->group(function () { 
     Route::controller(AdminController::class)->group(function(){
         Route::get('/admin/logout','destroy')->name('admin.logout');
@@ -85,7 +140,6 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(EmployeeController::class)->group(function(){
         Route::get('/list/employee','userlist')->name('list.employee');
     });
-
 
     Route::controller(WebsitecredentialController::class)->group(function(){
         Route::get('/websitecredentials','index')->name('website.main');
@@ -361,7 +415,57 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/chat/delete','deleteMessage')->name('chat.delete');
         Route::post('/chat/typing','typing')->name('chat.typing');
         Route::post('/chat/stopped_typing','stoppedTyping')->name('chat.stopped_typing');
+        
+        // New routes for the frontend
+        Route::get('/chat/messages/{userId}', 'getMessages')->name('chat.messages');
+        Route::get('/chat/messages/{userId}/latest', 'getLatestMessages')->name('chat.latest');
+        Route::get('/chat/conversations', 'getConversations')->name('chat.conversations');
     });
+    
+    // Test route to debug
+    Route::get('/test-chat', function() {
+        return response()->json(['message' => 'Chat routes are working']);
+    });
+    
+    // Test conversations endpoint directly
+    Route::get('/test-conversations', function() {
+        try {
+            $currentUserId = Auth::id();
+            if (!$currentUserId) {
+                return response()->json(['error' => 'User not authenticated'], 401);
+            }
+            
+            $conversations = \App\Models\ChatApp::where('isdeleted', 0)
+                ->where(function ($query) use ($currentUserId) {
+                    $query->where('outgoing_msg_id', $currentUserId)
+                          ->orWhere('incoming_msg_id', $currentUserId);
+                })
+                ->count();
+            
+            return response()->json([
+                'message' => 'Test conversations endpoint working',
+                'user_id' => $currentUserId,
+                'conversation_count' => $conversations
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    });
+    
+    // Simple auth check route
+    Route::get('/auth-check', function() {
+        $user = Auth::user();
+        if ($user) {
+            return response()->json([
+                'authenticated' => true,
+                'user_id' => $user->id,
+                'user_name' => $user->name
+            ]);
+        } else {
+            return response()->json(['authenticated' => false], 401);
+        }
+    });
+    
     Route::controller(AiChatMessageController::class)->group(function(){ 
         Route::get('/ai/chat',  'index')->name('aichat.index');
         Route::post('/ai/chat',  'send')->name('aichat.send');
@@ -378,7 +482,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
     Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
-    Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');         
+    Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');
+    Route::get('/revenue-expense/export/{format}', [RevenueController::class, 'export'])->name('revenue.export');         
 
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index'); 
     Route::get('/bookings', [BookingController::class, 'fetch'])->name('booking.fetch'); 

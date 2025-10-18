@@ -156,21 +156,29 @@
 
 	
 
-<script>
-tinymce.init({
-    selector: "#tinymce_basic", height : "400", statusbar: false, menubar: false,
-    toolbar: [ "styleselect fontsizeselect fontselect| bold italic | link image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | autolink | code preview"],
-    plugins : "advlist autolink link image lists charmap print preview code",
-	relative_urls: false, 
-    remove_script_host: false, 
-	image_dimensions: false,
-	setup: function (editor) {
-		editor.on('BeforeSetContent', function (e) { 
-			if (e.content) {
-				e.content = e.content.replace(/(<img[^>]+)(?:width|height)="[^"]*"/g, '$1');
+		<script>
+		tinymce.init({
+		    selector: "#tinymce_basic", height : "400", statusbar: false, menubar: false,
+		    toolbar: [ "styleselect fontsizeselect fontselect| bold italic | link image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | autolink | code preview"],
+		    plugins : "advlist autolink link image lists charmap print preview code",
+			relative_urls: false, 
+		    remove_script_host: false, 
+			image_dimensions: false,
+			setup: function (editor) {
+				editor.on('BeforeSetContent', function (e) { 
+					if (e.content) {
+						e.content = e.content.replace(/(<img[^>]+)(?:width|height)="[^"]*"/g, '$1');
+					}
+				});
 			}
-		});
-	}
-});</script>
+		});</script>
+
+		<!-- Idle Timeout Script -->
+		<script>
+			// Set global URLs for the idle timeout handler
+			window.resetSessionUrl = '{{ route("reset-session") }}';
+			window.loginUrl = '{{ route("login") }}';
+		</script>
+		<script src="{{ asset('js/idle-timeout.js') }}"></script>
 	</body>
 </html>

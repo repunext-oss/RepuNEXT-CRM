@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JiraTask;
 use App\Models\User;
 use App\Models\ProjectDetail;
+use App\Models\Sprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -23,30 +24,21 @@ class JiraTaskController extends Controller
             session(['name' => Auth::user()->id, 'username' => Auth::user()->username]);
         }
 
+        // Get current active sprint
+        $currentSprint = Sprint::where('status', 'active')->first();
+
         // Get tasks organized by status (excluding backlog - shown in separate page)
-        $todoTasks = JiraTask::active()
-            ->byStatus('todo')
-            ->with(['assignee', 'reporter', 'project'])
-            ->orderBy('id', 'DESC')
-            ->get();
+        // If there's an active sprint, only show tasks assigned to that sprint
+        $query = JiraTask::active()->with(['assignee', 'reporter', 'project', 'sprint']);
+        
+        if ($currentSprint) {
+            $query->where('sprint_id', $currentSprint->id);
+        }
 
-        $inProgressTasks = JiraTask::active()
-            ->byStatus('in_progress')
-            ->with(['assignee', 'reporter', 'project'])
-            ->orderBy('id', 'DESC')
-            ->get();
-
-        $reviewTasks = JiraTask::active()
-            ->byStatus('review')
-            ->with(['assignee', 'reporter', 'project'])
-            ->orderBy('id', 'DESC')
-            ->get();
-
-        $doneTasks = JiraTask::active()
-            ->byStatus('done')
-            ->with(['assignee', 'reporter', 'project'])
-            ->orderBy('id', 'DESC')
-            ->get();
+        $todoTasks = (clone $query)->byStatus('todo')->orderBy('id', 'DESC')->get();
+        $inProgressTasks = (clone $query)->byStatus('in_progress')->orderBy('id', 'DESC')->get();
+        $reviewTasks = (clone $query)->byStatus('review')->orderBy('id', 'DESC')->get();
+        $doneTasks = (clone $query)->byStatus('done')->orderBy('id', 'DESC')->get();
 
         $users = User::where('status', 0)->get();
         $projects = ProjectDetail::where('project_status', 0)->get();
@@ -57,7 +49,8 @@ class JiraTaskController extends Controller
             'reviewTasks', 
             'doneTasks', 
             'users', 
-            'projects'
+            'projects',
+            'currentSprint'
         ));
     }
 
@@ -118,8 +111,11 @@ class JiraTaskController extends Controller
         if ($request->hasFile('attachments')) {
             $files = [];
             foreach ($request->file('attachments') as $file) {
-                $filename = 'jira_task_' . time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('upload/jira-tasks'), $filename);
+                $dateTime = date('dmyHis');
+                $random = rand(10, 99);
+                $extension = $file->getClientOriginalExtension();
+                $filename = "rnboard-{$dateTime}{$random}." . $extension; 
+                $file->move(public_path('upload/rn-board-tasks'), $filename);
                 $files[] = $filename;
             }
             $task->attachments = $files;
@@ -140,7 +136,7 @@ class JiraTaskController extends Controller
             }
         }
 
-        return redirect()->route('jira-tasks.board')->with([
+        return redirect()->route('jira-tasks.backlog')->with([
             'message' => 'Task created successfully!',
             'alert-type' => 'success'
         ]);
@@ -216,8 +212,11 @@ class JiraTaskController extends Controller
         if ($request->hasFile('attachments')) {
             $files = [];
             foreach ($request->file('attachments') as $file) {
-                $filename = 'jira_task_' . time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('upload/jira-tasks'), $filename);
+                $dateTime = date('dmyHis');
+                $random = rand(10, 99);
+                $extension = $file->getClientOriginalExtension();
+                $filename = "rnboard-{$dateTime}{$random}." . $extension;
+                $file->move(public_path('upload/rn-board-tasks'), $filename);
                 $files[] = $filename;
             }
             $task->attachments = $files;
@@ -392,10 +391,16 @@ class JiraTaskController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->get();
 
+        // Get sprint data for sprint management
+        $currentSprint = Sprint::where('status', 'active')->first();
+        $allSprints = Sprint::withCount('tasks')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $users = User::where('status', 0)->get();
         $projects = ProjectDetail::where('project_status', 0)->get();
 
-        return view('jira-tasks.backlog', compact('backlogTasks', 'todoTasks', 'users', 'projects'));
+        return view('jira-tasks.backlog', compact('backlogTasks', 'todoTasks', 'users', 'projects', 'currentSprint', 'allSprints'));
     }
 
     /**
@@ -463,6 +468,145 @@ class JiraTaskController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Comment deleted successfully'
+        ]);
+    }
+
+    /**
+     * Get tasks available for sprint assignment
+     */
+    public function getAvailableTasksForSprint()
+    {
+        $currentSprint = Sprint::where('status', 'active')->first();
+        
+        // Get tasks that are not assigned to any sprint or are in backlog
+        $availableTasks = JiraTask::active()
+            ->where(function($query) {
+                $query->whereNull('sprint_id')
+                      ->orWhere('status', 'backlog');
+            })
+            ->with(['assignee', 'reporter', 'project'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'tasks' => $availableTasks,
+            'currentSprint' => $currentSprint
+        ]);
+    }
+
+    /**
+     * Assign task to sprint
+     */
+    public function assignTaskToSprint(Request $request)
+    {
+        $request->validate([
+            'task_id' => 'required|exists:jira_tasks,id',
+            'sprint_id' => 'required|exists:sprints,id'
+        ]);
+
+        $task = JiraTask::findOrFail($request->task_id);
+        $sprint = Sprint::findOrFail($request->sprint_id);
+
+        // Check if sprint is active or planning
+        if (!in_array($sprint->status, ['active', 'planning'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tasks can only be assigned to active or planning sprints.'
+            ], 422);
+        }
+
+        $task->sprint_id = $request->sprint_id;
+        
+        // If task is in backlog and being assigned to active sprint, move to todo
+        if ($task->status === 'backlog' && $sprint->status === 'active') {
+            $task->status = 'todo';
+            $task->moved_to_todo_at = now();
+        }
+        
+        $task->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task assigned to sprint successfully!',
+            'task' => $task->load(['assignee', 'reporter', 'project', 'sprint'])
+        ]);
+    }
+
+    /**
+     * Remove task from sprint
+     */
+    public function removeTaskFromSprint(Request $request)
+    {
+        $request->validate([
+            'task_id' => 'required|exists:jira_tasks,id'
+        ]);
+
+        $task = JiraTask::findOrFail($request->task_id);
+        
+        // Only allow removal if task is not in done status
+        if ($task->status === 'done') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot remove completed tasks from sprint.'
+            ], 422);
+        }
+
+        $task->sprint_id = null;
+        $task->status = 'backlog'; // Move back to backlog
+        $task->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task removed from sprint and moved to backlog!',
+            'task' => $task->load(['assignee', 'reporter', 'project'])
+        ]);
+    }
+
+    /**
+     * Bulk assign tasks to sprint
+     */
+    public function bulkAssignTasksToSprint(Request $request)
+    {
+        $request->validate([
+            'task_ids' => 'required|array',
+            'task_ids.*' => 'exists:jira_tasks,id',
+            'sprint_id' => 'required|exists:sprints,id'
+        ]);
+
+        $sprint = Sprint::findOrFail($request->sprint_id);
+        
+        // Check if sprint is active or planning
+        if (!in_array($sprint->status, ['active', 'planning'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tasks can only be assigned to active or planning sprints.'
+            ], 422);
+        }
+
+        $tasks = JiraTask::whereIn('id', $request->task_ids)->get();
+        $assignedCount = 0;
+
+        foreach ($tasks as $task) {
+            // Only assign tasks that are not already in a sprint or are in backlog
+            if (!$task->sprint_id || $task->status === 'backlog') {
+                $task->sprint_id = $request->sprint_id;
+                
+                // If task is in backlog and being assigned to active sprint, move to todo
+                if ($task->status === 'backlog' && $sprint->status === 'active') {
+                    $task->status = 'todo';
+                    $task->moved_to_todo_at = now();
+                }
+                
+                $task->save();
+                $assignedCount++;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully assigned {$assignedCount} tasks to sprint!",
+            'assigned_count' => $assignedCount
         ]);
     }
 }

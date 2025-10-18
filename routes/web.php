@@ -41,7 +41,7 @@ use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\JiraTaskController;
-
+use App\Http\Controllers\SprintController;  
 
 Route::get('/test-mail', function () {
     Mail::raw('Test email from Laravel SMTP config', function ($message) {
@@ -111,6 +111,12 @@ Route::get('/auto-login', function() {
 });
 
 Route::middleware(['auth'])->group(function () { 
+    // Session reset route for idle timeout
+    Route::post('/reset-session', function() {
+        session()->put('last_activity', time());
+        return response()->json(['status' => 'success', 'message' => 'Session extended']);
+    })->name('reset-session');
+    
     Route::controller(AdminController::class)->group(function(){
         Route::get('/admin/logout','destroy')->name('admin.logout');
         Route::get('/admin/profile','Profile')->name('admin.profile');
@@ -528,6 +534,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jira-tasks/backlog', 'backlog')->name('jira-tasks.backlog');
         Route::post('/jira-tasks/{id}/add-comment', 'addComment')->name('jira-tasks.add-comment');
         Route::delete('/jira-tasks/{id}/delete-comment', 'deleteComment')->name('jira-tasks.delete-comment');
+        Route::get('/jira-tasks/available-for-sprint', 'getAvailableTasksForSprint')->name('jira-tasks.available-for-sprint');
+        Route::post('/jira-tasks/assign-to-sprint', 'assignTaskToSprint')->name('jira-tasks.assign-to-sprint');
+        Route::post('/jira-tasks/remove-from-sprint', 'removeTaskFromSprint')->name('jira-tasks.remove-from-sprint');
+        Route::post('/jira-tasks/bulk-assign-to-sprint', 'bulkAssignTasksToSprint')->name('jira-tasks.bulk-assign-to-sprint');
+    });
+
+    // Sprint Routes
+    Route::controller(SprintController::class)->group(function(){
+        Route::get('/sprints', 'index')->name('sprints.index');
+        Route::post('/sprints', 'store')->name('sprints.store');
+        Route::get('/sprints/all', 'getAllSprints')->name('sprints.all');
+        Route::get('/sprints/current', 'getCurrentSprint')->name('sprints.current');
+        Route::get('/sprints/{id}', 'show')->name('sprints.show');
+        Route::get('/sprints/{id}/closed-tickets', 'getClosedTickets')->name('sprints.closed-tickets');
+        Route::post('/sprints/{id}/start', 'start')->name('sprints.start');
+        Route::post('/sprints/{id}/complete', 'complete')->name('sprints.complete');
+        Route::post('/sprints/{id}/add-tasks', 'addTasks')->name('sprints.add-tasks');
+        Route::post('/sprints/{id}/remove-task', 'removeTask')->name('sprints.remove-task');
+        Route::put('/sprints/{id}', 'update')->name('sprints.update');
+        Route::delete('/sprints/{id}', 'destroy')->name('sprints.destroy');
     });
  
 });

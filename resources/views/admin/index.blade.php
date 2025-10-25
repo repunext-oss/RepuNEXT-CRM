@@ -29,7 +29,7 @@
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     border-radius: 16px;
-    padding: 35px;
+    padding: 15px;
     margin-bottom: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -843,66 +843,481 @@
     @media (max-width: 1199.98px){ .stats-grid{ grid-template-columns:repeat(3,1fr);} }
     @media (max-width: 575.98px){ .stats-grid{ grid-template-columns:1fr 1fr; } .action-buttons .btn{ flex:1 1 auto; } }
 </style>
+<style>
+.unique-card {
+    background: linear-gradient(135deg, #ffffff, #f8faff); /* brighter solid background */
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.unique-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.15);
+}
+
+.unique-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .8rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: .6rem;
+}
+
+.icon-badge {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: #fff;
+    border-radius: 12px;
+    padding: .45rem .65rem;
+    font-size: 1.1rem;
+    box-shadow: 0 3px 8px rgba(79,70,229,0.35);
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.stat-box {
+    flex: 1;
+    text-align: center;
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    position: relative;
+}
+
+.stat-icon {
+    font-size: 1.6rem;
+    margin-bottom: .4rem;
+    color: #2563eb;
+}
+
+.stat-number {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.stat-label {
+    font-size: .85rem;
+    color: #6b7280;
+}
+
+.trend-chip {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: .75rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #fff;
+}
+.trend-chip.up { background: #16c784; }
+.trend-chip.down { background: #ef4444; }
+
+.action-buttons {
+    display: flex;
+    gap: .6rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+.action-buttons .btn-brand {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+}
+.action-buttons .btn-brand:hover {
+    opacity: 0.9;
+}
+.action-buttons .btn-outline-light {
+    border: 1px solid #d1d5db;
+    color: #374151;
+    background: #fff;
+}
+ .action-buttons .btn-outline-light:hover {
+     background: #f3f4f6;
+ }
+
+/* Professional Leave Management Styles */
+.leave-management-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.leave-management-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+}
+
+.leave-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.leave-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.leave-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0fdf4;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #bbf7d0;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: pulse 2s infinite;
+}
+
+.status-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+.leave-date {
+    background: #f8fafc;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.selection-panel {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-label {
+    color: #374151;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-select-lg {
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.form-select-lg:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.balance-dashboard {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+
+.balance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.balance-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 2px solid #f1f5f9;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+}
+
+.balance-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-color: #3b82f6;
+}
+
+.balance-card.credit-leave::before { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+.balance-card.casual-leave::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.balance-card.sick-leave::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
+.balance-card.total-leave::before { background: linear-gradient(90deg, #10b981, #059669); }
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    font-size: 1.25rem;
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+}
+
+.credit-leave .card-icon { 
+    background: #f3f4f6; 
+    border-color: #8b5cf6;
+    color: #8b5cf6;
+}
+.casual-leave .card-icon { 
+    background: #f3f4f6; 
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+.sick-leave .card-icon { 
+    background: #f3f4f6; 
+    border-color: #ef4444;
+    color: #ef4444;
+}
+.total-leave .card-icon { 
+    background: #f3f4f6; 
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.balance-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.balance-unit {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.balance-progress {
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+.analytics-panel {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.analytics-header {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.analytics-body {
+    padding: 1.5rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 1rem;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.legend-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@media (max-width: 768px) {
+    .balance-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .leave-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
+ 
+ </style>
+
 <div class="dashboard-container">
     <div class="container-xxl">
         <!-- Analytical Dashboard Header -->
-        <div class="dashboard-header fade-in">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="me-3">
-                            <div class="bg-primary rounded-circle p-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-graph-up-arrow text-white fs-3"></i>
+        <div class="dashboard-header mb-4">
+        
+                <div class="card-body p-4">
+                    <!-- Main Header Row -->
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center">
+                                <div class="me-4">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="bi bi-graph-up-arrow text-white fs-3"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h1 class="h4 fw-bold text-dark mb-1">Analytics Dashboard</h1>
+                                    <p class="text-muted mb-0">Real-time business intelligence & performance analytics</p>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <h1 class="h2 fw-bold text-dark mb-1">Analytics Dashboard</h1>
-                            <p class="text-muted mb-0">Real-time business intelligence & performance analytics</p>
+                        <div class="col-lg-4">
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="text-end me-3">
+                                    <div class="d-flex align-items-center justify-content-end mb-1">
+                                        <div class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></div>
+                                        <small class="text-success fw-semibold">System Online</small>
+                                    </div>
+                                    <div class="fw-bold text-dark fs-6">{{ now()->format('M d, Y') }}</div>
+                                    <small class="text-muted">{{ now()->format('H:i:s') }} UTC</small>
+                                </div>
+                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                    <i class="bi bi-speedometer2 text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Analytics Bar -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="bg-light rounded-3 p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-lightning-charge text-primary me-2"></i>
+                                        <span class="fw-semibold text-dark">Live Analytics</span>
+                                    </div>
+                                    <div class="d-flex gap-5">
+                                        <div class="text-center">
+                                            <div class="fw-bold text-primary fs-4">{{ $totalBookings }}</div>
+                                            <small class="text-muted">Total Sessions</small>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="fw-bold text-success fs-4">{{ $activeAvailabilities }}</div>
+                                            <small class="text-muted">Active Schedules</small>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="fw-bold text-info fs-4">{{ $allUsers->count() }}</div>
+                                            <small class="text-muted">Total Users</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="d-flex justify-content-end align-items-center">
-                        <div class="me-4 text-end">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></div>
-                                <small class="text-success fw-semibold">System Online</small>
-                            </div>
-                            <div class="fw-bold text-dark fs-6">{{ now()->format('l, F d, Y') }}</div>
-                            <small class="text-muted">{{ now()->format('H:i:s') }} UTC</small>
-                        </div>
-                        <div class="bg-gradient-primary rounded-circle p-3" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <i class="bi bi-speedometer2 text-white fs-4"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Analytics Bar -->
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 12px;">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-lightning-charge text-primary me-2"></i>
-                            <span class="fw-semibold text-dark">Live Analytics</span>
-                        </div>
-                        <div class="d-flex gap-4">
-                            <div class="text-center">
-                                <div class="fw-bold text-primary">{{ $totalBookings }}</div>
-                                <small class="text-muted">Total Sessions</small>
-                            </div>
-                            <div class="text-center">
-                                <div class="fw-bold text-success">{{ $activeAvailabilities }}</div>
-                                <small class="text-muted">Active Schedules</small>
-                            </div>
-                            <!-- <div class="text-center">
-                                <div class="fw-bold text-warning">${{ number_format($totalRevenue, 0) }}</div>
-                                <small class="text-muted">Revenue</small>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+         
         </div>
 
         <div class="row">
@@ -1074,7 +1489,7 @@
 
         @if ($user && in_array($user->role, ['Admin', 'Customer Support']))
             <div class="text-center mb-5">
-                <h2 class="fw-bold">📈 Support Insights</h2>
+                <h2 class="fw-bold">Support Insights</h2>
                 <p class="text-muted">Visual summary of your support categorized by time and status</p>
             </div>
 
@@ -1168,7 +1583,7 @@
                                     <a href="http://127.0.0.1:8000/salesorder/add"
                                     class="btn px-4 py-2 me-2 fw-semibold"
                                     style="background-color: #002244; border: none; color: white;">
-                                        🚀 Try Now
+                                        ðŸš€ Try Now
                                     </a>
                                 </div>
                             </div>
@@ -1177,7 +1592,7 @@
                 </div>
             </div>
             <div class="col-xl-9">
-                <div class="card mb-2" style="height: 488px; overflow: hidden;">
+                <div class="card mb-2" style="height: 465px; overflow: hidden;">
                     <div class="card-header position-relative py-4 border-0 bg-light rounded-top shadow-sm">
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
                             <h3 class="card-title text-dark fw-bold fs-3 mb-0 ps-4">Active Tasks</h3>
@@ -1186,7 +1601,7 @@
                                     <option value="">All Users</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}" {{ ($userId == $user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
-                                    @endforeach
+                                    @endforeach 
                                 </select>
                                 <input type="text" name="date_range" id="datePicker" value="{{ $dateRange }}" class="form-control form-control-sm border-0" placeholder="Date or Range" style="min-width: 160px;" />
                                 <input type="hidden" id="currentFilter" name="filter" value="{{ $filter }}">
@@ -1202,7 +1617,7 @@
                                 </span>Add</button>
                             </a>
 
-                            <button id="refreshButton" class="btn btn-primary ms-2">↻</button>
+                            <button id="refreshButton" class="btn btn-primary ms-2">â†»</button>
                         </div>
                         <ul class="nav nav-pills gap-2 justify-content-center mt-5" role="tablist">
                             @php
@@ -1228,455 +1643,363 @@
             </div>
         </div>
        
-        <div class="row">
-            <div class="col-xl-3">
-                <div class="card border-0 shadow-lg rounded-4 p-3 w-100" style="max-width: 700px; margin: 0 auto;">
-                    @foreach($users as $user)
-                        @if(!in_array(strtolower($user->role), ['admin', 'cto']))
-                            <div class="col-md-12">
-                                <a href="{{ route('list.user') }}" class="text-decoration-none">
-                                    <div class="card shadow-sm border-0 rounded-4 p-3 mb-3 user-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,0.2); transition: all 0.3s;">
-                                        <div class="d-flex justify-content-between">
-                                            {{-- Left section --}}
-                                            <div class="d-flex align-items-center gap-3">
-                                                                                                 <div class="overflow-hidden" style="border-radius: 50%; width:50px; height:50px; border: 2px solid #fff;">
-                                                     @if($user->profile_image && file_exists(public_path('upload/admin-images/' . $user->profile_image)))
-                                                         <img src="{{ asset('upload/admin-images/' . $user->profile_image) }}" alt="Profile" style="width:100%; height:100%; object-fit:cover;" class="profile-img">
-                                                     @else
-                                                         <div class="profile-placeholder d-flex align-items-center justify-content-center" style="width:100%; height:100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 20px; font-weight: bold;">
-                                                             {{ strtoupper(substr($user->name, 0, 1)) }}
-                                                         </div>
-                                                     @endif
-                                                 </div>
+         <!-- Leave Management Section -->
+         <div class="row gx-2 mt-1">
+             <div class="col-12">
+                 <div class="leave-management-card">
+                     <div class="leave-header">
+                         <div class="d-flex align-items-center gap-3">
+                             <div class="leave-icon">
+                                 <i class="bi bi-calendar-check-fill"></i>
+                             </div>
+                             <div>
+                                 <h5 class="mb-0 fw-bold text-dark">Leave Management System</h5>
+                                 <p class="mb-0 text-muted small">Track and manage employee leave balances</p>
+                             </div>
+                         </div>
+                         
+                     </div>
+                     
+                     <div class="leave-body">
+                         <!-- Professional Selection Panel -->
+                         <div class="selection-panel">
+                             <div class="row g-3">
+                                 <div class="col-lg-6">
+                                     <div class="form-group">
+                                         <label class="form-label fw-semibold text-dark">
+                                             <i class="bi bi-person-fill me-2"></i>Select Employee
+                                         </label>
+                                        <select class="form-select form-select-lg" id="leaveUserSelect">
+                                            <option value="">Choose an employee...</option>
+                                            @foreach($allUsers as $user)
+                                                <option value="{{ $user->id }}" {{ auth()->id() == $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $user->username }})</option>
+                                            @endforeach
+                                        </select>
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-6">
+                                     <div class="form-group">
+                                         <label class="form-label fw-semibold text-dark">
+                                             <i class="bi bi-calendar3 me-2"></i>Select Year
+                                         </label>
+                                         <select class="form-select form-select-lg" id="leaveYearSelect">
+                                             @for($year = date('Y'); $year >= 2020; $year--)
+                                                 <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                                             @endfor
+                                         </select>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
 
-                                                <div class="d-flex flex-column justify-content-center ">
-                                                    <span class="fw-bold">{{ $user->name }}</span>
-                                                    <small style="font-size: 11px; opacity:0.8;">{{ $user->email }}</small>
-                                                    <span style="font-size: 10px; font-weight: bold;">{{ ucfirst($user->role) }}</span>
-                                                </div>
+                        <!-- Professional Leave Balance Dashboard -->
+                        <div id="leaveBalanceCards" style="display: none;">
+                            <div class="balance-dashboard">
+                               
+                                
+                                <div class="balance-grid">
+                                    <div class="balance-card credit-leave">
+                                        <div class="card-header">
+                                            <div class="card-icon">
+                                                <i class="bi bi-credit-card-2-front-fill"></i>
                                             </div>
-
-                                            {{-- Right section --}}
-                                            <div class="d-flex flex-column align-items-center justify-content-center">
-                                                @if($user->status == 0)
-                                                    <span style="display:inline-block; width:12px; height:12px; background:#00e5e0; border-radius:50%; box-shadow: 0 0 8px #00e5e0;"></span>
-                                                @else
-                                                    <span style="display:inline-block; width:12px; height:12px; background:red; border-radius:50%; box-shadow: 0 0 8px red;"></span>
-                                                @endif
+                                            <div class="card-title">Credit Leave</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="balance-value" id="creditLeaveBalance">0</div>
+                                            <div class="balance-unit">Days</div>
+                                            <div class="balance-progress">
+                                                <div class="progress-bar" id="creditProgress"></div>
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="balance-card casual-leave">
+                                        <div class="card-header">
+                                            <div class="card-icon">
+                                                <i class="bi bi-calendar-check-fill"></i>
+                                            </div>
+                                            <div class="card-title">Casual Leave</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="balance-value" id="casualLeaveBalance">0</div>
+                                            <div class="balance-unit">Days</div>
+                                            <div class="balance-progress">
+                                                <div class="progress-bar" id="casualProgress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="balance-card sick-leave">
+                                        <div class="card-header">
+                                            <div class="card-icon">
+                                                <i class="bi bi-heart-pulse-fill"></i>
+                                            </div>
+                                            <div class="card-title">Sick Leave</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="balance-value" id="sickLeaveBalance">0</div>
+                                            <div class="balance-unit">Days</div>
+                                            <div class="balance-progress">
+                                                <div class="progress-bar" id="sickProgress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="balance-card total-leave">
+                                        <div class="card-header">
+                                            <div class="card-icon">
+                                                <i class="bi bi-graph-up-arrow"></i>
+                                            </div>
+                                            <div class="card-title">Total Balance</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="balance-value" id="totalLeaveBalance">0</div>
+                                            <div class="balance-unit">Days</div>
+                                            <div class="balance-progress">
+                                                <div class="progress-bar" id="totalProgress"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Professional Analytics Chart -->
+                        <div id="monthlyLeaveChart" style="display: none;">
+                            <div class="analytics-panel">
+                                <div class="analytics-header">
+                                    <div>
+                                        <h6 class="mb-1 fw-bold text-dark">
+                                            <i class="bi bi-bar-chart-line-fill me-2"></i>Monthly Leave Analytics
+                                        </h6>
+                                        <p class="mb-0 text-muted small">Leave usage pattern for <span id="selectedUserName" class="fw-semibold text-primary"></span></p>
+                                    </div>
+                                </div>
+                                <div class="analytics-body">
+                                    <div class="chart-container">
+                                        <canvas id="monthlyLeaveChartCanvas" height="120"></canvas>
+                                    </div>
+                                    <div class="chart-legend">
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background: #3b82f6;"></span>
+                                            <span class="legend-label">Leave Taken (Days)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Person Availability -->
+        <div class="row gx-4 mt-3">
+            <div class="col-xl-6">
+                <div class="unique-card h-100">
+                    <div class="unique-header">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="icon-badge"><i class="bi bi-people-fill"></i></span>
+                            <h6 class="mb-0 fw-bold">Person Availability</h6>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="small subtle-date">{{ now()->format('M j, Y') }}</span>
+                            <a href="{{ route('availability.index') }}" class="header-link" data-bs-toggle="tooltip" title="Open availability list">
+                                <i class="bi bi-arrow-right-circle-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="unique-body">
+                        @php
+                            $activeAvailabilities = $activeAvailabilities ?? 0;
+                            $todayAvailableUsers = $todayAvailableUsers ?? 0;
+                            $thisWeekAvailableUsers = $thisWeekAvailableUsers ?? 0;
+                            $availabilityTrend = $availabilityTrend ?? null;
+                        @endphp
+
+                        @if(($activeAvailabilities + $todayAvailableUsers + $thisWeekAvailableUsers) === 0)
+                            <div class="empty-state text-center py-4">
+                                <i class="bi bi-emoji-neutral fs-3 text-muted"></i>
+                                <p class="small mb-2">No availability scheduled yet.</p>
+                                <a class="btn btn-sm btn-brand" href="{{ route('availability.create') }}">
+                                    <i class="bi bi-plus-circle me-1"></i>Add Availability
                                 </a>
+                            </div>
+                        @else
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <span class="stat-icon"><i class="bi bi-clock-history"></i></span>
+                                    @if($availabilityTrend && $availabilityTrend['dir']==='up')
+                                        <span class="trend-chip up"><i class="bi bi-arrow-up-right"></i>{{ $availabilityTrend['val'] }}%</span>
+                                    @elseif($availabilityTrend && $availabilityTrend['dir']==='down')
+                                        <span class="trend-chip down"><i class="bi bi-arrow-down-right"></i>{{ $availabilityTrend['val'] }}%</span>
+                                    @endif
+                                    <h4 class="stat-number">{{ $activeAvailabilities }}</h4>
+                                    <p class="stat-label">Active Schedules</p>
+                                </div>
+
+                                <div class="stat-box">
+                                    <span class="stat-icon"><i class="bi bi-calendar-check"></i></span>
+                                    <h4 class="stat-number">{{ $todayAvailableUsers }}</h4>
+                                    <p class="stat-label">Today Available</p>
+                                </div>
+
+                                <div class="stat-box">
+                                    <span class="stat-icon"><i class="bi bi-calendar-week"></i></span>
+                                    <h4 class="stat-number">{{ $thisWeekAvailableUsers }}</h4>
+                                    <p class="stat-label">This Week</p>
+                                </div>
                             </div>
                         @endif
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-xl-9">
-                <div class="card shadow-sm " style="max-width: 800px;">
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 text-white">Leave Balance Summary</h5>
-                        <div class="d-flex gap-2">
-                            <!-- Date inputs are hidden -->
-                            <input type="hidden" id="start_date" value=" 2025-01-01">
-                            <input type="hidden" id="end_date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
-                            <button class="btn btn-sm btn-primary" onclick="showTakenLeaveTable()">
-                                <i class="bi bi-filter"></i> Total Taken Leave
-                            </button>
-                            <button class="btn d-flex align-items-center justify-content-center rounded-3"
-                                    style="width: 48px; height: 48px; background-color: #0d0f2b;"
-                                    onclick="resetTakenLeaveTable()"
-                                    title="Reset Taken Leave">
-                                <i class="bi bi-arrow-clockwise text-white fs-5"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary" onclick="fetchLeaveBalance()">
-                                <i class="bi bi-filter"></i> Check Balance Leave
-                            </button>
-                            <button class="btn btn-dark d-flex align-items-center justify-content-center rounded-3"
-                                    style="width: 48px; height: 48px;"
-                                    onclick="resetFilter()"
-                                    title="Reset Balance Leave">
-                                <i class="bi bi-arrow-clockwise fs-5"></i>
-                            </button>
+
+                        <div class="action-buttons d-flex justify-content-center gap-2 mt-3 ">
+                            <a href="{{ route('availability.create') }}" class="btn btn-brand btn-sm"><i class="bi bi-plus-circle me-1"></i>Add</a>
+                            <a href="{{ route('availability.check-form') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-search me-1"></i>Quick Check</a>
                         </div>
                     </div>
-                    <div id="balanceLeaveTableWrapper" style="display: none;">
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped table-bordered mb-0">
-                                    <thead class="table-dark">
-                                        <tr class="text-center">
-                                            <th>#</th>
-                                            <th>User Name</th>
-                                            <th>Balance Credit Leave (Days)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="leave-balance-table">
-                                        <tr>
-                                            <td colspan="3" class="text-center text-muted">Please select a date range to view data.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                </div>
+            </div>
+    
+
+            <!-- Studio Booking -->
+            <div class="col-xl-6 ">
+                <div class="unique-card h-100">
+                    <div class="unique-header">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="icon-badge"><i class="bi bi-camera-video-fill"></i></span>
+                            <h6 class="mb-0 fw-bold">Studio Booking</h6>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="small subtle-date">{{ now()->format('M j, Y') }}</span>
+                            <a href="{{ route('booking.index') }}" class="header-link" data-bs-toggle="tooltip" title="Open bookings">
+                                <i class="bi bi-arrow-right-circle-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="unique-body">
+                        @php
+                            $todayBookings = $todayBookings ?? 0;
+                            $thisWeekBookings = $thisWeekBookings ?? 0;
+                            $totalBookings = $totalBookings ?? 0;
+                            $bookingTrend = $bookingTrend ?? null;
+                        @endphp
+
+                        @if(($todayBookings + $thisWeekBookings + $totalBookings) === 0)
+                            <div class="empty-state text-center py-4">
+                                <i class="bi bi-calendar2-x fs-3 text-muted"></i>
+                                <p class="small mb-2">No bookings yet. Get started below.</p>
+                                <a class="btn btn-sm btn-brand" href="{{ route('booking.index') }}">
+                                    <i class="bi bi-plus-circle me-1"></i>New Booking
+                                </a>
+                            </div>
+                        @else
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <span class="stat-icon"><i class="bi bi-brightness-alt-high"></i></span>
+                                    @if($bookingTrend && $bookingTrend['dir']==='up')
+                                        <span class="trend-chip up"><i class="bi bi-arrow-up-right"></i>{{ $bookingTrend['val'] }}%</span>
+                                    @elseif($bookingTrend && $bookingTrend['dir']==='down')
+                                        <span class="trend-chip down"><i class="bi bi-arrow-down-right"></i>{{ $bookingTrend['val'] }}%</span>
+                                    @endif
+                                    <h4 class="stat-number">{{ $todayBookings }}</h4>
+                                    <p class="stat-label">Todayâ€™s Slots</p>
+                                </div>
+
+                                <div class="stat-box">
+                                    <span class="stat-icon"><i class="bi bi-calendar-week"></i></span>
+                                    <h4 class="stat-number">{{ $thisWeekBookings }}</h4>
+                                    <p class="stat-label">This Week</p>
+                                </div>
+
+                                <div class="stat-box">
+                                    <span class="stat-icon"><i class="bi bi-collection"></i></span>
+                                    <h4 class="stat-number">{{ $totalBookings }}</h4>
+                                    <p class="stat-label">Total</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="action-buttons d-flex justify-content-center gap-2 mt-3">
+                            <a href="{{ route('booking.index') }}" class="btn btn-brand btn-sm"><i class="bi bi-list-ul me-1"></i>Bookings</a>
+                            <a href="{{ route('booking.index') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-plus-circle me-1"></i>New</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <!-- Financial Analytics Dashboard -->
+        <div class="financial-overview ">
+            <div class="financial-card">
+                <div class="financial-header d-flex align-items-center justify-content-between">
+                    <div class="financial-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <div class="financial-title">Financial Analytics</div>
+                    <div class="ms-auto">
+                        <select id="financialChartType" class="form-select form-select-sm" style="width: auto;">
+                            <option value="bar">Bar Chart</option>
+                            <option value="line">Line Chart</option>
+                            <option value="doughnut">Doughnut Chart</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="financial-content">
+                    <div class="chart-container" style="height: 300px; position: relative;">
+                        <canvas id="financialChart"></canvas>
+                    </div>
+                    
+                    <div class="row mt-2    ">
+                        <!-- Total Revenue -->
+                        <div class="col-md-6 text-center">
+                            <div class="financial-stat">
+                                <div class="stat-value text-success">${{ number_format($Final, 0) }}</div>
+                                <div class="stat-label">Total Revenue</div>
                             </div>
                         </div>
-                    </div>
-
-                                        <!-- Total Taken Leave Table -->
-                    <div id="totalTakenLeaveTable" style="display: none;">
-                    <div class="card shadow-sm p-3 mt-4 rounded" style="background-color: #f8f9fa;">
-                        <h5 class="mb-3 text-dark">Monthly Leave Taken Summary</h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover table-bordered">
-                                <thead class="text-white text-uppercase text-center" style="background-color:#002244;">
-                                    <tr>
-                                        <th class="px-3 py-2">#</th>
-                                        <th class="px-3 py-2">User Name</th>
-                                        <th class="px-3 py-2">Year</th>
-                                        <th class="px-3 py-2">Month</th>
-                                        <th class="px-3 py-2">Total Leave Taken (Days)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center align-middle">
-                                    @php $i = 1; @endphp
-                                    @foreach($leaveSummary as $summary)
-                                        <tr>
-                                            <td class="px-3 py-2">{{ $i++ }}</td>
-                                            <td class="px-3 py-2">{{ $summary['user_name'] }}</td>
-                                            <td class="px-3 py-2">{{ $summary['year'] }}</td>
-                                            <td class="px-3 py-2">{{ \Carbon\Carbon::create()->month($summary['month'])->format('F') }}</td>
-                                            <td class="px-3 py-2">
-                                            @php
-                                                $days = $summary['total_taken_leave'] / 8;
-                                            @endphp
-
-                                            @if ($days > 0)
-                                                {{ floor($days) == $days ? intval($days) : number_format($days, 1) }}
-                                                {{ $days == 1 ? 'Day' : 'Days' }}
-                                            @else
-                                                -
-                                            @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <!-- Total Expenses -->
+                        <div class="col-md-6 text-center">
+                            <div class="financial-stat">
+                                <div class="stat-value text-danger">${{ number_format($totalExpense, 0) }}</div>
+                                <div class="stat-label">Total Expenses</div>
+                            </div>
+                        </div>
+                        <!-- Monthly Revenue -->
+                        <div class="col-md-6 text-center">
+                            <div class="financial-stat">
+                                <div class="stat-value text-primary">${{ number_format($MonthlyFinal, 0) }}</div>
+                                <div class="stat-label">Monthly Revenue</div>
+                            </div>
+                        </div>
+                        <!-- Monthly Expense -->
+                        <div class="col-md-6 text-center">
+                            <div class="financial-stat">
+                                <div class="stat-value text-warning">${{ number_format($monthlyExpense, 0) }}</div>
+                                <div class="stat-label">Monthly Expense</div>
+                            </div>
+                        </div>
+                        <div class="action-buttons d-flex justify-content-center mt-4 mb-6 gap-3">
+                            <a href="{{ route('revenue-expense.index') }}" class="btn btn-brand btn-sm">
+                                <i class="bi bi-list-ul me-1"></i>View Records
+                            </a>
+                            <a href="{{ route('revenue.create') }}" class="btn btn-ghost btn-sm">
+                                <i class="bi bi-plus-circle me-1"></i>Add Entry
+                            </a>
+                            <a href="{{ route('revenue-expense.index') }}" class="btn btn-ghost btn-sm">
+                                <i class="bi bi-bar-chart me-1"></i>Reports
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-
-     <div class="row gx-4 mt-3">
-
-    <!-- Person Availability -->
-    <div class="col-xl-6">
-        <div class="unique-card h-100">
-            <div class="unique-header">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="icon-badge"><i class="bi bi-people-fill"></i></span>
-                    <h6 class="mb-0 fw-bold">Person Availability</h6>
-                </div>
-                <div class="d-flex align-items-center gap-3">
-                    <span class="small subtle-date">{{ now()->format('M j, Y') }}</span>
-                    <a href="{{ route('availability.index') }}" class="header-link" data-bs-toggle="tooltip" title="Open availability list">
-                        <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="unique-body">
-                @php
-                    $activeAvailabilities = $activeAvailabilities ?? 0;
-                    $todayAvailableUsers = $todayAvailableUsers ?? 0;
-                    $thisWeekAvailableUsers = $thisWeekAvailableUsers ?? 0;
-                    $availabilityTrend = $availabilityTrend ?? null;
-                @endphp
-
-                @if(($activeAvailabilities + $todayAvailableUsers + $thisWeekAvailableUsers) === 0)
-                    <div class="empty-state text-center py-4">
-                        <i class="bi bi-emoji-neutral fs-3 text-muted"></i>
-                        <p class="small mb-2">No availability scheduled yet.</p>
-                        <a class="btn btn-sm btn-brand" href="{{ route('availability.create') }}">
-                            <i class="bi bi-plus-circle me-1"></i>Add Availability
-                        </a>
-                    </div>
-                @else
-                    <div class="stats-grid">
-                        <div class="stat-box">
-                            <span class="stat-icon"><i class="bi bi-clock-history"></i></span>
-                            @if($availabilityTrend && $availabilityTrend['dir']==='up')
-                                <span class="trend-chip up"><i class="bi bi-arrow-up-right"></i>{{ $availabilityTrend['val'] }}%</span>
-                            @elseif($availabilityTrend && $availabilityTrend['dir']==='down')
-                                <span class="trend-chip down"><i class="bi bi-arrow-down-right"></i>{{ $availabilityTrend['val'] }}%</span>
-                            @endif
-                            <h4 class="stat-number">{{ $activeAvailabilities }}</h4>
-                            <p class="stat-label">Active Schedules</p>
-                        </div>
-
-                        <div class="stat-box">
-                            <span class="stat-icon"><i class="bi bi-calendar-check"></i></span>
-                            <h4 class="stat-number">{{ $todayAvailableUsers }}</h4>
-                            <p class="stat-label">Today Available</p>
-                        </div>
-
-                        <div class="stat-box">
-                            <span class="stat-icon"><i class="bi bi-calendar-week"></i></span>
-                            <h4 class="stat-number">{{ $thisWeekAvailableUsers }}</h4>
-                            <p class="stat-label">This Week</p>
-                        </div>
-                    </div>
-                @endif
-
-                <div class="action-buttons d-flex justify-content-center gap-2 mt-3 ">
-                    <a href="{{ route('availability.create') }}" class="btn btn-brand btn-sm"><i class="bi bi-plus-circle me-1"></i>Add</a>
-                    <a href="{{ route('availability.check-form') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-search me-1"></i>Quick Check</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Studio Booking -->
-    <div class="col-xl-6 ">
-        <div class="unique-card h-100">
-            <div class="unique-header">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="icon-badge"><i class="bi bi-camera-video-fill"></i></span>
-                    <h6 class="mb-0 fw-bold">Studio Booking</h6>
-                </div>
-                <div class="d-flex align-items-center gap-3">
-                    <span class="small subtle-date">{{ now()->format('M j, Y') }}</span>
-                    <a href="{{ route('booking.index') }}" class="header-link" data-bs-toggle="tooltip" title="Open bookings">
-                        <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="unique-body">
-                @php
-                    $todayBookings = $todayBookings ?? 0;
-                    $thisWeekBookings = $thisWeekBookings ?? 0;
-                    $totalBookings = $totalBookings ?? 0;
-                    $bookingTrend = $bookingTrend ?? null;
-                @endphp
-
-                @if(($todayBookings + $thisWeekBookings + $totalBookings) === 0)
-                    <div class="empty-state text-center py-4">
-                        <i class="bi bi-calendar2-x fs-3 text-muted"></i>
-                        <p class="small mb-2">No bookings yet. Get started below.</p>
-                        <a class="btn btn-sm btn-brand" href="{{ route('booking.index') }}">
-                            <i class="bi bi-plus-circle me-1"></i>New Booking
-                        </a>
-                    </div>
-                @else
-                    <div class="stats-grid">
-                        <div class="stat-box">
-                            <span class="stat-icon"><i class="bi bi-brightness-alt-high"></i></span>
-                            @if($bookingTrend && $bookingTrend['dir']==='up')
-                                <span class="trend-chip up"><i class="bi bi-arrow-up-right"></i>{{ $bookingTrend['val'] }}%</span>
-                            @elseif($bookingTrend && $bookingTrend['dir']==='down')
-                                <span class="trend-chip down"><i class="bi bi-arrow-down-right"></i>{{ $bookingTrend['val'] }}%</span>
-                            @endif
-                            <h4 class="stat-number">{{ $todayBookings }}</h4>
-                            <p class="stat-label">Today’s Slots</p>
-                        </div>
-
-                        <div class="stat-box">
-                            <span class="stat-icon"><i class="bi bi-calendar-week"></i></span>
-                            <h4 class="stat-number">{{ $thisWeekBookings }}</h4>
-                            <p class="stat-label">This Week</p>
-                        </div>
-
-                        <div class="stat-box">
-                            <span class="stat-icon"><i class="bi bi-collection"></i></span>
-                            <h4 class="stat-number">{{ $totalBookings }}</h4>
-                            <p class="stat-label">Total</p>
-                        </div>
-                    </div>
-                @endif
-
-                <div class="action-buttons">
-                    <a href="{{ route('booking.index') }}" class="btn btn-brand btn-sm"><i class="bi bi-list-ul me-1"></i>Bookings</a>
-                    <a href="{{ route('booking.index') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-plus-circle me-1"></i>New</a>
-                    
-                </div>
-            </div>
-        </div>
+        </div>  
+        
     </div>
 </div>
-<style>
-.unique-card {
-    background: linear-gradient(135deg, #ffffff, #f8faff); /* brighter solid background */
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    border: 1px solid #e2e8f0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.unique-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.15);
-}
-
-.unique-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: .8rem;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: .6rem;
-}
-
-.icon-badge {
-    background: linear-gradient(135deg, #4f46e5, #3b82f6);
-    color: #fff;
-    border-radius: 12px;
-    padding: .45rem .65rem;
-    font-size: 1.1rem;
-    box-shadow: 0 3px 8px rgba(79,70,229,0.35);
-}
-
-.stats-grid {
-    display: flex;
-    justify-content: space-around;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.stat-box {
-    flex: 1;
-    text-align: center;
-    background: #f9fafb;
-    border-radius: 12px;
-    padding: 1rem;
-    border: 1px solid #e5e7eb;
-    position: relative;
-}
-
-.stat-icon {
-    font-size: 1.6rem;
-    margin-bottom: .4rem;
-    color: #2563eb;
-}
-
-.stat-number {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #111827;
-}
-
-.stat-label {
-    font-size: .85rem;
-    color: #6b7280;
-}
-
-.trend-chip {
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    font-size: .75rem;
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-weight: 600;
-    color: #fff;
-}
-.trend-chip.up { background: #16c784; }
-.trend-chip.down { background: #ef4444; }
-
-.action-buttons {
-    display: flex;
-    gap: .6rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-}
-.action-buttons .btn-brand {
-    background: linear-gradient(135deg, #4f46e5, #3b82f6);
-    color: #fff;
-    border: none;
-    font-weight: 600;
-}
-.action-buttons .btn-brand:hover {
-    opacity: 0.9;
-}
-.action-buttons .btn-outline-light {
-    border: 1px solid #d1d5db;
-    color: #374151;
-    background: #fff;
-}
-.action-buttons .btn-outline-light:hover {
-    background: #f3f4f6;
-}
-
-</style>
-
-            <!-- Financial Analytics Dashboard -->
-            <div class="financial-overview ">
-                <div class="financial-card">
-                    <div class="financial-header d-flex align-items-center justify-content-between">
-                        <div class="financial-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <i class="bi bi-graph-up"></i>
-                        </div>
-                        <div class="financial-title">Financial Analytics</div>
-                        <div class="ms-auto">
-                            <select id="financialChartType" class="form-select form-select-sm" style="width: auto;">
-                                <option value="bar">Bar Chart</option>
-                                <option value="line">Line Chart</option>
-                                <option value="doughnut">Doughnut Chart</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="financial-content">
-                        <div class="chart-container" style="height: 300px; position: relative;">
-                            <canvas id="financialChart"></canvas>
-                        </div>
-                        
-                        <div class="row mt-2    ">
-                            <!-- Total Revenue -->
-                            <div class="col-md-6 text-center">
-                                <div class="financial-stat">
-                                    <div class="stat-value text-success">${{ number_format($Final, 0) }}</div>
-                                    <div class="stat-label">Total Revenue</div>
-                                </div>
-                            </div>
-                            <!-- Total Expenses -->
-                            <div class="col-md-6 text-center">
-                                <div class="financial-stat">
-                                    <div class="stat-value text-danger">${{ number_format($totalExpense, 0) }}</div>
-                                    <div class="stat-label">Total Expenses</div>
-                                </div>
-                            </div>
-                            <!-- Monthly Revenue -->
-                            <div class="col-md-6 text-center">
-                                <div class="financial-stat">
-                                    <div class="stat-value text-primary">${{ number_format($MonthlyFinal, 0) }}</div>
-                                    <div class="stat-label">Monthly Revenue</div>
-                                </div>
-                            </div>
-                            <!-- Monthly Expense -->
-                            <div class="col-md-6 text-center">
-                                <div class="financial-stat">
-                                    <div class="stat-value text-warning">${{ number_format($monthlyExpense, 0) }}</div>
-                                    <div class="stat-label">Monthly Expense</div>
-                                </div>
-                            </div>
-                            <div class="action-buttons d-flex justify-content-center mt-4 mb-6 gap-3">
-                                <a href="{{ route('revenue-expense.index') }}" class="btn btn-brand btn-sm">
-                                    <i class="bi bi-list-ul me-1"></i>View Records
-                                </a>
-                                <a href="{{ route('revenue.create') }}" class="btn btn-ghost btn-sm">
-                                    <i class="bi bi-plus-circle me-1"></i>Add Entry
-                                </a>
-                                <a href="{{ route('revenue-expense.index') }}" class="btn btn-ghost btn-sm">
-                                    <i class="bi bi-bar-chart me-1"></i>Reports
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-        </div>
-    </div>
- </div>
             
       
        
@@ -1700,7 +2023,7 @@
                 success: function (response) {
                     $('#dashboard-content').html(response.html);
 
-                    // ✅ Render the bar chart after AJAX
+                    // âœ… Render the bar chart after AJAX
                     if (document.getElementById('categoryChart')) {
                         const ctx = document.getElementById('categoryChart').getContext('2d');
                         const labels = JSON.parse(document.getElementById('categoryChart').getAttribute('data-labels'));
@@ -1790,9 +2113,7 @@
     
 </script>
 
-
-
- <script>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         const chartElement = document.getElementById('goalStatusChart');
         if (!chartElement) {
@@ -1883,7 +2204,7 @@
             return;
         }
 
-        $('#balanceLeaveTableWrapper').show(); // ✅ Show the table
+        $('#balanceLeaveTableWrapper').show(); // âœ… Show the table
         $('#leave-balance-table').html('<tr><td colspan="3" class="text-center text-primary">Loading data...</td></tr>');
 
         $.ajax({
@@ -1896,21 +2217,24 @@
 
                 if (response.status === 'success' && response.data.length > 0) {
                     $.each(response.data, function(index, leave) {
-                        let balance = parseFloat(leave.balance_days);
-                        let formatted = balance > 0
-                            ? (Number.isInteger(balance) ? `${balance} Day${balance > 1 ? 's' : ''}` : `${balance} Days`)
-                            : '0';
+                        const fmt = (v) => {
+                            const n = parseFloat(v || 0);
+                            return Number.isInteger(n) ? n : n.toFixed(1);
+                        };
 
                         rows += `
                             <tr class="text-center">
                                 <td>${index + 1}</td>
                                 <td>${leave.user_name}</td>
-                                <td>${formatted}</td>
+                                <td>${fmt(leave.credit_days)}</td>
+                                <td>${fmt(leave.casual_days)}</td>
+                                <td>${fmt(leave.sick_days)}</td>
+                                <td class="fw-bold">${fmt(leave.total_days)}</td>
                             </tr>
                         `;
                     });
                 } else {
-                    rows = '<tr><td colspan="3" class="text-center text-danger">No data available for the selected date range</td></tr>';
+                    rows = '<tr><td colspan="6" class="text-center text-danger">No data available for the selected date range</td></tr>';
                 }
 
                 $('#leave-balance-table').html(rows);
@@ -1926,12 +2250,172 @@
         $('#start_date').val('2025-01-01');
         $('#end_date').val('{{ \Carbon\Carbon::now()->format("Y-m-d") }}');
 
-        // ✅ Hide the whole balance leave table (including thead)
+        // âœ… Hide the whole balance leave table (including thead)
         $('#balanceLeaveTableWrapper').hide();
 
         // Optionally clear the rows (not required if hiding the whole wrapper)
         $('#leave-balance-table').html('<tr><td colspan="3" class="text-center text-muted">Please select a date range to view data.</td></tr>');
     }
+
+    // Leave Management Functions
+    function loadLeaveData() {
+        const userId = $('#leaveUserSelect').val();
+        const year = $('#leaveYearSelect').val();
+        
+        if (!userId || userId === '' || userId === '0') {
+            $('#leaveBalanceCards').hide();
+            $('#monthlyLeaveChart').hide();
+            return;
+        }
+        
+        // Show the cards and chart
+        $('#leaveBalanceCards').show();
+        $('#monthlyLeaveChart').show();
+        
+        // Update selected user name
+        const selectedUserName = $('#leaveUserSelect option:selected').text();
+        $('#selectedUserName').text(selectedUserName);
+
+        $.ajax({
+            url: "{{ url('/fetch-user-monthly-leave') }}",
+            type: "GET",
+            data: { user_id: userId, year: year },
+            dataType: "json",
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Update balance cards
+                    $('#creditLeaveBalance').text(response.user_balance.credit_leave_days);
+                    $('#casualLeaveBalance').text(response.user_balance.casual_leave_days);
+                    $('#sickLeaveBalance').text(response.user_balance.sick_leave_days);
+                    $('#totalLeaveBalance').text(response.user_balance.total_balance_days);
+
+                    // Create monthly chart
+                    createLeaveChart(response.monthly_data);
+                } else {
+                    alert('Error: ' + (response.message || 'Unknown error occurred'));
+                }
+            },
+            error: function(xhr) {
+                alert('Error fetching data: ' + (xhr.responseJSON?.message || xhr.statusText || 'Unknown error'));
+            }
+        });
+    }
+
+    // Function to create monthly leave chart
+    function createLeaveChart(monthlyData) {
+        const ctx = document.getElementById('monthlyLeaveChartCanvas').getContext('2d');
+        
+        // Destroy existing chart if it exists
+        if (window.leaveChart) {
+            window.leaveChart.destroy();
+        }
+
+        // Prepare data for chart
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const leaveData = new Array(12).fill(0);
+        
+        monthlyData.forEach(item => {
+            leaveData[item.month - 1] = parseFloat(item.total_taken_leave);
+        });
+
+        window.leaveChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Leave Taken (Days)',
+                    data: leaveData,
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        bottom: 40
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                return value + ' day' + (value !== 1 ? 's' : '');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value) {
+                                return value + ' day' + (value !== 1 ? 's' : '');
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 0,
+                            padding: 10
+                        }
+                    }
+                },
+                animation: {
+                    onComplete: function() {
+                        // Add custom labels below month names with proper spacing
+                        const chart = this;
+                        const ctx = chart.ctx;
+                        ctx.font = 'bold 10px Arial';
+                        ctx.fillStyle = '#6b7280';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'top';
+                        
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+                            const meta = chart.getDatasetMeta(datasetIndex);
+                            meta.data.forEach((element, index) => {
+                                const value = dataset.data[index];
+                                if (value > 0) {
+                                    const x = element.x;
+                                    const y = chart.chartArea.bottom + 8;
+                                    ctx.fillText(value + ' day' + (value !== 1 ? 's' : ''), x, y);
+                                }
+                            });
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize leave management event handlers
+    $(document).ready(function() {
+        // Add change event listener to user dropdown
+        $('#leaveUserSelect').on('change', function() {
+            loadLeaveData();
+        });
+        
+        // Add change event listener to year dropdown
+        $('#leaveYearSelect').on('change', function() {
+            loadLeaveData();
+        });
+        
+        // Auto-load data for the default selected user (logged-in user)
+        if ($('#leaveUserSelect').val()) {
+            loadLeaveData();
+        }
+    });
+
+
 </script>
 <!-- Show taken leave -->
 <script>
@@ -2115,7 +2599,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clearTimeDisplayStyles();
     setTimeout(clearTimeDisplayStyles, 100);
 
-    
+
          // Initialize performance chart
      initializePerformanceChart();
      
@@ -2174,8 +2658,7 @@ function showNotification(message, type = 'info') {
     `;
     
     document.body.appendChild(notification);
-    
-    // Auto remove after 5 seconds
+ 
     setTimeout(() => {
         if (notification.parentNode) {
             notification.remove();
@@ -2231,7 +2714,6 @@ function initializePerformanceChart() {
     });
 }
 
-// Financial Chart Functions
 let financialChart = null;
 
 function initializeFinancialChart() {

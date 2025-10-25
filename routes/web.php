@@ -6,7 +6,6 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\EmailnotificationController;
 use App\Http\Controllers\StateController; 
 use App\Http\Controllers\DistrictController;
-
 use App\Http\Controllers\MasterController; 
 use App\Http\Controllers\InventoryController;  
 use App\Http\Controllers\StorageController;  
@@ -43,7 +42,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\JiraTaskController;
-
+use App\Http\Controllers\SprintController;  
 
 Route::get('/test-mail', function () {
     Mail::raw('Test email from Laravel SMTP config', function ($message) {
@@ -56,7 +55,69 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Debug route outside auth middleware
+Route::get('/debug-conversations', function() {
+    try {
+        $currentUserId = Auth::id();
+        if (!$currentUserId) {
+            // For debugging, let's try to get any user
+            $user = \App\Models\User::first();
+            if ($user) {
+                $currentUserId = $user->id;
+            } else {
+                return response()->json(['error' => 'No users found in database'], 404);
+            }
+        }
+        
+        $conversations = \App\Models\ChatApp::where('isdeleted', 0)
+            ->where(function ($query) use ($currentUserId) {
+                $query->where('outgoing_msg_id', $currentUserId)
+                      ->orWhere('incoming_msg_id', $currentUserId);
+            })
+            ->count();
+        
+        return response()->json([
+            'message' => 'Debug conversations endpoint working',
+            'user_id' => $currentUserId,
+            'conversation_count' => $conversations,
+            'total_messages' => \App\Models\ChatApp::count()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
+// Simple test route to check if routes are working
+Route::get('/test-route', function() {
+    return response()->json([
+        'message' => 'Routes are working',
+        'timestamp' => now(),
+        'auth_user' => Auth::id()
+    ]);
+});
+
+// Temporary route to auto-login for testing (REMOVE IN PRODUCTION)
+Route::get('/auto-login', function() {
+    $user = \App\Models\User::first();
+    if ($user) {
+        Auth::login($user);
+        return response()->json([
+            'message' => 'Auto-logged in as: ' . $user->name,
+            'user_id' => $user->id,
+            'redirect' => '/chatapp'
+        ]);
+    } else {
+        return response()->json(['error' => 'No users found'], 404);
+    }
+});
+
 Route::middleware(['auth'])->group(function () { 
+    // Session reset route for idle timeout
+    Route::post('/reset-session', function() {
+        session()->put('last_activity', time());
+        return response()->json(['status' => 'success', 'message' => 'Session extended']);
+    })->name('reset-session');
+    
     Route::controller(AdminController::class)->group(function(){
         Route::get('/admin/logout','destroy')->name('admin.logout');
         Route::get('/admin/profile','Profile')->name('admin.profile');
@@ -79,13 +140,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store/userlist','Storeuserlist')->name('store.userlist');
         Route::get('/dashboard','Dashboard')->middleware(['auth'])->name('dashboard');
         Route::get('/dashboard-data', 'Dashboard')->name('dashboard.data');
+        Route::get('/fetch-user-monthly-leave','fetchUserMonthlyLeave')->name('admin.fetchUserMonthly');
 
     });
 
     Route::controller(EmployeeController::class)->group(function(){
         Route::get('/list/employee','userlist')->name('list.employee');
     });
-
 
     Route::controller(WebsitecredentialController::class)->group(function(){
         Route::get('/websitecredentials','index')->name('website.main');
@@ -287,26 +348,27 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/training/video/status','status')->name('status.tvideos');
         Route::get('/download/{filename}','download')->name('download.file'); 
         Route::get('/view-pdf/{filename}','viewPDF')->name('view.pdf'); 
-
     });
-Route::controller(LeaveController::class)->group(function(){      
-        Route::get('/leave/list','index')->name('list.leave');
-        Route::get('/leave/create','create')->name('add.leave');  
-        Route::post('/leave/store','store')->name('store.leave');    
-        Route::post('/leave/update','update')->name('update.leave');     
-        Route::get('/leave/edit/{id}','edit')->name('edit.leave');
-        Route::get('/leave/view/{id}','show')->name('view.leave'); 
-        Route::post('/leave/destroy/{id}','destroy')->name('destroy.leave'); 
-        Route::post('/leave/status','status')->name('status.leave');
-        Route::post('/send-response-email', 'sendResponseEmail')->name('send.leave');
-        Route::post('/update-leave-status', 'updateLeaveStatus')->name('upt.leave');
-        Route::post('/leave/approve','approveLeave')->name('approve.leave');
-        Route::post('/leaves/reject','reject')->name('leaves.reject');
-        Route::get('/leave/balance','showLeaveBalance')->name('leave.balance');
-        Route::get('/fetch-leave-balance','fetchLeaveBalance')->name('leave.fetchBalance');
-        Route::get('/leave/management/create','lmcreate')->name('add.leaveManagement');  
-        Route::post('/leave/management/store','lmstore')->name('store.leaveManagement');    
-        });
+    
+    Route::controller(LeaveController::class)->group(function(){      
+    Route::get('/leave/list','index')->name('list.leave');
+    Route::get('/leave/create','create')->name('add.leave');  
+    Route::post('/leave/store','store')->name('store.leave');    
+    Route::post('/leave/update','update')->name('update.leave');     
+    Route::get('/leave/edit/{id}','edit')->name('edit.leave');
+    Route::get('/leave/view/{id}','show')->name('view.leave'); 
+    Route::post('/leave/destroy/{id}','destroy')->name('destroy.leave'); 
+    Route::post('/leave/status','status')->name('status.leave');
+    Route::post('/send-response-email', 'sendResponseEmail')->name('send.leave');
+    Route::post('/update-leave-status', 'updateLeaveStatus')->name('upt.leave');
+    Route::post('/leave/approve','approveLeave')->name('approve.leave');
+    Route::post('/leaves/reject','reject')->name('leaves.reject');
+    Route::get('/leave/balance','showLeaveBalance')->name('leave.balance');
+    Route::get('/fetch-leave-balance','fetchLeaveBalance')->name('leave.fetchBalance');
+    Route::get('/leave/management/create','lmcreate')->name('add.leaveManagement');  
+    Route::post('/leave/management/store','lmstore')->name('store.leaveManagement');    
+    });
+
     Route::controller(SupportCallCenterController::class)->group(function(){      
         Route::get('/support/list','index')->name('list.support');
         Route::get('/support/create','create')->name('add.support');  
@@ -336,7 +398,9 @@ Route::controller(LeaveController::class)->group(function(){
         Route::post('/chat/{id}/send', [RoomController::class, 'sendMessage'])->name('chat.sends');
         Route::post('/rooms/{id}/add-users', [RoomController::class, 'addUsers'])->name('rooms.addUsers');
         Route::post('/rooms/{id}/remove-user', [RoomController::class, 'removeUser'])->name('rooms.removeUser');
-        Route::post('/rooms/destroy/{id}', [RoomController::class,'destroy'])->name('rooms.destroy'); 
+        Route::post('/rooms/destroy/{id}', [RoomController::class,'destroy'])->name('rooms.destroy');
+        Route::delete('/message/destroy/{id}', [RoomController::class, 'deleteMessage'])->name('message.destroy');
+        Route::get('/rooms/{id}/messages/{lastMessageId?}', [RoomController::class, 'getNewMessages'])->name('rooms.messages'); 
         Route::post('/message/destroy/{id}', [MessageController::class,'destroy'])->name('message.destroy');
     });
     
@@ -358,13 +422,63 @@ Route::controller(LeaveController::class)->group(function(){
         Route::post('/chat/delete','deleteMessage')->name('chat.delete');
         Route::post('/chat/typing','typing')->name('chat.typing');
         Route::post('/chat/stopped_typing','stoppedTyping')->name('chat.stopped_typing');
+        
+        // New routes for the frontend
+        Route::get('/chat/messages/{userId}', 'getMessages')->name('chat.messages');
+        Route::get('/chat/messages/{userId}/latest', 'getLatestMessages')->name('chat.latest');
+        Route::get('/chat/conversations', 'getConversations')->name('chat.conversations');
     });
+    
+    // Test route to debug
+    Route::get('/test-chat', function() {
+        return response()->json(['message' => 'Chat routes are working']);
+    });
+    
+    // Test conversations endpoint directly
+    Route::get('/test-conversations', function() {
+        try {
+            $currentUserId = Auth::id();
+            if (!$currentUserId) {
+                return response()->json(['error' => 'User not authenticated'], 401);
+            }
+            
+            $conversations = \App\Models\ChatApp::where('isdeleted', 0)
+                ->where(function ($query) use ($currentUserId) {
+                    $query->where('outgoing_msg_id', $currentUserId)
+                          ->orWhere('incoming_msg_id', $currentUserId);
+                })
+                ->count();
+            
+            return response()->json([
+                'message' => 'Test conversations endpoint working',
+                'user_id' => $currentUserId,
+                'conversation_count' => $conversations
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    });
+    
+    // Simple auth check route
+    Route::get('/auth-check', function() {
+        $user = Auth::user();
+        if ($user) {
+            return response()->json([
+                'authenticated' => true,
+                'user_id' => $user->id,
+                'user_name' => $user->name
+            ]);
+        } else {
+            return response()->json(['authenticated' => false], 401);
+        }
+    });
+    
     Route::controller(AiChatMessageController::class)->group(function(){ 
         Route::get('/ai/chat',  'index')->name('aichat.index');
         Route::post('/ai/chat',  'send')->name('aichat.send');
     });
    Route::controller(InternController::class)->group(function(){
-        Route::get('/intern/list','index')->name('list.intern');
+        Route::get('/intern/list','index')->name('list.intern');       
         Route::post('/intern/store','store')->name('store.intern');    
         Route::post('/intern/update','update')->name('update.intern');     
         Route::get('/intern/edit/{id}','edit')->name('edit.intern');
@@ -373,18 +487,17 @@ Route::controller(LeaveController::class)->group(function(){
         Route::post('/intern/status','status')->name('status.intern');
     });
 
-   Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
-   Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
-   Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');
-   Route::get('/revenue/{revenue}', [RevenueController::class, 'show'])->name('revenue.show');
-   Route::get('/revenue/{revenue}/edit', [RevenueController::class, 'edit'])->name('revenue.edit');
-   Route::put('/revenue/{revenue}', [RevenueController::class, 'update'])->name('revenue.update');
-   Route::delete('/revenue/{revenue}', [RevenueController::class, 'destroy'])->name('revenue.destroy');
-   Route::get('/revenue-export/{format}', [RevenueController::class, 'export'])->name('revenue.export');
+    Route::get('/revenue-expense',[RevenueController::class, 'index'])->name('revenue-expense.index'); 
+    Route::get('/add-entry',      [RevenueController::class, 'create'])->name('revenue.create');       
+    Route::post('/store-entry',   [RevenueController::class, 'store'])->name('revenue.store');
+    Route::get('/revenue/{revenue}', [RevenueController::class, 'show'])->name('revenue.show');
+    Route::get('/revenue/{revenue}/edit', [RevenueController::class, 'edit'])->name('revenue.edit');
+    Route::put('/revenue/{revenue}', [RevenueController::class, 'update'])->name('revenue.update');
+    Route::delete('/revenue/{revenue}', [RevenueController::class, 'destroy'])->name('revenue.destroy');
+    Route::get('/revenue-export/{format}', [RevenueController::class, 'export'])->name('revenue.export');
 
-   // Expense Routes
-   Route::resource('expense', ExpenseController::class);         
-
+    // Expense Routes
+    Route::resource('expense', ExpenseController::class);
 
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index'); 
     Route::get('/bookings', [BookingController::class, 'fetch'])->name('booking.fetch'); 
@@ -412,17 +525,6 @@ Route::controller(LeaveController::class)->group(function(){
          Route::delete('/availability/{id}', 'destroy')->name('availability.destroy');
          Route::post('/availability/{id}/toggle', 'toggleStatus')->name('availability.toggle');
      }); 
- 
-     Route::controller(InternController::class)->group(function(){
-      
-        Route::get('/karthik','create')->name('add.intern');  
-        Route::post('/intern/store','store')->name('store.intern');    
-        Route::post('/intern/update','update')->name('update.intern');     
-        Route::get('/intern/edit/{id}','edit')->name('edit.intern');
-        Route::get('/intern/view/{id}','show')->name('view.intern'); 
-        Route::post('/intern/destroy/{id}','destroy')->name('destroy.intern'); 
-        Route::post('/intern/status','status')->name('status.intern');
-    });
 
     // Jira Tasks Routes
     Route::controller(JiraTaskController::class)->group(function(){
@@ -439,7 +541,29 @@ Route::controller(LeaveController::class)->group(function(){
         Route::get('/jira-tasks/backlog', 'backlog')->name('jira-tasks.backlog');
         Route::post('/jira-tasks/{id}/add-comment', 'addComment')->name('jira-tasks.add-comment');
         Route::delete('/jira-tasks/{id}/delete-comment', 'deleteComment')->name('jira-tasks.delete-comment');
+        Route::get('/jira-tasks/available-for-sprint', 'getAvailableTasksForSprint')->name('jira-tasks.available-for-sprint');
+        Route::post('/jira-tasks/assign-to-sprint', 'assignTaskToSprint')->name('jira-tasks.assign-to-sprint');
+        Route::post('/jira-tasks/remove-from-sprint', 'removeTaskFromSprint')->name('jira-tasks.remove-from-sprint');
+        Route::post('/jira-tasks/bulk-assign-to-sprint', 'bulkAssignTasksToSprint')->name('jira-tasks.bulk-assign-to-sprint');
+    });
+
+    // Sprint Routes
+    Route::controller(SprintController::class)->group(function(){
+        Route::get('/sprints', 'index')->name('sprints.index');
+        Route::post('/sprints', 'store')->name('sprints.store');
+        Route::get('/sprints/all', 'getAllSprints')->name('sprints.all');
+        Route::get('/sprints/current', 'getCurrentSprint')->name('sprints.current');
+        Route::get('/sprints/{id}', 'show')->name('sprints.show');
+        Route::get('/sprints/{id}/closed-tickets', 'getClosedTickets')->name('sprints.closed-tickets');
+        Route::post('/sprints/{id}/start', 'start')->name('sprints.start');
+        Route::post('/sprints/{id}/complete', 'complete')->name('sprints.complete');
+        Route::post('/sprints/{id}/add-tasks', 'addTasks')->name('sprints.add-tasks');
+        Route::post('/sprints/{id}/remove-task', 'removeTask')->name('sprints.remove-task');
+        Route::put('/sprints/{id}', 'update')->name('sprints.update');
+        Route::delete('/sprints/{id}', 'destroy')->name('sprints.destroy');
     });
  
 });
+
 require __DIR__.'/auth.php';
+Route::get('/Karthik',[InternController::class,'create'])->name('add.intern');

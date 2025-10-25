@@ -22,58 +22,54 @@
 
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <label class="col-form-label required fw-bold fs-6">Leave Type</label>
-                                <select name="leave_type" id="leave_type" required class="form-control form-control-lg">
+                                <select name="leave_type" id="leave_type" required class="form-control form-control-lg" onchange="updateEndDateOnLeaveTypeChange()">
                                     <option value="" disabled selected>Select an Option</option>
-                                    <option>Restricted Holiday</option>
-                                    <option>Late Entry/Exit 15 mins (2nd Half)</option>
                                     <option>Late Entry/Exit 15 mins (1st Half)</option>
+                                    <option>Late Entry/Exit 15 mins (2nd Half)</option>
                                     <option>Permission 1st Half</option>
                                     <option>Permission 2nd Half</option>
-                                    <option>Sick Leave</option>
-                                    <option>Long Leave Apply</option>
-                                    <option>Casual Leave</option>
-                                    <option>Leave(Half Day)</option>
-                                    <option>Loss of Pay(LOP)</option>
+                                    <option>Leave</option>
+                                    
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <label class="col-form-label required fw-bold fs-6">Total Days</label>
                                 <select name="totaldays" id="totaldays" required class="form-control form-control-lg">
                                     <option value="" disabled selected>Select an Option</option>
-                                    <option value="0.25">15 min</option>
-                                    <option value="2">2 hours</option>
-                                    <option value="4">Half day</option>
-                                    <option value="8">1 day</option>
-                                    <option value="16">2 days</option>
-                                    <option value="24">3 days</option>
-                                    <option value="32">4 days</option>
-                                    <option value="40">5 days</option>
-                                    <option value="48">6 days</option>
-                                    <option value="56">7 days</option>
-                                    <option value="64">8 days</option>
-                                    <option value="72">9 days</option>
-                                    <option value="80">10 days</option>
-                                    <option value="88">11 days</option>
-                                    <option value="96">12 days</option>
-                                    <option value="104">13 days</option>
-                                    <option value="112">14 days</option>
-                                    <option value="120">15 days</option>
-                                    <option value="128">16 days</option>
-                                    <option value="136">17 days</option>
-                                    <option value="144">18 days</option>
-                                    <option value="152">19 days</option>
-                                    <option value="160">20 days</option>
-                                    <option value="168">21 days</option>
-                                    <option value="176">22 days</option>
-                                    <option value="184">23 days</option>
-                                    <option value="192">24 days</option>
-                                    <option value="200">25 days</option>
-                                    <option value="208">26 days</option>
-                                    <option value="216">27 days</option>
-                                    <option value="224">28 days</option>
-                                    <option value="232">29 days</option>
-                                    <option value="240">30 days</option>
-                                    <option value="248">31 days</option>
+                                    <option value="0.03">15 min</option>
+                                    <option value="0.25">2 hours</option>
+                                    <option value="0.5">Half day</option>
+                                    <option value="1">1 day</option>
+                                    <option value="2">2 days</option>
+                                    <option value="3">3 days</option>
+                                    <option value="4">4 days</option>
+                                    <option value="5">5 days</option>
+                                    <option value="6">6 days</option>
+                                    <option value="7">7 days</option>
+                                    <option value="8">8 days</option>
+                                    <option value="9">9 days</option>
+                                    <option value="10">10 days</option>
+                                    <option value="11">11 days</option>
+                                    <option value="12">12 days</option>
+                                    <option value="13">13 days</option>
+                                    <option value="14">14 days</option>
+                                    <option value="15">15 days</option>
+                                    <option value="16">16 days</option>
+                                    <option value="17">17 days</option>
+                                    <option value="18">18 days</option>
+                                    <option value="19">19 days</option>
+                                    <option value="20">20 days</option>
+                                    <option value="21">21 days</option>
+                                    <option value="22">22 days</option>
+                                    <option value="23">23 days</option>
+                                    <option value="24">24 days</option>
+                                    <option value="25">25 days</option>
+                                    <option value="26">26 days</option>
+                                    <option value="27">27 days</option>
+                                    <option value="28">28 days</option>
+                                    <option value="29">29 days</option>
+                                    <option value="30">30 days</option>
+                                    <option value="31">31 days</option>
                                 </select>
                             </div>
 
@@ -136,20 +132,55 @@
     function updateEndDate() {
         let startDateInput = document.getElementById('startdate');
         let endDateInput = document.getElementById('enddate');
+        let leaveTypeSelect = document.getElementById('leave_type');
+
+        console.log('updateEndDate called');
+        console.log('Start date:', startDateInput.value);
+        console.log('Leave type:', leaveTypeSelect.value);
 
         if (startDateInput.value) {
             let startDate = new Date(startDateInput.value);
-            startDate.setDate(startDate.getDate()); // Adding 1 day to Start Date
+            let leaveType = leaveTypeSelect.value;
 
-            let formattedMinDate = startDate.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
-            endDateInput.min = formattedMinDate; // Set min attribute to restrict dates before Start Date +1 day
+            // Check if it's permission or 15 min late entry/exit
+            let isPermissionOrLate = leaveType.includes('Permission 1st Half') || leaveType.includes('Permission 2nd Half') || 
+                                   leaveType.includes('Late Entry/Exit 15 mins (1st Half)') || leaveType.includes('Late Entry/Exit 15 mins (2nd Half)');
+            
+            console.log('Is permission or late:', isPermissionOrLate);
 
-            // Clear the selected End Date if it's before the new min date
-            if (endDateInput.value && new Date(endDateInput.value) < startDate) {
-                endDateInput.value = '';
+            if (isPermissionOrLate) {
+                // For permission and 15 min late, end date = start date
+                endDateInput.value = startDateInput.value;
+                endDateInput.min = startDateInput.value;
+                endDateInput.max = startDateInput.value;
+                endDateInput.readOnly = true;
+                endDateInput.style.backgroundColor = '#f8f9fa';
+            } else {
+                // For regular leaves, allow end date to be same or after start date
+                endDateInput.readOnly = false;
+                endDateInput.style.backgroundColor = '';
+                endDateInput.min = startDateInput.value;
+                endDateInput.max = '';
+                
+                // Clear the selected End Date if it's before the start date
+                if (endDateInput.value && new Date(endDateInput.value) < startDate) {
+                    endDateInput.value = '';
+                }
             }
         } else {
             endDateInput.min = "{{ date('Y-m-d') }}"; // Reset min date if Start Date is cleared
+            endDateInput.readOnly = false;
+            endDateInput.style.backgroundColor = '';
+            endDateInput.max = '';
+        }
+    }
+
+    // Also trigger when leave type changes
+    function updateEndDateOnLeaveTypeChange() {
+        console.log('Leave type changed');
+        let startDateInput = document.getElementById('startdate');
+        if (startDateInput.value) {
+            updateEndDate();
         }
     }
 </script>

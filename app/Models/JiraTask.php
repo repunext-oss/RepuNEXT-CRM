@@ -22,6 +22,7 @@ class JiraTask extends Model
         'assignee_id',
         'reporter_id',
         'project_id',
+        'sprint_id',
         'story_points',
         'due_date',
         'labels',
@@ -43,6 +44,12 @@ class JiraTask extends Model
         'moved_to_done_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'status_text',
+        'priority_text',
+        'type_text'
+    ];
+
     // Relationships
     public function assignee(): BelongsTo
     {
@@ -57,6 +64,11 @@ class JiraTask extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(ProjectDetail::class, 'project_id');
+    }
+
+    public function sprint(): BelongsTo
+    {
+        return $this->belongsTo(Sprint::class, 'sprint_id');
     }
 
     // Generate unique task key

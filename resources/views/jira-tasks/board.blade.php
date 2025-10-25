@@ -18,6 +18,52 @@
                         </a>
                     </div>
                 </div>
+                
+                <!-- Sprint Management Section -->
+                <div class="sprint-management-section">
+                    <div class="row">
+                        <div class="col-12">
+                            @if($currentSprint)
+                                <div class="sprint-info-card">
+                                    <div class="sprint-status-indicator active"></div>
+                                    <div class="sprint-details">
+                                        <h6 class="sprint-name">
+                                            {{ $currentSprint->name }}
+                                            <span class="sprint-dates ms-3">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            <span>{{ \Carbon\Carbon::parse($currentSprint->start_date)->format('M d') }} - {{ \Carbon\Carbon::parse($currentSprint->end_date)->format('M d, Y') }}</span>
+                                            </span>
+                                        </h6>
+                                        <div class="sprint-progress">
+                                            <div class="progress-bar-container">
+                                                <div class="progress-bar-fill" style="width: 0%"></div>
+                                            </div>
+                                            <small class="progress-text">Loading progress...</small>
+                                        </div>
+                                    </div>
+                            <div class="sprint-actions">
+                                    <button class="btn btn-sprint btn-info" onclick="viewSprintDetails({{ $currentSprint->id }})">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <span>View Details</span>
+                                    </button>
+                                    <button class="btn btn-sprint btn-success" onclick="completeSprint({{ $currentSprint->id }})">
+                                        <i class="fas fa-check"></i>
+                                        <span>Complete Sprint</span>
+                                </button>
+                            </div>
+                                </div>
+                            @else
+                                <div class="sprint-info-card no-sprint">
+                                    <div class="sprint-status-indicator inactive"></div>
+                                    <div class="sprint-details">
+                                        <h6 class="sprint-name">No Active Sprint</h6>
+                                        <p class="sprint-subtitle">Create a new sprint to start tracking your work</p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <!-- To Do Column -->
@@ -664,6 +710,98 @@
     transform: translateY(-1px);
 }
 
+/* Optimized Image Attachment Styles */
+.image-attachment {
+    padding: 0;
+    overflow: hidden;
+}
+
+.image-preview-container {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    background: #f8f9fa;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attachment-image-preview {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-preview-container:hover .attachment-image-preview {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.image-preview-container:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.image-fallback small {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.attachment-info {
+    padding: 0.75rem;
+}
+
+.attachment-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.attachment-actions .btn {
+    flex: 1;
+}
+
+/* Image Modal Header Button Styles */
+#imageOverviewModal .modal-header .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+#imageOverviewModal .modal-header .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    transform: translateY(-1px);
+}
+
+#imageOverviewModal .modal-header .btn-outline-light:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
 .file-icon-large {
     width: 48px;
     height: 48px;
@@ -827,6 +965,638 @@
     z-index: 10;
 }
 
+/* Sprint Management Section Styling */
+.sprint-management-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.sprint-management-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    animation: shimmer 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.sprint-info-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    gap: 1.5rem;
+}
+
+.sprint-info-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.sprint-info-card.no-sprint {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border-color: #ffc107;
+}
+
+.sprint-status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sprint-status-indicator.active {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.2);
+    animation: pulse 2s infinite;
+}
+
+.sprint-status-indicator.inactive {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+}
+
+.sprint-details {
+    flex: 1;
+}
+
+.sprint-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.sprint-subtitle {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.sprint-dates {
+    display: inline-flex;
+    align-items: center;
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.sprint-dates i {
+    color: #007bff;
+}
+
+.sprint-progress {
+    margin-top: 0.5rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+    border-radius: 3px;
+    transition: width 0.8s ease;
+    position: relative;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    animation: progressShimmer 2s ease-in-out infinite;
+}
+
+.progress-text {
+    color: #6c757d;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.sprint-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.btn-sprint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-sprint::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    transition: left 0.5s ease;
+}
+
+.btn-sprint:hover::before {
+    left: 100%;
+}
+
+
+.btn-sprint.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-sprint.btn-success:hover,
+.btn-sprint.btn-info:hover {
+    transform: translateY(-2px);
+}
+
+.btn-sprint.btn-success:hover {
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-sprint.btn-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+}
+
+.btn-sprint.btn-info:hover {
+    box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4);
+}
+
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.2); }
+    50% { box-shadow: 0 0 0 8px rgba(40, 167, 69, 0.1); }
+    100% { box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.2); }
+}
+
+/* Sprint Details Modal Styles */
+.sprint-details-container {
+    padding: 0;
+}
+
+/* Modal Header Styles */
+.sprint-modal-header-info {
+    flex: 1;
+}
+
+.sprint-modal-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.sprint-modal-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.sprint-modal-dates {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.sprint-modal-dates i {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.sprint-modal-progress {
+    text-align: center;
+    margin-right: 1rem;
+}
+
+.sprint-modal-percentage {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+.sprint-modal-progress-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+/* Sprint Information Section */
+.sprint-info-section {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.sprint-info-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5rem;
+    color: white;
+}
+
+.sprint-info-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.sprint-info-title i {
+    color: white !important;
+}
+
+.sprint-info-content {
+    padding: 1.5rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-color: #007bff;
+}
+
+.info-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: white !important;
+    font-size: 1.2rem;
+}
+
+.info-details {
+    flex: 1;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.sprint-description-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border-left: 4px solid #007bff;
+}
+
+.description-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.description-label i {
+    color: #495057 !important;
+}
+
+.description-content {
+    font-size: 0.95rem;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Sprint Statistics Section */
+.sprint-stats-section {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+    height: fit-content;
+}
+
+.stats-header {
+    background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+    padding: 1.5rem;
+    color: white;
+}
+
+.stats-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.stats-title i {
+    color: white !important;
+}
+
+.stats-content {
+    padding: 1.5rem;
+}
+
+/* Progress Overview */
+.progress-overview {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.progress-circle-large {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.progress-circle-fill-large {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(#28a745 0deg, #28a745 calc(var(--progress) * 3.6deg), #e9ecef calc(var(--progress) * 3.6deg));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.progress-circle-fill-large::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+}
+
+.progress-percentage {
+    position: relative;
+    z-index: 1;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #28a745;
+    line-height: 1;
+}
+
+.progress-label {
+    position: relative;
+    z-index: 1;
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+/* Stats Grid Modern */
+.stats-grid-modern {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.stat-item-modern {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.stat-item-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon-modern {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    color: white !important;
+    font-size: 1rem;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+/* Custom background colors for sprint details icons */
+.bg-purple {
+    background-color: #6f42c1 !important;
+}
+
+.bg-purple:hover {
+    background-color: #5a32a3 !important;
+}
+
+
+
+@keyframes progressShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Task Management Modal Styles */
+.available-tasks-container,
+.sprint-tasks-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.task-item:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-item.selected {
+    background: #e3f2fd;
+    border-color: #2196f3;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+}
+
+.task-checkbox {
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.task-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-key {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.task-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.task-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.task-badge.type {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.task-badge.priority {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.task-badge.priority.high {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+.task-badge.priority.critical {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.task-assignee {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    color: #6c757d;
+}
+
+.task-assignee img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+
 .column-header-gradient {
     border-radius: 0.75rem 0.75rem 0 0;
     padding: 1.25rem 1.5rem;
@@ -834,27 +1604,200 @@
 
 .todo-header {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.todo-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    animation: columnShimmer 3s ease-in-out infinite;
 }
 
 .in-progress-header {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.in-progress-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    animation: columnShimmer 3s ease-in-out infinite 0.5s;
 }
 
 .review-header {
     background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.review-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    animation: columnShimmer 3s ease-in-out infinite 1s;
 }
 
 .done-header {
     background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+    position: relative;
+    overflow: hidden;
 }
 
-.badge-count {
-    font-size: 1rem;
-    font-weight: 800;
-    padding: 0.5rem 0.8rem;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(255,255,255,0.3);
+.done-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    animation: columnShimmer 3s ease-in-out infinite 1.5s;
 }
+
+@keyframes columnShimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sprint-management-section {
+        padding: 1rem;
+    }
+    
+    .sprint-info-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .sprint-status-indicator {
+        margin-right: 0;
+        margin-bottom: 0.75rem;
+    }
+    
+    .sprint-actions {
+        justify-content: center;
+        margin-top: 0;
+        flex-direction: row;
+        gap: 0.75rem;
+    }
+    
+    .btn-sprint {
+        flex: 1;
+        min-width: 120px;
+        padding: 0.75rem;
+        justify-content: center;
+    }
+    
+    .sprint-modal-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .sprint-modal-dates {
+        margin-left: 0 !important;
+    }
+    
+    .sprint-modal-progress {
+        margin-right: 0;
+        margin-top: 0.5rem;
+    }
+    
+    .sprint-modal-name {
+        font-size: 1.1rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .info-card {
+        padding: 0.75rem;
+    }
+    
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 0.75rem;
+        font-size: 1rem;
+        color: white !important;
+    }
+    
+    .stats-grid-modern {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .stat-item-modern {
+        padding: 0.75rem;
+    }
+    
+    .progress-circle-large {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .progress-circle-fill-large::before {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .progress-percentage {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .board-title {
+        font-size: 1.2rem;
+    }
+    
+    .column-title {
+        font-size: 1rem;
+    }
+    
+    .badge-count {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    .task-card {
+        padding: 0.75rem !important;
+    }
+    
+    .sprint-name {
+        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .sprint-dates {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        margin-left: 0 !important;
+    }
+}
+
 
 .board-title {
     font-size: 1.5rem;
@@ -1029,7 +1972,7 @@
 }
 
 .sortable-column {
-    min-height: 400px !important;
+    min-height: 500px !important;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
@@ -1459,22 +2402,71 @@
     </div>
 </div>
 
+<!-- Image Overview Modal -->
+<div class="modal fade" id="imageOverviewModal" tabindex="-1" aria-labelledby="imageOverviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 bg-gradient-primary text-white">
+                <div class="d-flex align-items-center justify-content-between w-100">
+                    <h5 class="modal-title mb-0" id="imageOverviewModalLabel">
+                        <i class="fas fa-image me-2"></i><span id="modalImageTitle">Image Preview</span>
+                    </h5>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-outline-light btn-sm" onclick="toggleImageFullscreen()" title="Fullscreen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <a id="modalImageDownload" href="" class="btn btn-outline-light btn-sm" target="_blank" title="Download" download>
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="image-container text-center">
+                    <img id="modalImagePreview" src="" alt="" class="img-fluid" style="max-height: 70vh; width: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Sprint Details Modal -->
+<div class="modal fade" id="sprintDetailsModal" tabindex="-1" aria-labelledby="sprintDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 bg-gradient-primary text-white">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="sprint-modal-header-info">
+                        <div class="sprint-modal-meta">
+                            <span class="sprint-modal-name" id="sprintModalName">Loading...</span>
+                            <span class="sprint-modal-dates ms-3" id="sprintModalDates">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="sprint-modal-progress">
+                        <div class="sprint-modal-percentage" id="sprintModalPercentage">0%</div>
+                        <div class="sprint-modal-progress-label">Complete</div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body p-4">
+                <div id="sprintDetailsContent">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <style>
 .draggable-task {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
-}
-
-.draggable-task:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.draggable-task.dragging {
-    cursor: move;
-    opacity: 0.5;
-    transform: rotate(5deg);
 }
 
 .draggable-task::before {
@@ -1579,7 +2571,39 @@
 // Drag and Drop functionality
 document.addEventListener('DOMContentLoaded', function() {
     initializeDragAndDrop();
+    loadSprintProgress();
 });
+
+// Load sprint progress
+function loadSprintProgress() {
+    const progressBar = document.querySelector('.progress-bar-fill');
+    const progressText = document.querySelector('.progress-text');
+    
+    if (progressBar && progressText) {
+        // Get current sprint data
+        fetch('/sprints/current')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.sprint) {
+                const progress = data.progress || 0;
+                const totalTasks = data.tasks ? 
+                    (data.tasks.todo.length + data.tasks.in_progress.length + data.tasks.review.length + data.tasks.done.length) : 0;
+                const completedTasks = data.tasks ? data.tasks.done.length : 0;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = `${completedTasks}/${totalTasks} tasks completed (${progress}%)`;
+            } else {
+                progressBar.style.width = '0%';
+                progressText.textContent = 'No active sprint';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading sprint progress:', error);
+            progressBar.style.width = '0%';
+            progressText.textContent = 'Error loading progress';
+        });
+    }
+}
 
 function initializeDragAndDrop() {
     const taskCards = document.querySelectorAll('.draggable-task');
@@ -1801,10 +2825,6 @@ function assignTask() {
     });
 }
 
-function openAssignModal(taskId) {
-    document.getElementById('assign_task_id').value = taskId;
-    new bootstrap.Modal(document.getElementById('assignTaskModal')).show();
-}
 
 function viewTaskDetails(taskId) {
     // Check if the element is being dragged
@@ -1878,7 +2898,19 @@ function viewTaskDetails(taskId) {
                                         `}
                                     </div>
                                 </div>
-                                
+                                <!-- Attachments Section -->
+                                    ${task.attachments && task.attachments.length > 0 ? `
+                                    <div class="content-section">
+                                        <h5 class="section-title">
+                                            <i class="fas fa-paperclip"></i>Attachments (${task.attachments.length})
+                                        </h5>
+                                        <div class="attachments-grid">
+                                            <div class="row g-3">
+                                                    ${task.attachments.map(attachment => generateAttachmentHTML(attachment, task.id)).join('')}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
                                 <!-- Comments Section -->
                                 <div class="content-section">
                                     <h5 class="section-title">
@@ -1937,48 +2969,7 @@ function viewTaskDetails(taskId) {
                                         </div>
                                 </div>
                                     
-                                <!-- Attachments Section -->
-                                    ${task.attachments && task.attachments.length > 0 ? `
-                                    <div class="content-section">
-                                        <h5 class="section-title">
-                                            <i class="fas fa-paperclip"></i>Attachments (${task.attachments.length})
-                                        </h5>
-                                        <div class="attachments-grid">
-                                            <div class="row g-3">
-                                                    ${task.attachments.map(attachment => {
-                                                        const isString = typeof attachment === 'string';
-                                                        const fileName = isString ? attachment : (attachment.name || 'Attachment');
-                                                        const fileUrl = isString ? '/upload/jira_tasks/' + attachment : (attachment.url || '#');
-                                                        const fileSize = isString ? '' : (attachment.size ? formatFileSize(attachment.size) : '');
-                                                        const fileExtension = fileName.split('.').pop().toLowerCase();
-                                                        const fileIcon = getFileIcon(fileExtension);
-                                                    const fileIconClass = getFileIconClass(fileExtension);
-                                                        
-                                                        return `
-                                                        <div class="col-md-6 col-lg-4">
-                                                            <div class="attachment-card">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="file-icon-large ${fileIconClass}">
-                                                                        <i class="fas fa-${fileIcon}"></i>
-                                                                    </div>
-                                                                    <div class="flex-grow-1">
-                                                                        <h6 class="mb-1 text-dark">${fileName}</h6>
-                                                                        <small class="text-muted">${fileSize}</small>
-                                                                    </div>
-                                                                    <div class="ms-2">
-                                                                        <a href="${fileUrl}" class="btn btn-outline-primary btn-sm" target="_blank" title="Download">
-                                                                            <i class="fas fa-download"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        `;
-                                                    }).join('')}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ` : ''}
+                                
                                 </div>
 
                             <!-- Sidebar Information Column -->
@@ -2220,18 +3211,24 @@ function viewTaskDetails(taskId) {
 
 /* Optimized - removed unused functions */
 
+// Optimized file type constants
+const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+
+const FILE_ICON_CLASSES = {
+    'pdf': 'file-icon-pdf',
+    'doc': 'file-icon-doc',
+    'docx': 'file-icon-doc',
+    'jpg': 'file-icon-img',
+    'jpeg': 'file-icon-img',
+    'png': 'file-icon-img',
+    'gif': 'file-icon-img',
+    'svg': 'file-icon-img',
+    'webp': 'file-icon-img',
+    'bmp': 'file-icon-img'
+};
+
 function getFileIconClass(extension) {
-    switch(extension) {
-        case 'pdf': return 'file-icon-pdf';
-        case 'doc':
-        case 'docx': return 'file-icon-doc';
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'gif':
-        case 'svg': return 'file-icon-img';
-        default: return 'file-icon-default';
-    }
+    return FILE_ICON_CLASSES[extension] || 'file-icon-default';
 }
 
 // Comment System Functions
@@ -2509,37 +3506,412 @@ function formatFileSize(bytes) {
     return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
 }
 
+// Optimized file icon mapping
+const FILE_ICONS = {
+    'pdf': 'file-pdf',
+    'doc': 'file-word', 'docx': 'file-word',
+    'xls': 'file-excel', 'xlsx': 'file-excel',
+    'ppt': 'file-powerpoint', 'pptx': 'file-powerpoint',
+    'txt': 'file-alt',
+    'jpg': 'file-image', 'jpeg': 'file-image', 'png': 'file-image',
+    'gif': 'file-image', 'bmp': 'file-image', 'svg': 'file-image', 'webp': 'file-image',
+    'mp4': 'file-video', 'avi': 'file-video', 'mov': 'file-video',
+    'mp3': 'file-audio', 'wav': 'file-audio',
+    'zip': 'file-archive', 'rar': 'file-archive', '7z': 'file-archive',
+    'css': 'file-code', 'js': 'file-code', 'html': 'file-code',
+    'php': 'file-code', 'json': 'file-code', 'xml': 'file-code'
+};
+
 function getFileIcon(extension) {
-    const iconMap = {
-        'pdf': 'file-pdf',
-        'doc': 'file-word',
-        'docx': 'file-word',
-        'xls': 'file-excel',
-        'xlsx': 'file-excel',
-        'ppt': 'file-powerpoint',
-        'pptx': 'file-powerpoint',
-        'txt': 'file-alt',
-        'jpg': 'file-image',
-        'jpeg': 'file-image',
-        'png': 'file-image',
-        'gif': 'file-image',
-        'bmp': 'file-image',
-        'svg': 'file-image',
-        'mp4': 'file-video',
-        'avi': 'file-video',
-        'mov': 'file-video',
-        'mp3': 'file-audio',
-        'wav': 'file-audio',
-        'zip': 'file-archive',
-        'rar': 'file-archive',
-        '7z': 'file-archive',
-        'css': 'file-code',
-        'js': 'file-code',
-        'html': 'file-code',
-        'php': 'file-code',
-        'json': 'file-code',
-        'xml': 'file-code'
-    };
-    return iconMap[extension] || 'file-alt';
+    return FILE_ICONS[extension] || 'file-alt';
 }
+
+// Optimized attachment HTML generator
+function generateAttachmentHTML(attachment, taskId) {
+    const isString = typeof attachment === 'string';
+    const fileName = isString ? attachment : (attachment.name || 'Attachment');
+    const fileUrl = isString ? '/upload/rn-board-tasks/' + attachment : (attachment.url || '#');
+    const fileSize = isString ? '' : (attachment.size ? formatFileSize(attachment.size) : '');
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    const fileIcon = getFileIcon(fileExtension);
+    const fileIconClass = getFileIconClass(fileExtension);
+    
+    // Check if it's an image file
+    const isImage = IMAGE_EXTENSIONS.includes(fileExtension);
+    
+    if (isImage) {
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="attachment-card image-attachment">
+                <div class="image-preview-container" onclick="viewImageOverview('${fileUrl}', '${fileName}', ${taskId})">
+                    <img src="${fileUrl}" alt="${fileName}" class="attachment-image-preview" 
+                         onerror="handleImageError(this);" 
+                         onload="handleImageLoad(this);">
+                    <div class="image-fallback" style="display: none;">
+                        <div class="file-icon-large ${fileIconClass}">
+                            <i class="fas fa-${fileIcon}"></i>
+                        </div>
+                        <small class="text-muted mt-2">Image not available</small>
+                    </div>
+                    <div class="image-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+                <div class="attachment-info">
+                    <h6 class="mb-1 text-dark">${fileName}</h6>
+                    <small class="text-muted">${fileSize}</small> 
+                </div>
+            </div>
+        </div>
+        `;
+    } else {
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="attachment-card">
+                <div class="d-flex align-items-center">
+                    <div class="file-icon-large ${fileIconClass}">
+                        <i class="fas fa-${fileIcon}"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 text-dark">${fileName}</h6>
+                        <small class="text-muted">${fileSize}</small>
+                    </div>
+                    <div class="ms-2">
+                        <a href="${fileUrl}" class="btn btn-outline-primary btn-sm" target="_blank" title="Download">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }
+}
+
+// Image Overview Functions
+function viewImageOverview(imageUrl, fileName, taskId) {
+    // Validate URL before setting
+    if (!imageUrl || imageUrl === '#') {
+        alert('Image URL is not available');
+        return;
+    }
+    
+    // Set the image source and name
+    document.getElementById('modalImagePreview').src = imageUrl;
+    document.getElementById('modalImagePreview').alt = fileName;
+    document.getElementById('modalImageTitle').textContent = fileName;
+    document.getElementById('modalImageDownload').href = imageUrl;
+    
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('imageOverviewModal'));
+    modal.show();
+}
+
+// Image error handling functions
+function handleImageError(imgElement) {
+    imgElement.style.display = 'none';
+    const fallback = imgElement.nextElementSibling;
+    if (fallback) {
+        fallback.style.display = 'flex';
+        fallback.style.flexDirection = 'column';
+        fallback.style.alignItems = 'center';
+        fallback.style.justifyContent = 'center';
+    }
+}
+
+function handleImageLoad(imgElement) {
+    imgElement.style.display = 'block';
+    const fallback = imgElement.nextElementSibling;
+    if (fallback) {
+        fallback.style.display = 'none';
+    }
+}
+
+function toggleImageFullscreen() {
+    const image = document.getElementById('modalImagePreview');
+    const modal = document.getElementById('imageOverviewModal');
+    
+    if (!document.fullscreenElement) {
+        // Enter fullscreen
+        if (image.requestFullscreen) {
+            image.requestFullscreen();
+        } else if (image.webkitRequestFullscreen) {
+            image.webkitRequestFullscreen();
+        } else if (image.msRequestFullscreen) {
+            image.msRequestFullscreen();
+        }
+    } else {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
+// Handle fullscreen change events
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    const fullscreenButton = document.querySelector('[onclick="toggleImageFullscreen()"]');
+    const icon = fullscreenButton.querySelector('i');
+    
+    if (document.fullscreenElement) {
+        icon.className = 'fas fa-compress';
+        fullscreenButton.title = 'Exit Fullscreen';
+    } else {
+        icon.className = 'fas fa-expand';
+        fullscreenButton.title = 'Fullscreen';
+    }
+}
+
+// Sprint Management Functions
+
+function completeSprint(sprintId) {
+    if (confirm('Are you sure you want to complete this sprint? Completed tasks will be closed permanently and incomplete tasks will be moved to backlog.')) {
+        fetch(`/sprints/${sprintId}/complete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification(data.message, 'success');
+                location.reload(); // Reload to update the sprint status
+            } else {
+                showNotification(data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while completing the sprint', 'error');
+        });
+    }
+}
+
+
+// Sprint Details Functions
+function viewSprintDetails(sprintId) {
+    fetch(`/sprints/${sprintId}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            displaySprintDetails(data);
+            const modal = new bootstrap.Modal(document.getElementById('sprintDetailsModal'));
+            modal.show();
+        } else {
+            showNotification('Failed to load sprint details', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('An error occurred while loading sprint details', 'error');
+    });
+}
+
+function displaySprintDetails(data) {
+    const sprint = data.sprint;
+    const stats = data.statistics;
+    const closedTickets = data.closedTickets;
+    const incompleteTickets = data.incompleteTickets;
+
+    // Update modal header with sprint information
+    document.getElementById('sprintModalName').textContent = sprint.name;
+    document.getElementById('sprintModalDates').innerHTML = `
+        <i class="fas fa-calendar-alt me-1"></i>
+        ${formatDate(sprint.start_date)} - ${formatDate(sprint.end_date)}
+    `;
+    document.getElementById('sprintModalPercentage').textContent = `${stats.completion_rate}%`;
+
+    const content = `
+        <div class="sprint-details-container">
+            <div class="row g-4">
+                <!-- Sprint Information Section -->
+                <div class="col-lg-8">
+                    <div class="sprint-info-section">
+                        <div class="sprint-info-header">
+                            <div class="sprint-info-title">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span>Sprint Information</span>
+                            </div>
+                        </div>
+                        <div class="sprint-info-content">
+                            <div class="info-grid">
+                                <div class="info-card">
+                                    <div class="info-icon bg-success">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </div>
+                                    <div class="info-details">
+                                        <div class="info-label">Start Date</div>
+                                        <div class="info-value">${formatDate(sprint.start_date)}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-card">
+                                    <div class="info-icon bg-danger">
+                                        <i class="fas fa-calendar-minus"></i>
+                                    </div>
+                                    <div class="info-details">
+                                        <div class="info-label">End Date</div>
+                                        <div class="info-value">${formatDate(sprint.end_date)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="info-card">
+                                    <div class="info-icon bg-info">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="info-details">
+                                        <div class="info-label">Duration</div>
+                                        <div class="info-value">${calculateDuration(sprint.start_date, sprint.end_date)} days</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-card">
+                                    <div class="info-icon bg-purple">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="info-details">
+                                        <div class="info-label">Created</div>
+                                        <div class="info-value">${formatDate(sprint.created_at)}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            ${sprint.description ? `
+                                <div class="sprint-description-section">
+                                    <div class="description-label">
+                                        <i class="fas fa-align-left me-2"></i>
+                                        Description
+                                    </div>
+                                    <div class="description-content">
+                                        ${sprint.description}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+                        
+                <!-- Sprint Statistics Section -->
+                <div class="col-lg-4">
+                    <div class="sprint-stats-section">
+                        <div class="stats-header">
+                            <div class="stats-title">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                <span>Sprint Statistics</span>
+                            </div>
+                        </div>
+                        <div class="stats-content">
+                            <!-- Progress Overview -->
+                            <div class="progress-overview">
+                                <div class="progress-circle-large">
+                                    <div class="progress-circle-fill-large" style="--progress: ${stats.completion_rate}%">
+                                        <span class="progress-percentage">${stats.completion_rate}%</span>
+                                        <span class="progress-label">Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stats Grid -->
+                            <div class="stats-grid-modern">
+                                <div class="stat-item-modern">
+                                    <div class="stat-icon-modern bg-primary">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">${stats.total_tickets}</div>
+                                        <div class="stat-label">Total Tasks</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item-modern">
+                                    <div class="stat-icon-modern bg-success">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">${stats.closed_tickets}</div>
+                                        <div class="stat-label">Completed</div>
+                                    </div>
+                                </div>
+
+                                <div class="stat-item-modern">
+                                    <div class="stat-icon-modern bg-info">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">${stats.total_story_points}</div>
+                                        <div class="stat-label">Total Points</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item-modern">
+                                    <div class="stat-icon-modern bg-warning">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">${stats.completed_story_points}</div>
+                                        <div class="stat-label">Completed Points</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('sprintDetailsContent').innerHTML = content;
+}
+
+
+// Helper functions
+function getStatusColor(status) {
+    const colors = {
+        'planning': 'secondary',
+        'active': 'success',
+        'completed': 'primary',
+        'cancelled': 'danger'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getPriorityColor(priority) {
+    const colors = {
+        'low': 'success',
+        'medium': 'warning',
+        'high': 'danger',
+        'critical': 'dark'
+    };
+    return colors[priority] || 'secondary';
+}
+
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+function calculateDuration(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+}
+
+
+</script> 
 </script> 

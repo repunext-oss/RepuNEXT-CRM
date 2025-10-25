@@ -12,6 +12,11 @@
 
         <!-- Scripts -->
          @vite(['resources/css/app.css', 'resources/js/app.js'])
+         
+         <!-- jQuery for idle timeout functionality -->
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -29,5 +34,13 @@
                 {{ $slot }}
             </main>
         </div>
+        
+        <!-- Idle Timeout Script -->
+        <script>
+            // Set global URLs for the idle timeout handler
+            window.resetSessionUrl = '{{ route("reset-session") }}';
+            window.loginUrl = '{{ route("login") }}';
+        </script>
+        <script src="{{ asset('js/idle-timeout.js') }}"></script>
     </body>
 </html>

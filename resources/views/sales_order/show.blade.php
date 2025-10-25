@@ -61,6 +61,7 @@
     .address-card {
         width: 45%;
         padding: 15px;
+        margin-left:10px !important;
         border-radius: 0;
         background: none;
         box-shadow: none;
@@ -102,6 +103,11 @@
 
     /* Print-specific styles */
     @media print {
+    @page {
+        size: A4;
+        margin: 0.1cm;
+    }
+
     * {
         margin: 0 !important;
         padding: 0 !important;
@@ -109,7 +115,8 @@
     }
 
     html, body {
-        width: 100%;
+        width: 210mm;
+        max-width: 210mm;
         height: auto !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -141,8 +148,9 @@
         display: block !important;
         visibility: visible !important;
         width: 100%;
-        margin-bottom: 1px !important;
-        padding-bottom: 3px !important;
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+        padding-bottom: 0 !important;
         border-bottom: none !important;
     }
 
@@ -154,44 +162,82 @@
         width: 100%;
         border-collapse: collapse;
         border: 1px solid black;
-        margin: 0 auto;
-        padding: 2px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        table-layout: fixed;
     }
 
     .header-table td {
         border: 1px solid black;
-        padding: 4px !important;
+        padding: 1mm !important;
+        font-size: 9px;
+        vertical-align: middle;
+        height: 80px;
+    }
+
+    .header-table td:first-child {
+        width: 25%;
         text-align: center;
-        font-size: 11px;
+    }
+
+    .header-table td:nth-child(2) {
+        width: 55%;
+        text-align: center;
+        padding-left: 1mm !important;
+        padding-right: 1mm !important;
+    }
+
+    .header-table td:last-child {
+        width: 20%;
+        text-align: right;
+        padding-right: 1mm !important;
+    }
+
+    .company-logo {
+        text-align: center;
+        vertical-align: middle;
+        height: 100%;
     }
 
     .company-logo img {
-        height: 80px;
-        margin: 0 auto;
+        height: 50px;
         text-align: center;
+        vertical-align: middle;
+        max-width: 50px;
+        margin: 0 auto;
+        display: block;
+        object-fit: contain;
     }
 
     .company-name {
-        font-size: 12px;
+        font-size: 16px !important;
         font-family: 'Merriweather';
+        color: black;
         text-align: center;
-        padding: 3px;
+        line-height: 1.1;
+        padding: 0;
+        margin: 0;
+        vertical-align: middle;
     }
 
     .company_email {
         font-family: 'Merriweather';
-        font-size: 10px;
-        text-align: center;
+        font-size: 16px !important;
+        text-align: center !important;
+        line-height: 1.1;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
     }
 
     #printInvoiceHeader {
         display: flex !important;
         justify-content: center;
         align-items: center;
-        margin-top: 5px; 
-        padding-bottom: 15px; 
+        margin-top: 1mm !important; 
+        padding-bottom: 1mm !important; 
         border-bottom: 1px solid black;
-        margin-bottom: 15px !important;
+        margin-bottom: 3mm !important;
     }
 
     #printInvoiceHeader h2 {
@@ -203,9 +249,12 @@
 
     #invoiceContent {
         width: 100% !important;
-        margin: 0 auto !important;
-        padding: 3px !important;
+        margin: 0 !important;
+        padding: 0.2mm !important;
         border: 1px solid black;
+        max-width: none !important;
+        box-sizing: border-box;
+        min-height: auto;
     }
 
     .invoice-details {
@@ -220,34 +269,129 @@
     .invoice-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 5px;
-        margin-bottom: 10px !important;
+        margin: 0 !important;
     }
 
     .invoice-table th, .invoice-table td {
         border: 1px solid #000;
-        padding: 6px !important;
-        font-size: 11px;
+        padding: 0.5mm !important;
+        font-size: 9px;
         text-align: center;
     }
 
     .total-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 5px;
-        margin-bottom: 2px !important;
+        margin: 0 !important;
     }
 
     .total-table td {
         border: 1px solid #000;
-        padding: 4px !important;
+        padding: 0.5mm !important;
         text-align: right;
         font-weight: bold;
-        font-size: 11px;
+        font-size: 9px;
     }
 
     .total-table td:first-child {
         text-align: left;
+    }
+
+    /* Full space utilization */
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .container-fluid {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        width: 100% !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+
+    .card-body {
+        padding: 0.5mm !important;
+        width: 100% !important;
+    }
+    
+    /* Remove top spacing for print */
+    .card-header {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
+    .container-xxl {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        @
+    }
+    
+    .content, #kt_content, #kt_post {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .table {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .table th, .table td {
+        width: auto !important;
+    }
+
+    .table th:nth-child(1) { width: 8% !important; }
+    .table th:nth-child(2) { width: 35% !important; }
+    .table th:nth-child(3) { width: 12% !important; }
+    .table th:nth-child(4) { width: 10% !important; }
+    .table th:nth-child(5) { width: 15% !important; }
+    .table th:nth-child(6) { width: 10% !important; }
+    .table th:nth-child(7) { width: 10% !important; }
+
+    /* Page break control */
+    .page-break-inside-avoid {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .page-break-before-avoid {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+    }
+
+    .page-break-after-avoid {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    /* Compact spacing for single page */
+    .invoice-details {
+        margin-bottom: 2px !important;
+        padding: 1px !important;
+    }
+
+    .divider1, .divider3 {
+        height: 1px !important;
+        margin: 1px 0 !important;
+    }
+
+    .totals-section {
+        padding: 2px 0 !important;
+        margin: 0 !important;
+    }
+
+    .bank-certification-table {
+        margin-top: 2px !important;
+        padding: 1px !important;
     }
 
     .amount-table {
@@ -288,6 +432,7 @@
 
     #sales-order-print-header {
         margin-top: 5px;
+        margin-right: 10px !important;
         width: 50%;
         text-align: right;
         font-size: 11px;
@@ -300,7 +445,7 @@
     }
 
     .terms-box {
-        margin-top: 10px;
+        margin-top: 5px;
         padding: 10px;
         background-color: #fff;
         color: #000;
@@ -452,7 +597,7 @@
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <div class="container-xxl" id="kt_content_container">
             <div class="card">
-                <div class="card-header pt-5">
+                <div class="card-header pt-1">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bold fs-3 mb-1">View</span>
                         <span class="text-muted-custom fw-semibold fs-7">
@@ -467,15 +612,15 @@
                     <table class="header-table">
                         <tr>
                             <td class="company-logo">
-                                <img src="{{ asset('backend/assets/media/logos/print_logo.jpg') }}" alt="Company Logo">
+                                <img src="{{ asset('backend/assets/media/logos/logo2.png') }}" alt="RepuNext Logo" style="max-width: 60%; height: auto; display: block; margin: 0 auto;">
                             </td>
                             <td class="company-name">
-                                <strong>REPUNEXT</strong><br>
-                                D.No. 24, Plot 41A,6th Main Road, <br>
-                                Ram Nagar North Extention,<br>
-                                Velachery, Chennai – 600042,<br>
-                                Phone: [+91 95001 555 23 / 24] <br>
-                                Landline: 044 486 555 23
+                                <h2>REPUNEXT LLP</h2>
+                                Plot No. 22 and 23, 2nd Floor, 2nd Main Road,<br>
+                                V.G.P. Selva Nagar, <br>
+                                Velachery, Chennai – 600042,<br>                            
+                                Phone: [+91 95001 555 23 / 24 / 90 / 91] <br>
+                                Landline : 044 486 555 23
                             </td>
                             <td class="company_email">
                                 Email: info@repunext.com <br>
@@ -499,13 +644,10 @@
                             <span><strong>GST IN:</strong> {{ $salesOrder->gst_number }} </span>
                         </div>
                         <div id="sales-order-print-header">
-                                <span><strong>Invoice Number:</strong> RN/D/12/{{ str_pad($salesOrder->invoice_number, 3, '0', STR_PAD_LEFT) }}</span>
-                                <br>
-                                <span><strong>Date:</strong> {{ date('d-m-Y', strtotime($salesOrder->date)) }}</span>
-                                <br>
+                                <span><strong>Invoice Number:</strong> RN/D/12/{{ str_pad($salesOrder->invoice_number, 3, '0', STR_PAD_LEFT) }} | </span>
+                                <span><strong>Date:</strong> {{ date('d-m-Y', strtotime($salesOrder->date)) }} | </span>
                                 <span><strong>GST IN:</strong> 33ARFPP5003N1ZR</span>
-                                <br>
-                                <br>
+                                <br><br>
                                 <div class="terms-box">
                                     <strong>Terms of Payment & Delivery</strong><br>
                                     {{ $salesOrder->terms_of_payment_and_delivery }}
@@ -534,7 +676,12 @@
                     </div>
                     <br>
                     <div class="card-body border-0 pt-0">
-                        <table class="table table-bordered mt-3 text-center">
+                        @php
+                            $hasDiscount = $salesOrder->salesOrderDetails->whereNotNull('discount')->count() > 0;
+                        @endphp
+                        
+                        
+                        <table class="table table-bordered mt-0 text-center">
                             <thead>
                                 <tr class="text-muted-custom">
                                     <th>S.No</th>
@@ -542,26 +689,26 @@
                                     <th>Month</th>
                                     <th>QTY</th>
                                     <th>Price</th>
-                                    @if($salesOrder->salesOrderDetails->where('discount', '>', 0)->count() > 0)
+                                    @if($hasDiscount)
                                     <th>Disc</th>
                                     @endif
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach($salesOrder->salesOrderDetails as $key => $item)
-                                <tr class="text-muted-custom">
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $item->product_name }}</td>
-                                    <td>{{ $item->month }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>₹{{ $item->rate }}</td>
-                                    @if($item->discount > 0)
-                                    <td>{{ $item->discount }}%</td>
-                                    @endif
-                                    <td>₹{{ $item->total_amount }}</td>
-                                </tr>
-                            @endforeach
+                                @foreach($salesOrder->salesOrderDetails as $index => $item)
+                                    <tr class="text-muted-custom">
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $item->product_name }}</td>
+                                        <td>{{ $item->month }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>₹{{ $item->rate }}</td>
+                                        @if($hasDiscount)
+                                        <td>{{ $item->discount ? $item->discount . '%' : '' }}</td>
+                                        @endif
+                                        <td>₹{{ $item->total_amount }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                         <div class="divider1"></div>
@@ -626,11 +773,12 @@
                                     <td class="bank-details" rowspan="2">
                                         <strong>Bank Details</strong>
                                         <hr><br>
-                                        <p>M/S REPUNEXT</p>
-                                        <p>Current A/C No: 50200050527113</p>
+                                        <p> HDFC Bank: Praveen Dilip S</p>
+                                        <p>Current A/C No: 50100 17489 4841</p>
                                         <p>Bank: HDFC  Branch: Velachery</p>
-                                        <p>IFSC CODE: HDFC0000444</p>
-                                        <p>SWIFT CODE: HDFCINBBCHE</p>
+                                        <p>IFSC CODE: HDFC 0000 010</p>
+                                        <p>MG Road, Besant Nagar, Chennai - 600090, Tamil Nadu Or Google Pay/Bhim
+                                        9884454104</p>
                                     </td>
                                     <td class="certification-details">
                                         <strong>Certified in Quality Management System</strong><br>

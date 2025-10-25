@@ -24,6 +24,9 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+    public function dummy(){
+        return view('admin.dummy');
+    }
 
     public function dashboard(Request $request)
     {
@@ -47,16 +50,29 @@ class AdminController extends Controller
             ->sum('amount');
 
         $monthlyIntern = Intern::where('i_isdeleted', '!=', 1)
+            ->where('amt', 'paid')
             ->whereBetween('created_at', [$currentMonth, $currentMonthEnd])
             ->sum('Amount');
             
         $monthlyProfit = $monthlyRevenue - $monthlyExpense;
-        $totalInternPaid=Intern::where('i_isdeleted', '!=', 1)->sum('amount');
-        $totalRevenue = Revenue::sum('amount');
-        $totalExpense = Expense::sum('amount');
+        $totalInternPaid=Intern::where('i_isdeleted', '!=', 1)->where('amt', 'paid')->sum('amount');
+        $totalRevenue = Revenue::where('r_isdeleted', '!=', 1)->sum('amount');
+        $totalExpense = Expense::where('e_isdeleted', '!=', 1)->sum('amount');
         $totalProfit = $totalRevenue - $totalExpense;
         $Final = $totalRevenue + $totalInternPaid;
         $MonthlyFinal = $monthlyRevenue+ $monthlyIntern;
+        
+        // Debug: Log financial data
+        \Log::info('Financial Data Debug:', [
+            'totalRevenue' => $totalRevenue,
+            'totalExpense' => $totalExpense,
+            'monthlyRevenue' => $monthlyRevenue,
+            'monthlyExpense' => $monthlyExpense,
+            'totalInternPaid' => $totalInternPaid,
+            'monthlyIntern' => $monthlyIntern,
+            'Final' => $Final,
+            'MonthlyFinal' => $MonthlyFinal
+        ]);
 
         // Studio Booking Data
         $todayBookings = Booking::whereDate('start', Carbon::today())->count();
@@ -148,13 +164,93 @@ class AdminController extends Controller
         ->orderBy('year', 'ASC')
         ->orderBy('month', 'DESC')
         ->get();
+
+        // Get all users for dropdown selection
+        $allUsers = User::where('isdeleted', 0)->select('id', 'name', 'username')->get();
         
         return view('admin.index', compact(
             'users', 'goals', 'time', 'filter', 'dateRange', 'userId', 'serv', 'categoryData','leaveSummary','support',
             'monthlyRevenue', 'monthlyExpense', 'monthlyProfit','monthlyIntern', 'totalRevenue', 'totalExpense', 'Final','totalProfit',
             'todayBookings', 'thisWeekBookings', 'thisMonthBookings', 'totalBookings','MonthlyFinal',
-            'activeAvailabilities', 'todayAvailableUsers', 'thisWeekAvailableUsers'
+            'activeAvailabilities', 'todayAvailableUsers', 'thisWeekAvailableUsers', 'allUsers'
         ));
+    }
+
+    public function fetchUserMonthlyLeave(Request $request)
+    {
+        $userId = $request->get('user_id');
+        $year = $request->get('year', date('Y'));
+
+        if (!$userId) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User ID is required'
+            ], 400);
+        }
+
+        try {
+            // Check if the user exists
+            $user = User::find($userId);
+            if (!$user) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            // Get monthly leave taken data for the selected user
+            $monthlyLeaveData = LeaveManagement::where('l_isdeleted', 0)
+                ->where('user_ref_id', $userId)
+                ->whereYear('date', $year)
+                ->selectRaw('
+                    MONTH(date) as month,
+                    MONTHNAME(date) as month_name,
+                    SUM(taken_leave) as total_taken_leave
+                ')
+                ->groupBy('month', 'month_name')
+                ->orderBy('month')
+                ->get();
+
+            // If no data for the selected year, try to get any data for this user
+            if ($monthlyLeaveData->isEmpty()) {
+                $monthlyLeaveData = LeaveManagement::where('l_isdeleted', 0)
+                    ->where('user_ref_id', $userId)
+                    ->selectRaw('
+                        MONTH(date) as month,
+                        MONTHNAME(date) as month_name,
+                        SUM(taken_leave) as total_taken_leave
+                    ')
+                    ->groupBy('month', 'month_name')
+                    ->orderBy('month')
+                    ->get();
+            }
+
+            // Get user's current leave balance
+            $latestBalance = LeaveManagement::where('l_isdeleted', 0)
+                ->where('user_ref_id', $userId)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $userBalance = [
+                'credit_leave_days' => $latestBalance ? round((float)$latestBalance->credit_leave, 1) : 0,
+                'casual_leave_days' => $latestBalance ? round((float)$latestBalance->casual_leave, 1) : 0,
+                'sick_leave_days' => $latestBalance ? round((float)$latestBalance->sick_leave, 1) : 0,
+                'total_balance_days' => $latestBalance ? round(((float)$latestBalance->credit_leave + (float)$latestBalance->casual_leave + (float)$latestBalance->sick_leave), 1) : 0
+            ];
+
+            $response = [
+                'status' => 'success',
+                'monthly_data' => $monthlyLeaveData,
+                'user_balance' => $userBalance
+            ];
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
     }
     
     
@@ -402,7 +498,6 @@ class AdminController extends Controller
             $host_write=trim($request->host_write);
             $host_create=trim($request->host_create);
             $host_delete=trim($request->host_delete);
-
 
             $data = array(
                 'user_management_all' => $user_management_all,
@@ -1036,8 +1131,7 @@ class AdminController extends Controller
 
     public function roleview(){
         return view('admin.role_view');
-    }  // End Function
-
+    } 
     public function UpdateEmail(Request $request){
         $id=Auth::user()->id;
         $editData= DB::table('users')
@@ -1059,7 +1153,6 @@ class AdminController extends Controller
             );
             return redirect('/edit/profile')->with($notification);
         }
-
     }
 
     public function UpdatePassword(Request $request){
@@ -1183,7 +1276,7 @@ class AdminController extends Controller
         $usersdetails->save();   
         if($usersdetails){
             $notification = array(  'message'    => 'User details Updated Successfully',
-                                    'alert-type' => 'success'  );
+                                    'alert-type'   => 'success'  );
             return redirect()->route('list.user')->with($notification);
         }else{
             $notification = array(  'message'       => 'Something went wrong, Please try again!!',

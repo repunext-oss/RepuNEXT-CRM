@@ -3,6 +3,150 @@
 
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .product-table th {
+        background-color: #f8f9fa;
+        color: #495057;
+        font-weight: 600;
+        padding: 12px 8px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        font-size: 14px;
+    }
+    
+    .product-table td {
+        padding: 8px;
+        border: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+    
+    .product-table input {
+        border: 1px solid #ced4da;
+        padding: 8px 12px;
+        width: 100%;
+        font-size: 14px;
+        border-radius: 4px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .product-table input:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    .product-table input[readonly] {
+        background-color: #f8f9fa;
+        border-color: #e9ecef;
+    }
+    
+    .product-table .sno-column {
+        width: 60px;
+        text-align: center;
+        font-weight: 600;
+        background-color: #f8f9fa;
+    }
+    
+    .product-table .description-column {
+        width: 30%;
+    }
+    
+    .product-table .month-column {
+        width: 15%;
+    }
+    
+    .product-table .qty-column {
+        width: 10%;
+        text-align: center;
+    }
+    
+    .product-table .price-column {
+        width: 15%;
+        text-align: right;
+    }
+    
+    .product-table .total-column {
+        width: 15%;
+        text-align: right;
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+    
+    .product-table .action-column {
+        width: 80px;
+        text-align: center;
+    }
+    
+    .remove-btn {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background-color 0.15s ease-in-out;
+    }
+    
+    .remove-btn:hover {
+        background-color: #c82333;
+    }
+    
+    .add-product-btn {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 15px;
+        transition: background-color 0.15s ease-in-out;
+    }
+    
+    .add-product-btn:hover {
+        background-color: #0056b3;
+    }
+    
+    .totals-section {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .totals-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+    
+    .totals-row:last-child {
+        border-top: 2px solid #dee2e6;
+        padding-top: 10px;
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    
+    .error-message {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 4px;
+        display: block;
+    }
+</style>
 </head>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -94,78 +238,79 @@
                         <hr>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4 class="text-dark mb-0">Product Details</h4>
-                            <button type="button" id="addProduct" class="btn btn-sm btn-primary">
-                                <i class="fas fa-plus"></i>
+                            <button type="button" id="addProduct" class="add-product-btn">
+                                <i class="fas fa-plus"></i> Add Product
                             </button>
                         </div>
-                        <div id="productTable">
-                            <div class="row g-2 align-items-center productRow">
-                                <div class="col-lg-3 mb-3">
-                                    <label class="required fw-bold fs-6 mb-2">Description</label>
-                                    <input type="text" class="form-control" id="product_name" name="product_name[]" placeholder="Enter Description" required>
-                                    <small id="product_name_error" class="text-danger"></small>
-                                </div>
-                                <div class="col-lg-2 mb-3">
-                                    <label class="fw-bold fs-6 mb-2">Month</label>
-                                    <input type="text" class="form-control" name="month[]" placeholder="Month">
-                                </div>
-                                <div class="col-lg-1 mb-3">
-                                    <label class="fw-bold fs-6 mb-2">Qty</label>
-                                    <input type="number" class="form-control" id="quantity" name="quantity[]" placeholder="Qty" value=1>
-                                    <small id="qty_error" class="text-danger"></small>
-                                </div>
-                                <div class="col-lg-2 mb-3">
-                                    <label class="required fw-bold fs-6 mb-2">Price</label>
-                                    <input type="number" class="form-control" id="rate" name="rate[]" placeholder="Price" required>
-                                    <small id="rate_error" class="text-danger"></small>
-                                </div>
-                                <div class="col-lg-1 mb-3">
-                                    <label class="fw-bold fs-6 mb-2">Disc (%)</label>
-                                    <input type="number" class="form-control discount" id="discount" name="discount[]" placeholder="Disc" value=0>
-                                    <small id="discount_error" class="text-danger"></small>
-                                </div>
-                                <div class="col-lg-2 mb-3">
-                                    <label class="fw-bold fs-6 mb-2">Total</label>
-                                    <input type="text" class="form-control total_amount" id="total_amount" name="total_amount[]" placeholder="Total" readonly>
-                                </div>
-                                <div class="col-lg-1 d-flex align-items-center justify-content-center">
-                                    <button type="button" class="btn btn-sm btn-danger removeProduct mt-3 ms-12">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
+                        
+                        <table class="product-table" id="productTable">
+                            <thead>
+                                <tr>
+                                    <th class="sno-column">S.No</th>
+                                    <th class="description-column">Description</th>
+                                    <th class="month-column">Month</th>
+                                    <th class="qty-column">QTY</th>
+                                    <th class="price-column">Price</th>
+                                    <th class="total-column">Total</th>
+                                    <th class="action-column">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="productRow">
+                                    <td class="sno-column">1</td>
+                                    <td class="description-column">
+                                        <input type="text" class="form-control" id="product_name" name="product_name[]" placeholder="Enter Description" required>
+                                        <small id="product_name_error" class="error-message"></small>
+                                    </td>
+                                    <td class="month-column">
+                                        <input type="text" class="form-control" name="month[]" placeholder="Month">
+                                    </td>
+                                    <td class="qty-column">
+                                        <input type="number" class="form-control" id="quantity" name="quantity[]" placeholder="Qty" value="1" min="1">
+                                        <small id="qty_error" class="error-message"></small>
+                                    </td>
+                                    <td class="price-column">
+                                        <input type="number" class="form-control" id="rate" name="rate[]" placeholder="Price" required step="0.01">
+                                        <small id="rate_error" class="error-message"></small>
+                                    </td>
+                                    <td class="total-column">
+                                        <span class="total_amount">₹0.00</span>
+                                        <input type="hidden" name="total_amount[]" class="total_amount_input">
+                                    </td>
+                                    <td class="action-column">
+                                        <button type="button" class="remove-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="totals-section">
+                            <div class="totals-row">
+                                <span>Sub Total:</span>
+                                <span id="sub_total">₹0.00</span>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-lg-12 d-flex justify-content-end align-items-center">
-                                <div class="col-lg-2 me-3 gst-state-fields" style="display: none;">
-                                    <label class="fw-bold fs-6 mb-2">CGST%</label>
-                                    <input type="text" class="form-control" id="cgst" name="cgst" value="9%" readonly>
-                                </div>
-                                <div class="col-lg-2 me-3 gst-state-fields" style="display: none;">
-                                    <label class="fw-bold fs-6 mb-2">CGST AMT</label>
-                                    <input type="text" class="form-control" id="cgst_amt" name="cgst_amt" readonly>
-                                </div>
-                                <div class="col-lg-2 me-3 gst-state-fields" style="display: none;">
-                                    <label class="fw-bold fs-6 mb-2">SGST%</label>
-                                    <input type="text" class="form-control" id="sgst" name="sgst" value="9%" readonly>
-                                </div>
-                                <div class="col-lg-2 me-3 gst-state-fields" style="display: none;">
-                                    <label class="fw-bold fs-6 mb-2">SGST AMT</label>
-                                    <input type="text" class="form-control" id="sgst_amt" name="sgst_amt" readonly>
-                                </div>
-                                <div class="col-lg-2 me-3 gst-central-fields" style="display: none;">
-                                    <label class="fw-bold fs-6 mb-2">IGST%</label>
-                                    <input type="text" class="form-control" id="igst" name="igst" value="18%" readonly>
-                                </div>
-                                <div class="col-lg-2 me-3 gst-central-fields" style="display: none;">
-                                    <label class="fw-bold fs-6 mb-2">IGST AMT</label>
-                                    <input type="text" class="form-control" id="igst_amt" name="igst_amt" readonly>
-                                </div>
-                                <div class="col-lg-2">
-                                    <label class="fw-bold fs-6 mb-2">Grand Total</label>
-                                    <input type="text" class="form-control" id="grand_total" name="grand_total" readonly>
-                                </div>
+                            
+                            <!-- GST State Fields -->
+                            <div class="totals-row gst-state-fields" style="display: none;">
+                                <span>CGST (9%):</span>
+                                <span id="cgst_amt">₹0.00</span>
+                            </div>
+                            <div class="totals-row gst-state-fields" style="display: none;">
+                                <span>SGST (9%):</span>
+                                <span id="sgst_amt">₹0.00</span>
+                            </div>
+                            
+                            <!-- GST Central Fields -->
+                            <div class="totals-row gst-central-fields" style="display: none;">
+                                <span>IGST (18%):</span>
+                                <span id="igst_amt">₹0.00</span>
+                            </div>
+                            
+                            <div class="totals-row">
+                                <span>Grand Total:</span>
+                                <span id="grand_total">₹0.00</span>
+                                <input type="hidden" id="grand_total_input" name="grand_total">
                             </div>
                         </div>
                         <br>
@@ -202,7 +347,7 @@ const validations = {
     product_name: { pattern: /^[A-Za-z0-9 ]+$/, error: "Only letters, numbers, and spaces allowed" },
     quantity: { pattern: /^[1-9][0-9]*$/, error: "Enter a valid quantity" },
     rate: { pattern: /^\d+(\.\d{1,2})?$/, error: "Enter a valid rate" },
-    discount: { pattern: /^\d+(\.\d{1,2})?$/, error: "Enter a valid discount percentage" },
+    discount: { pattern: /^(\d+(\.\d{1,2})?)?$/, error: "Enter a valid discount percentage" },
     gst_number: { pattern: /^[a-zA-Z0-9]+$/, error: "Enter a valid GST number"}
 };
 
@@ -248,14 +393,22 @@ document.addEventListener("DOMContentLoaded", function () {
     productRows.forEach(row => {
         let rate = parseFloat(row.querySelector("[name='rate[]']").value) || 0;
         let quantity = parseInt(row.querySelector("[name='quantity[]']").value) || 1;
-        let discount = parseFloat(row.querySelector("[name='discount[]']").value) || 0;
 
-        let discountAmount = (rate * quantity) * (discount / 100);
-        let taxableAmount = (rate * quantity) - discountAmount;
+        // Skip empty rows
+        if (rate === 0 && quantity === 0) {
+            return;
+        }
 
+        let taxableAmount = rate * quantity;
         totalAmount += taxableAmount; 
 
-        row.querySelector("[name='total_amount[]']").value = taxableAmount.toFixed(2);
+        // Update the display and hidden input
+        let totalSpan = row.querySelector(".total_amount");
+        let totalInput = row.querySelector(".total_amount_input");
+        if (totalSpan && totalInput) {
+            totalSpan.textContent = "₹" + taxableAmount.toFixed(2);
+            totalInput.value = taxableAmount.toFixed(2);
+        }
 
         let cgstAmount = 0, sgstAmount = 0, igstAmount = 0;
 
@@ -274,10 +427,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     grandTotal = totalAmount + totalGSTAmount;
 
-    document.getElementById("cgst_amt").value = totalCGST.toFixed(2);
-    document.getElementById("sgst_amt").value = totalSGST.toFixed(2);
-    document.getElementById("igst_amt").value = totalIGST.toFixed(2);
-    document.getElementById("grand_total").value = grandTotal.toFixed(2);
+    // Update summary display
+    document.getElementById("sub_total").textContent = "₹" + totalAmount.toFixed(2);
+    document.getElementById("cgst_amt").textContent = "₹" + totalCGST.toFixed(2);
+    document.getElementById("sgst_amt").textContent = "₹" + totalSGST.toFixed(2);
+    document.getElementById("igst_amt").textContent = "₹" + totalIGST.toFixed(2);
+    document.getElementById("grand_total").textContent = "₹" + grandTotal.toFixed(2);
+    document.getElementById("grand_total_input").value = grandTotal.toFixed(2);
 }
 
     document.addEventListener("input", function (event) {
@@ -290,38 +446,61 @@ document.addEventListener("DOMContentLoaded", function () {
         radio.addEventListener("change", calculateGST);
     });
 
-    $("#productTable").on("click", ".removeProduct", function () {
-    $(this).closest(".productRow").remove();
-    setTimeout(calculateGST, 100); 
-});
 
     calculateGST(); 
 });
 
 $(document).ready(function () {
-    $("#addProduct").click(function () {  
-        let newRow = `
-        <div class="row g-2 align-items-center productRow mt-1">
-            <div class="col-lg-3"><input type="text" class="form-control" name="product_name[]" placeholder="Enter Description" required></div>
-            <div class="col-lg-2"><input type="text" class="form-control" name="month[]" placeholder="Month" required></div>
-            <div class="col-lg-1"><input type="number" class="form-control" name="quantity[]" placeholder="Qty" min="1" value="1" required></div>
-            <div class="col-lg-2"><input type="number" class="form-control" name="rate[]" placeholder="Price" min="1" required></div>
-            <div class="col-lg-1"><input type="number" class="form-control" name="discount[]" placeholder="Disc" min="0" value="0" required></div>
-            <div class="col-lg-2"><input type="text" class="form-control" name="total_amount[]" placeholder="Total" readonly></div>
-            <div class="col-lg-1 d-flex align-items-center justify-content-center">
-                <button type="button" class="btn btn-sm btn-danger removeProduct ms-12"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>`;
+    let rowCounter = 1;
 
-        $("#productTable").append(newRow);
+    $("#addProduct").click(function () {  
+        rowCounter++;
+        let newRow = `
+        <tr class="productRow">
+            <td class="sno-column">${rowCounter}</td>
+            <td class="description-column">
+                <input type="text" class="form-control" name="product_name[]" placeholder="Enter Description" required>
+            </td>
+            <td class="month-column">
+                <input type="text" class="form-control" name="month[]" placeholder="Month">
+            </td>
+            <td class="qty-column">
+                <input type="number" class="form-control" name="quantity[]" placeholder="Qty" min="1" value="1">
+            </td>
+            <td class="price-column">
+                <input type="number" class="form-control" name="rate[]" placeholder="Price" min="0" step="0.01">
+            </td>
+            <td class="total-column">
+                <span class="total_amount">₹0.00</span>
+                <input type="hidden" name="total_amount[]" class="total_amount_input">
+            </td>
+            <td class="action-column">
+                <button type="button" class="remove-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>`;
+
+        $("#productTable tbody").append(newRow);
         calculateGST();
     });
 
-    $("#productTable").on("input", "input[name^='quantity'], input[name^='rate'], input[name^='discount']", function () {
-    calculateGST();
+    $("#productTable").on("input", "input[name^='quantity'], input[name^='rate']", function () {
+        calculateGST();
+    });
+
+    $("#productTable").on("click", ".remove-btn", function () {
+        $(this).closest(".productRow").remove();
+        updateRowNumbers();
+        calculateGST();
+    });
 });
 
-});
+function updateRowNumbers() {
+    $("#productTable tbody .productRow").each(function(index) {
+        $(this).find("td:first").text(index + 1);
+    });
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     const gstStateFields = document.querySelectorAll(".gst-state-fields");

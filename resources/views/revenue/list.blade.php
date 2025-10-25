@@ -40,9 +40,7 @@
                        
                         <div id="kt_ecommerce_report_views_export" class="d-none"></div>
                     </div>
-
                     <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-
                         {{-- Date Range Filter (GET) --}}
                         <form id="filterForm" method="GET" class="d-flex align-items-center gap-2">
                             <input id="created_range"
@@ -222,6 +220,7 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
                                 <th class="w-10px pe-2"></th>
                                 <th>#</th>
+<<<<<<< HEAD
                                 <th class="min-w-125px sorting">R - Name</th>
                                 <th class="min-w-125px sorting">Category</th>
                                 <th class="min-w-125px sorting">Subcategory</th>
@@ -229,6 +228,12 @@
                                 <th class="min-w-125px sorting">Amount</th>
                                 <th class="min-w-125px sorting">Date</th>
                                 <th class="min-w-100px sorting">Actions</th>
+=======
+                                <th class ="min-w-125px sorting">Category</th>
+                                <th class ="min-w-125px sorting">Subcategory</th>
+                                <th class ="min-w-125px sorting">Amount</th>
+                                <th class ="min-w-125px sorting">CreatedDate</th>
+>>>>>>> arvindkumar
                             </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">
@@ -290,7 +295,7 @@
                         </thead>
                         <tbody class="fw-semibold text-gray-600">
                             @php $j = 0; @endphp
-                            @forelse($expenses as $expense)
+                            @forelse($expenses as $expense) 
                                 <tr>
                                     <td></td>
                                     <td>{{ $j += 1 }}</td>
@@ -450,6 +455,99 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+// Export functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle export menu clicks
+    document.querySelectorAll('[data-kt-ecommerce-export]').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const exportType = this.getAttribute('data-kt-ecommerce-export');
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            
+            let url = '{{ route("revenue.export", ":format") }}';
+            let format = 'excel';
+            
+            switch(exportType) {
+                case 'excel':
+                    format = 'excel';
+                    break;
+                case 'csv':
+                    format = 'csv';
+                    break;
+                case 'pdf':
+                    format = 'pdf';
+                    break;
+                case 'copy':
+                    copyToClipboard();
+                    return;
+            }
+            
+            url = url.replace(':format', format);
+            
+            // Add query parameters for date filtering
+            const params = new URLSearchParams();
+            if (startDate) params.append('start_date', startDate);
+            if (endDate) params.append('end_date', endDate);
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+            
+            // Open export URL in new window/tab
+            window.open(url, '_blank');
+        });
+    });
+    
+    function copyToClipboard() {
+        // Get table data
+        const revenueTable = document.getElementById('revenue_table');
+        const expenseTable = document.getElementById('expense_table');
+        
+        let text = 'Revenue & Expense Report\n';
+        text += 'Date Range: {{ request("start_date") ? \Carbon\Carbon::parse(request("start_date"))->format("d-m-Y") . " to " . \Carbon\Carbon::parse(request("end_date"))->format("d-m-Y") : "All Time" }}\n';
+        text += 'Generated: ' + new Date().toLocaleString() + '\n\n';
+        
+        text += 'SUMMARY\n';
+        text += 'Total Revenue: ${{ number_format($totalRevenue, 2) }}\n';
+        text += 'Total Expenses: ${{ number_format($totalExpense, 2) }}\n';
+        text += 'Net {{ $net >= 0 ? "Income" : "Loss" }}: ${{ number_format($net, 2) }}\n\n';
+        
+        text += 'REVENUE RECORDS\n';
+        text += '#\tCategory\tSubcategory\tAmount\tDate\n';
+        @foreach($revenues as $index => $revenue)
+        text += '{{ $index + 1 }}\t{{ $revenue->category }}\t{{ $revenue->subcategory ?? "" }}\t${{ number_format($revenue->amount, 2) }}\t{{ $revenue->created_at->format("d-m-Y") }}\n';
+        @endforeach
+        
+        text += '\nEXPENSE RECORDS\n';
+        text += '#\tCategory\tSubcategory\tAmount\tDate\n';
+        @foreach($expenses as $index => $expense)
+        text += '{{ $index + 1 }}\t{{ $expense->category }}\t{{ $expense->subcategory ?? "" }}\t${{ number_format($expense->amount, 2) }}\t{{ $expense->created_at->format("d-m-Y") }}\n';
+        @endforeach
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(text).then(function() {
+            // Show success message
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copied!',
+                    text: 'Data copied to clipboard',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                alert('Data copied to clipboard!');
+            }
+        }).catch(function(err) {
+            console.error('Failed to copy: ', err);
+            alert('Failed to copy to clipboard');
+        });
+    }
+});
+</script>
 
 <script>  
 	function deleteConfirmation(id)

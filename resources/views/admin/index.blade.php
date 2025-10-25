@@ -1601,7 +1601,7 @@
                                     <option value="">All Users</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}" {{ ($userId == $user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
-                                    @endforeach
+                                    @endforeach 
                                 </select>
                                 <input type="text" name="date_range" id="datePicker" value="{{ $dateRange }}" class="form-control form-control-sm border-0" placeholder="Date or Range" style="min-width: 160px;" />
                                 <input type="hidden" id="currentFilter" name="filter" value="{{ $filter }}">
@@ -2113,9 +2113,7 @@
     
 </script>
 
-
-
- <script>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         const chartElement = document.getElementById('goalStatusChart');
         if (!chartElement) {
@@ -2601,7 +2599,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clearTimeDisplayStyles();
     setTimeout(clearTimeDisplayStyles, 100);
 
-    
+
          // Initialize performance chart
      initializePerformanceChart();
      
@@ -2660,8 +2658,7 @@ function showNotification(message, type = 'info') {
     `;
     
     document.body.appendChild(notification);
-    
-    // Auto remove after 5 seconds
+ 
     setTimeout(() => {
         if (notification.parentNode) {
             notification.remove();
@@ -2717,7 +2714,6 @@ function initializePerformanceChart() {
     });
 }
 
-// Financial Chart Functions
 let financialChart = null;
 
 function initializeFinancialChart() {

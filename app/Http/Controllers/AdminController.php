@@ -914,8 +914,7 @@ class AdminController extends Controller
 
     public function roleview(){
         return view('admin.role_view');
-    }  // End Function
-
+    } 
     public function UpdateEmail(Request $request){
         $id=Auth::user()->id;
         $editData= DB::table('users')
@@ -937,7 +936,6 @@ class AdminController extends Controller
             );
             return redirect('/edit/profile')->with($notification);
         }
-
     }
 
     public function UpdatePassword(Request $request){
@@ -1061,7 +1059,7 @@ class AdminController extends Controller
         $usersdetails->save();   
         if($usersdetails){
             $notification = array(  'message'    => 'User details Updated Successfully',
-                                    'alert-type' => 'success'  );
+                                    'alert-type'   => 'success'  );
             return redirect()->route('list.user')->with($notification);
         }else{
             $notification = array(  'message'       => 'Something went wrong, Please try again!!',

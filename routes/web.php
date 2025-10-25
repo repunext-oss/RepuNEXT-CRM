@@ -518,7 +518,6 @@ Route::middleware(['auth'])->group(function () {
          Route::post('/availability/{id}/toggle', 'toggleStatus')->name('availability.toggle');
      }); 
 
-
     // Jira Tasks Routes
     Route::controller(JiraTaskController::class)->group(function(){
         Route::get('/jira-tasks/board', 'index')->name('jira-tasks.board');

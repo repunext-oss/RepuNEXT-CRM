@@ -1253,11 +1253,8 @@
 
 <div class="dashboard-container">
     <div class="container-xxl">
-        <!-- Analytical Dashboard Header -->
         <div class="dashboard-header mb-4">
-        
-                <div class="card-body p-4">
-                    <!-- Main Header Row -->
+                 <div class="card-body p-4">
                     <div class="row align-items-center">
                         <div class="col-lg-8">
                             <div class="d-flex align-items-center">
@@ -1583,7 +1580,7 @@
                                     <a href="http://127.0.0.1:8000/salesorder/add"
                                     class="btn px-4 py-2 me-2 fw-semibold"
                                     style="background-color: #002244; border: none; color: white;">
-                                        ðŸš€ Try Now
+                                        Try Now
                                     </a>
                                 </div>
                             </div>
@@ -1617,7 +1614,7 @@
                                 </span>Add</button>
                             </a>
 
-                            <button id="refreshButton" class="btn btn-primary ms-2">â†»</button>
+                            <button id="refreshButton" class="btn btn-primary ms-2">refresh</button>
                         </div>
                         <ul class="nav nav-pills gap-2 justify-content-center mt-5" role="tablist">
                             @php
@@ -1635,7 +1632,6 @@
                         </ul>
                     </div>
 
-                    <!-- Scrollable Content Section -->
                     <div id="dashboard-content" style="height: calc(100% - 135px); overflow-y: auto; padding: 10px;">
                         @include('admin.dashboard_partial')
                     </div>
@@ -1696,11 +1692,10 @@
                         <div id="leaveBalanceCards" style="display: none;">
                             <div class="balance-dashboard">
                                
-                                
                                 <div class="balance-grid">
                                     <div class="balance-card credit-leave">
                                         <div class="card-header">
-                                            <div class="card-icon">
+                                           <div class="card-icon">
                                                 <i class="bi bi-credit-card-2-front-fill"></i>
                                             </div>
                                             <div class="card-title">Credit Leave</div>
@@ -1905,7 +1900,7 @@
                                         <span class="trend-chip down"><i class="bi bi-arrow-down-right"></i>{{ $bookingTrend['val'] }}%</span>
                                     @endif
                                     <h4 class="stat-number">{{ $todayBookings }}</h4>
-                                    <p class="stat-label">Todayâ€™s Slots</p>
+                                    <p class="stat-label">Today's Slots</p>
                                 </div>
 
                                 <div class="stat-box">
@@ -1953,7 +1948,7 @@
                         <canvas id="financialChart"></canvas>
                     </div>
                     
-                    <div class="row mt-2    ">
+                    <div class="row mt-2">
                         <!-- Total Revenue -->
                         <div class="col-md-6 text-center">
                             <div class="financial-stat">
@@ -2564,24 +2559,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const defaultImage = '{{ asset("upload/default.jpg") }}';
         
         profileImages.forEach(img => {
-            // Add error handling for each profile image
             img.addEventListener('error', function() {
                 console.log('Profile image not found, using default:', this.src);
                 this.src = defaultImage;
-                this.style.opacity = '0.8'; // Slightly dimmed to indicate it's a fallback
+                this.style.opacity = '0.8'; 
             });
-            
-            // Add loading state
+       
             img.addEventListener('load', function() {
                 this.style.opacity = '1';
             });
         });
     }
     
-    // Initialize profile image fixes
     fixProfileImages();
     
-    // Clear any inline display:none styles from time elements in dashboard header
     function clearTimeDisplayStyles() {
         const dashboardHeader = document.querySelector('.dashboard-header');
         if (dashboardHeader) {
@@ -2594,61 +2585,51 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
-    // Clear styles immediately and after a short delay
+     // Clear styles immediately and after a short delay
     clearTimeDisplayStyles();
     setTimeout(clearTimeDisplayStyles, 100);
 
-
-         // Initialize performance chart
      initializePerformanceChart();
      
-     // Initialize financial chart
      initializeFinancialChart();
- });
+ });  
 
 // Analytics Functions
 function initializeAnalytics() {
     console.log('Analytics Dashboard Initialized');
-    // Add any additional analytics initialization here
+  // Add any additional analytics initialization here
 }
 
 function refreshAnalytics() {
-    // Show loading state
     const refreshBtn = event.target.closest('button');
     const originalContent = refreshBtn.innerHTML;
     refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Refreshing...';
     refreshBtn.disabled = true;
     
-    // Simulate refresh delay
     setTimeout(() => {
         refreshBtn.innerHTML = originalContent;
         refreshBtn.disabled = false;
         
-        // Show success notification
         showNotification('Analytics refreshed successfully!', 'success');
     }, 2000);
 }
 
 function exportAnalytics() {
-    // Show loading state
+
     const exportBtn = event.target.closest('button');
     const originalContent = exportBtn.innerHTML;
     exportBtn.innerHTML = '<i class="bi bi-download"></i> Exporting...';
     exportBtn.disabled = true;
     
-    // Simulate export delay
     setTimeout(() => {
         exportBtn.innerHTML = originalContent;
         exportBtn.disabled = false;
-        
-        // Show success notification
+     
         showNotification('Analytics exported successfully!', 'success');
     }, 3000);
 }
 
 function showNotification(message, type = 'info') {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
     notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';

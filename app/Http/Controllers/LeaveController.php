@@ -238,9 +238,9 @@ public function approveLeave(Request $request)
 
     if ($user && $user->email) {
         $details = [
-            'subject'  => 'Leave Rejected',
-            'username' => $user->name ?? 'User',   // ✅ Add this key
-            'reason'   => $request->reason,
+            'subject'  => 'Leave Request Rejected',
+            'message'  => 'Sorry, your leave request has been rejected. Reason: ' . ($request->reason ?? 'No reason provided'),
+            'username' => (string) ($user->name ?? 'User'),
         ];
 
         // Send email
@@ -315,10 +315,20 @@ public function approveLeave(Request $request)
             $leave->save();
 
             if ($leave->user && $leave->user->email) {
-                Mail::to($user->email)->send(new LeaveRejectedMail($leave, $request->reason));
+                $details = [
+                    'subject'  => 'Leave Request Rejected',
+                    'body'  => 'Sorry, your leave request has been rejected. Reason: ' . ($request->reason ?? 'No reason provided'),
+                    'username' => (string) ($leave->user->name ?? 'User'),
+                ];
+                Mail::to($leave->user->email)->send(new LeaveRejectedMail($details));
             }
 
             return response()->json(['message' => 'Leave rejected and email sent.']);
+        }
+        // Handle leave approval
+        if ($request->action === 'approve') {
+            // Reuse the approval logic that updates balances and status
+            return $this->approveLeave($request);
         }
         return response()->json(['message' => 'Invalid action.'], 400);
     }
@@ -337,9 +347,9 @@ public function approveLeave(Request $request)
             $message = $action === "approve" ? "Your leave request has been approved." : "Sorry, your leave request has been rejected.";
 
        Mail::to($user->email)->send(new LeaveApprovedMail([
-        'subject'  => $subject,
-        'message'  => $message,
-        'username' => $user->name  // ✅ This line added
+        'subject'  => (string) $subject,
+        'body'  => (string) $message,
+        'username' => (string) ($user->name ?? 'User')
     ]));
 
             return response()->json(['message' => "Email sent successfully!"]);

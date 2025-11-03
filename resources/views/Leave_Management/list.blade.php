@@ -216,7 +216,7 @@
 									@foreach($repn as $repns)
 										@if( in_array("kt_roles_select_all", $rolerawdata, TRUE) || in_array("leave_all", $rolerawdata, TRUE) || (Auth::user()->id) == ($repns->name))
 										<tr> 
-											<td>  </td>
+											<td></td>
 											<td>{{++$j }}</td>
 											<td>
 												@foreach($user as $users)

@@ -96,7 +96,7 @@ Route::get('/test-route', function() {
     ]);
 });
 
-// Temporary route to auto-login for testing (REMOVE IN PRODUCTION)
+
 Route::get('/auto-login', function() {
     $user = \App\Models\User::first();
     if ($user) {

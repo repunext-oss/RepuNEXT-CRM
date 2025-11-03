@@ -722,7 +722,7 @@
                             @endif
                             <div>Grand Total: <span class="fw-bold fs-6 text-primary">₹{{ $salesOrder->grandtotal_amount }}
                             </span></div>
-                        </div>
+                          </div>
                         <div class="divider3"></div>
                         <div id="printTotals" class="print-totals-section">
                             <table class="total-table">

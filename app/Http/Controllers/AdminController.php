@@ -542,7 +542,6 @@ class AdminController extends Controller
                 'project_create' => $project_create,
                 'project_delete' => $project_delete,
 
-                
                 'timesheet_all' => $timesheet_all,
                 'timesheet_read' => $timesheet_read,
                 'timesheet_write' => $timesheet_write,
@@ -944,7 +943,6 @@ class AdminController extends Controller
                 'project_create' => $project_create,
                 'project_delete' => $project_delete,
 
-                
                 'timesheet_all' => $timesheet_all,
                 'timesheet_read' => $timesheet_read,
                 'timesheet_write' => $timesheet_write,

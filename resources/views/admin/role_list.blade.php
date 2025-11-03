@@ -965,7 +965,6 @@
 											</div>
 										</td>
 									</tr>
-									<!-- FollowUp List -->
 									<tr>
 										<td class="text-gray-800">FollowUp List</td>
 										<td>
@@ -1139,7 +1138,6 @@
 									</tr>
 		
 
-									<!-- Time -->
 									<!-- <tr>
 										<td class="text-gray-800">Task Timesheet List</td>
 										<td> 
@@ -1227,7 +1225,7 @@
 												</label>
 											</div>
 										</td>
-									</tr>
+    									</tr>
 
 									<tr>
 										<td class="text-gray-800">Domain</td>

@@ -120,7 +120,6 @@
         <div class="summary-grid">
             <div class="summary-item">
                 <h3>Total Revenue</h3>
-<<<<<<< HEAD
                 <div class="amount revenue">₹{{ number_format($totalRevenue, 2) }}</div>
             </div>
             <div class="summary-item">
@@ -130,17 +129,6 @@
             <div class="summary-item">
                 <h3>Net {{ $net >= 0 ? 'Income' : 'Loss' }}</h3>
                 <div class="amount net">₹{{ number_format($net, 2) }}</div>
-=======
-                <div class="amount revenue">${{ number_format($totalRevenue, 2) }}</div>
-            </div>
-            <div class="summary-item">
-                <h3>Total Expenses</h3>
-                <div class="amount expense">${{ number_format($totalExpense, 2) }}</div>
-            </div>
-            <div class="summary-item">
-                <h3>Net {{ $net >= 0 ? 'Income' : 'Loss' }}</h3>
-                <div class="amount net">${{ number_format($net, 2) }}</div>
->>>>>>> arvindkumar
             </div>
         </div>
     </div>
@@ -152,15 +140,10 @@
                 <thead>
                     <tr>
                         <th>#</th>
-<<<<<<< HEAD
                         <th>Name</th>
                         <th>Category</th>
                         <th>Subcategory</th>
                         <th>Payment Method</th>
-=======
-                        <th>Category</th>
-                        <th>Subcategory</th>
->>>>>>> arvindkumar
                         <th>Amount</th>
                         <th>Date</th>
                     </tr>
@@ -169,19 +152,12 @@
                     @foreach($revenues as $index => $revenue)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-<<<<<<< HEAD
                             <td>{{ $revenue->r_name ?? '-' }}</td>
                             <td>{{ $revenue->category }}</td>
                             <td>{{ $revenue->subcategory ?? '-' }}</td>
                             <td>{{ $revenue->payment_method ?? '-' }}</td>
                             <td class="amount revenue">₹{{ number_format($revenue->amount, 2) }}</td>
                             <td>{{ $revenue->entry_date ? \Carbon\Carbon::parse($revenue->entry_date)->format('d-m-Y') : $revenue->created_at->format('d-m-Y') }}</td>
-=======
-                            <td>{{ $revenue->category }}</td>
-                            <td>{{ $revenue->subcategory ?? '-' }}</td>
-                            <td class="amount revenue">${{ number_format($revenue->amount, 2) }}</td>
-                            <td>{{ $revenue->created_at->format('d-m-Y') }}</td>
->>>>>>> arvindkumar
                         </tr>
                     @endforeach
                 </tbody>
@@ -198,15 +174,10 @@
                 <thead>
                     <tr>
                         <th>#</th>
-<<<<<<< HEAD
                         <th>Name</th>
                         <th>Category</th>
                         <th>Subcategory</th>
                         <th>Payment Method</th>
-=======
-                        <th>Category</th>
-                        <th>Subcategory</th>
->>>>>>> arvindkumar
                         <th>Amount</th>
                         <th>Date</th>
                     </tr>
@@ -215,19 +186,12 @@
                     @foreach($expenses as $index => $expense)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-<<<<<<< HEAD
                             <td>{{ $expense->e_name ?? '-' }}</td>
                             <td>{{ $expense->category }}</td>
                             <td>{{ $expense->subcategory ?? '-' }}</td>
                             <td>{{ $expense->payment_method ?? '-' }}</td>
                             <td class="amount expense">₹{{ number_format($expense->amount, 2) }}</td>
                             <td>{{ $expense->entry_date ? \Carbon\Carbon::parse($expense->entry_date)->format('d-m-Y') : $expense->created_at->format('d-m-Y') }}</td>
-=======
-                            <td>{{ $expense->category }}</td>
-                            <td>{{ $expense->subcategory ?? '-' }}</td>
-                            <td class="amount expense">${{ number_format($expense->amount, 2) }}</td>
-                            <td>{{ $expense->created_at->format('d-m-Y') }}</td>
->>>>>>> arvindkumar
                         </tr>
                     @endforeach
                 </tbody>

@@ -60,7 +60,7 @@ class TaskTimeController extends Controller
     }
     public function update(Request $request)
     {
-        $repn           =   TaskTime::find($request->id);
+        $repn   =   TaskTime::find($request->id);
         $repn->goalid_ref = implode(',', $request->goalid_ref);
         $repn->starttime= $request['starttime'];
         $repn->endtime= $request['endtime'];

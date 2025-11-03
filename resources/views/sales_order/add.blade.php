@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let rate = parseFloat(row.querySelector("[name='rate[]']").value) || 0;
         let quantity = parseInt(row.querySelector("[name='quantity[]']").value) || 1;
 
-        // Skip empty rows
+       
         if (rate === 0 && quantity === 0) {
             return;
         }

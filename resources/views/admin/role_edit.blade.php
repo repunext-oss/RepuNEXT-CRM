@@ -664,7 +664,7 @@
 
 										<!-- Person Availability -->
 										 <tr>
-											<td class="text-gray-800">Studio Booking</td>
+											<td class="text-gray-800">Person Availability</td>
 											<td>
 												<div class="d-flex justify-content-between w-100">
 													<label class="form-check form-check-sm form-check-custom form-check-solid">

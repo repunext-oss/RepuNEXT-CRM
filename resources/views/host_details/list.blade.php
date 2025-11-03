@@ -106,7 +106,7 @@
 							<th class="min-w-125px sorting">Host Name</th> 
 							<th class="min-w-125px sorting">Credentials</th>
 							<th class="min-w-125px sorting">Host<br>Updat Date</th>  
-							<!-- <th class="min-w-100px sorting">Status</th>    -->
+							<!-- <th class="min-w-100px sorting">Status</th>-->
 							<th class="min-w-125px sorting">Actions</th> 
 							
 						</tr> 
@@ -118,7 +118,7 @@
 								<td></td>
 								<td>{{$j+=1;}}</td> 
 								<td>{{ preg_replace('/ - \(.*?\)/', '', $repns->host_name) }}</td>
-								<td>UN:{{ $repns->host_username}} <br>
+								<td>UN:{{ $repns->host_username}}<br>
 									<div class="password-container">
 										PD:<input type="password" class="password-input" value="{{ $repns->host_password }}" readonly>
 										<i class="fas fa-eye toggle-password"></i>

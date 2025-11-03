@@ -220,7 +220,6 @@
                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase text-muted bg-light">
                                 <th class="w-10px pe-2"></th>
                                 <th>#</th>
-<<<<<<< HEAD
                                 <th class="min-w-125px sorting">R - Name</th>
                                 <th class="min-w-125px sorting">Category</th>
                                 <th class="min-w-125px sorting">Subcategory</th>
@@ -228,12 +227,6 @@
                                 <th class="min-w-125px sorting">Amount</th>
                                 <th class="min-w-125px sorting">Date</th>
                                 <th class="min-w-100px sorting">Actions</th>
-=======
-                                <th class ="min-w-125px sorting">Category</th>
-                                <th class ="min-w-125px sorting">Subcategory</th>
-                                <th class ="min-w-125px sorting">Amount</th>
-                                <th class ="min-w-125px sorting">CreatedDate</th>
->>>>>>> arvindkumar
                             </tr>
                         </thead>
                         <tbody class="fw-semibold text-gray-600">

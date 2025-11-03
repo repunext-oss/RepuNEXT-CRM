@@ -57,13 +57,13 @@
 						</div>   
 						<br> 
 
-						<div class="col-lg-6 fv-row">
+							<div class="col-lg-6 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Task Description </label>
 								<textarea name="task_description" id="task_description"  rows="4" columns="45" placeholder="Task Description " required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 "/></textarea>
-						</div>  
+							</div>  
 						</div>
 
-						<!-- <div class="col-lg-6 fv-row">
+						<!--<div class="col-lg-6 fv-row">
 								<label class="col-lg-12 col-form-label required fw-bold fs-6">Task Status </label>
 								<input type="text" name="task_status" id="task_status"  placeholder="Task task_status " required class="form-control form-control-lg form-control-solid mb-3 mb-lg-0 "/>
 							</div>  

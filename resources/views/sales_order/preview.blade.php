@@ -1004,7 +1004,7 @@ input[type="text"]:focus, input[type="number"]:focus {
                 if (totalAmountCell) {
                     totalAmountCell.textContent = `₹${taxableAmount.toFixed(2)}`;
                 }
-
+                
                 if (gstStatus === "0") { 
                     let cgstAmount = (taxableAmount * 9) / 100;
                     let sgstAmount = (taxableAmount * 9) / 100;
